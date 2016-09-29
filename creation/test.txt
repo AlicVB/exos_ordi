@@ -1,0 +1,10 @@
+<div class="item ligne radio" tpe="radio" item="0">
+  <div>Noé </div>
+  <form>
+    <input type="radio" itemid="0" class="exo" onclick="change(this)" value="0" id="rb0" name="0">
+    <label for="rb0">et</label>
+    <br/><input type="radio" itemid="0" class="exo" onclick="change(this)" value="1" id="rb1" name="0">
+    <label for="rb1">est</label>
+  </form>
+  <div> dans sa maison.</div>
+</div>

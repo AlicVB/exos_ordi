@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Création d'exercice</title>
+  <link rel="stylesheet" href="mixed.css">
+  <link rel="stylesheet" href="exos.css">
+  <script type="text/javascript" src="FileSaver.min.js"></script>
+  <script type="text/javascript" src="jszip.min.js"></script>
+  <script type="text/javascript" src="mixed.js"></script>
+  <script type="text/javascript" src="jscolor.min.js"></script>
+</head>
+
+<body onload="redim()">
+  <div id="textediv">
+    <img id="apply" onclick="apply()" src="go-next.svg" /><br/><br/>
+    <div id="c"></div>
+    <br/><br/>
+    <button id="sauve" onClick="sauvegarder();">Sauvegarder l'exercice</button>
+  </div>
+  <div id="infosdiv">
+    <div id="tb">
+      <button onclick="radio_new()">radio</button>
+      <button onclick="radiobtn_new()">radio boutons</button>
+      <button onclick="check_new()">cases à cocher</button>
+      <button onclick="combo_new()">liste déroulante</button>
+      <button onclick="texte_new()">zone de texte</button>
+      <button onclick="multi_new()">boutons multi-positions</button>
+      <button onclick="image_new()">image</button>
+    </div>
+    <div id="elems">
+      <div id="radio">
+        <span id="eexpl">
+          <b>radio</b><br/>
+          Encadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $ (Les chats sont |*des mamifères$des oiseaux*des félins|)
+        </span><br/>
+        <input type="file" id="exo_img_get" accept="image/*" onchange="loadImg(event)"/>
+        <div class="coul">Nombre de positions :
+          <select id="nb_pos" onChange="coulchange()"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+        </div>
+        <div class="coul" id="div_coul1">Couleur1
+          <input class="jscolor {hash:true}" type="text" id="exo_coul1" value="#00ff00" onchange="change(this)" />
+        </div>
+        <div class="coul" id="div_coul2">Couleur2
+          <input class="jscolor {hash:true}" type="text" id="exo_coul2" value="#ff0000" onchange="change(this)" />
+        </div>
+        <div class="coul" id="div_coul3">Couleur3
+          <input class="jscolor {hash:true}" type="text" id="exo_coul3" value="#ff0000" onchange="change(this)" />
+        </div>
+        <div class="coul" id="div_coul4">Couleur4
+          <input class="jscolor {hash:true}" type="text" id="exo_coul4" value="#ff0000" onchange="change(this)" />
+        </div>
+        <div class="coul" id="div_coul5">Couleur5
+          <input class="jscolor {hash:true}" type="text" id="exo_coul5" value="#ff0000" onchange="change(this)" />
+        </div>
+        <div class="exo_tx_div" id="div_coul1">Largeur (0=infini) :
+          <input type="text" size="3" id="exo_txl" value="5" onchange="change(this)" title="nombre de charactères maxi" />
+          Hauteur :
+          <input type="text" size="3" id="exo_txh" value="1" onchange="change(this)" title="nombre de lignes" />
+          Retour à la ligne :
+          <select id="exo_txe" onchange="change(this)"><option value="1" selected>autorisé</option><option value="0">interdit</option></select>
+          Comparaison :
+          <select id="exo_txc" onchange="change(this)"><option value="0" selected>strict</option><option value="1">Sans Maj. au début</option><option value="2">Sans Maj.</option></select>
+        </div>
+        <input class="long" type="text" id="etxt" /><img id="updateimg" src="go-next.svg" onclick="create_div()" />
+      </div>
+    </div>
+    <textarea id="html"></textarea>
+  </div>
+  
+</body>
+</html>

@@ -1,0 +1,37 @@
+*********************** Arborescence : *******************************
+
+*********************** Syntaxe du fichier exo.txt : *******************************
+Nom de l'exercice
+Consigne (peut contenir de l'html)
+Total de l'exercice|arrondi(1,0.5,0.1,0.01)
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) \
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) |
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) |=> 6 lignes obligées pour désactiver 1 ligne mettre des scores impossibles
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) |
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) |
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) /
+nb d'essais maximum (0 = infini)
+couleur de fond (au formats html)
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)  => 10 lignes
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+Options spécifiques de l'exercice
+Idem
+...
+
+*********************** Syntaxe du fichier de sauvegarde : *******************************
+chaque élément est séparé par un saut de ligne
+la valeur de l'élément dépend du type d'item
+
+
+*********************** Syntaxe du fichier php : *******************************
+<div class="item ..." tpe="..." [opt="..."] [points="..."] item="...">              -> bloc item (contient toutes les infos)
+  <?? class="exo ..." ... ... onchange="change(this)" itemid="...">              -> élément à sauvegarder en cas de modif
+</div>

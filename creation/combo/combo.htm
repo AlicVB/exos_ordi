@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Création d'exercice</title>
+  <link rel="stylesheet" href="combo.css">
+  <script type="text/javascript" src="../FileSaver.min.js"></script>
+  <script type="text/javascript" src="../jszip.min.js"></script>
+  <script type="text/javascript" src="combo.js"></script>
+  <script type="text/javascript" src="../jscolor.min.js"></script>
+</head>
+
+<body onLoad="charge()" >
+  <div id="titre">exercice avec des listes déroulantes</div>
+  <p id="listetitre">Exemple : qcm, a-à</p>
+  <div id="infosdiv">
+    <p id="ititre">informations sur l'exercice</p>
+    <p>
+      Titre de l'exercice :
+      <input type="text" id="exo_titre" onKeyUp="change(this)" value="Exercice"/>
+    </p>
+    <p>
+      Consigne (html) :
+      <input class="long" type="text" id="exo_consigne" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Appréciation 1 :<br/>
+      min <input class="nb" type="text" id="a1_min" value="0" onKeyUp="change(this)" /> 
+      max <input class="nb" type="text" id="a1_max" value="0" onKeyUp="change(this)" /> 
+      couleur  <select id="a1_coul" onChange="change(this)"><option value="n">noir</option><option value="r">rouge</option><option value="j">jaune</option><option value="b">bleu</option><option value="v">vert</option><option value="c">coupe</option></select>
+      <input type="checkbox" id="a1_re" onChange="change(this)"/>bouton réessayer
+      <br/>texte (html) <input class="long" type="text" id="a1_txt" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Appréciation 2 :<br/>
+      min <input class="nb" type="text" id="a2_min" value="1" onKeyUp="change(this)" /> 
+      max <input class="nb" type="text" id="a2_max" value="3" onKeyUp="change(this)" /> 
+      couleur  <select id="a2_coul" onChange="change(this)"><option value="n">noir</option><option value="r" selected>rouge</option><option value="j">jaune</option><option value="b">bleu</option><option value="v">vert</option><option value="c">coupe</option></select>
+      <input type="checkbox" id="a2_re" onChange="change(this)"/>bouton réessayer
+      <br/>texte (html) <input class="long" type="text" id="a2_txt" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Appréciation 3 :<br/>
+      min <input class="nb" type="text" id="a3_min" value="4" onKeyUp="change(this)" /> 
+      max <input class="nb" type="text" id="a3_max" value="5" onKeyUp="change(this)" /> 
+      couleur  <select id="a3_coul" onChange="change(this)"><option value="n">noir</option><option value="r">rouge</option><option value="j" selected>jaune</option><option value="b">bleu</option><option value="v">vert</option><option value="c">coupe</option></select>
+      <input type="checkbox" id="a3_re" onChange="change(this)"/>bouton réessayer
+      <br/>texte (html) <input class="long" type="text" id="a3_txt" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Appréciation 4 :<br/>
+      min <input class="nb" type="text" id="a4_min" value="6" onKeyUp="change(this)" /> 
+      max <input class="nb" type="text" id="a4_max" value="7" onKeyUp="change(this)" /> 
+      couleur  <select id="a4_coul" onChange="change(this)"><option value="n">noir</option><option value="r">rouge</option><option value="j">jaune</option><option value="b" selected>bleu</option><option value="v">vert</option><option value="c">coupe</option></select>
+      <input type="checkbox" id="a4_re" onChange="change(this)"/>bouton réessayer
+      <br/>texte (html) <input class="long" type="text" id="a4_txt" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Appréciation 5 :<br/>
+      min <input class="nb" type="text" id="a5_min" value="8" onKeyUp="change(this)" /> 
+      max <input class="nb" type="text" id="a5_max" value="9" onKeyUp="change(this)" /> 
+      couleur  <select id="a5_coul" onChange="change(this)"><option value="n">noir</option><option value="r">rouge</option><option value="j">jaune</option><option value="b">bleu</option><option value="v" selected>vert</option><option value="c">coupe</option></select>
+      <input type="checkbox" id="a5_re" onChange="change(this)"/>bouton réessayer
+      <br/>texte (html) <input class="long" type="text" id="a5_txt" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Appréciation 6 :<br/>
+      min <input class="nb" type="text" id="a6_min" value="10" onKeyUp="change(this)" /> 
+      max <input class="nb" type="text" id="a6_max" value="10" onKeyUp="change(this)" /> 
+      couleur  <select id="a6_coul" onChange="change(this)"><option value="n">noir</option><option value="r">rouge</option><option value="j">jaune</option><option value="b">bleu</option><option value="v">vert</option><option value="c" selected>coupe</option></select>
+      <input type="checkbox" id="a6_re" onChange="change(this)"/>bouton réessayer
+      <br/>texte (html) <input class="long" type="text" id="a6_txt" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Texte score :
+      <input type="text" id="exo_score" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Nombre d'essais (0=infini) :
+      <input class="nb" type="text" id="exo_nb" value="1" onKeyUp="change(this)" />
+    </p>
+    <p>
+      Couleur de fond (formats html) :
+      <input class="jscolor {hash:true}" type="text" id="exo_coul" value="#ffffff" onchange="change(this)" />
+    </p>
+  </div>
+  <div id="textediv">
+    <span id="texte_aide">
+      - encadrer les choix par |<br/>
+      - le texte à sélectionner commence par *<br/>
+      - les autres commencent par $<br/><br/>
+      exemple : 'Les chats sont |$des poissons$des oiseaux*des félins|<br/><br/>
+    </span>
+    <textarea id="texte" name="texte" rows="36" cols="60" onKeyUp="change(this)" ></textarea>
+    <br/><br/>
+    <button id="sauve" onClick="sauvegarder();">Sauvegarder l'exercice</button>
+    <button id="reset" onClick="erase();">Remmettre à zéro</button>
+    <br/><br/>Charger un ancien exo (fichier xxx.sav.txt)<br/><input type="file" id="recharger"/>
+  </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+body {
+  background-color: #AEC7A6;
+}
+#titre {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  margin:0;
+}
+#sauve {
+  text-align: center
+}
+input.nb {
+  width: 3em;
+}
+input.long {
+  width: 140em;
+}
+input.jscolor {
+  width: 5em;
+}
+div.coul {
+  display: inline-block;
+}
