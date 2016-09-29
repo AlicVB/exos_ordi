@@ -1,5 +1,4 @@
-var imgs = new Array();   // stockage des images chargées en mémoire
-var imgs_ext = new Array(); // extensions de ces images
+var infos = {};
 
 var blocs = new Array();  // c'est un tableau qui rescence les données de chaque bloc
 var selection = new Array();  // c'est un tableau avec les indices de blocs sélectionnés
@@ -13,7 +12,9 @@ function change(e)
 function start()
 {
   _mv_ini();
-  g_restaurer();
+  g_restaurer(true);
+  g_restaurer_info(false);
+  cr_tab_click(document.getElementById("cr_tab_info"));
 }
 
 function hex2rgb(hex)
@@ -33,18 +34,72 @@ function hex2rgba(hex, alpha)
   return "rgba(" + r + ", " + g + ", " + b + ", " + (alpha/100) + ")";
 }
 
+function file_create_css()
+{
+  txt = "";
+  for (i=0; i<blocs.length; i++)
+  {
+    b = blocs[i];
+    txt += "[id=\"" + b.id + "\"] {";
+    //police
+    txt += "font-family: \"" + b.font_fam + "\"; ";
+    txt += "font-size: " + (b.font_size/10) + "vh; ";
+    txt += "color: " + b.font_coul + "; ";
+    if (b.font_g == "true") txt += "font-weight: bold; ";
+    if (b.font_i == "true") txt += "font-style: italic; ";
+    if (b.font_s == "true") txt += "text-decoration: underline; ";
+    if (b.font_b == "true") txt += "text-decoration: line-throught; ";
+    //position-taille
+    txt += "position: absolute; ";
+    txt += "left: " + b.left*100/443 + "%; ";
+    txt += "top: " + b.top*100/641 + "%; ";
+    txt += "width: " + b.width*100/443 + "%; ";
+    txt += "height: " + b.height*100/641 + "%; ";
+    //bords
+    if (b.bord != "hidden")
+    {
+      txt += "border-style: " + b.bord + "; ";
+      txt += "border-color: " + b.bord_coul + "; ";
+      txt += "border-width: " + b.bord_size + "px; ";
+      txt += "border-radius: " + b.bord_rond + "px; ";
+    }
+    //fond
+    if (b.fond_alpha != 0)
+    {
+      txt += "background-color: " + hex2rgba(b.fond_coul, b.fond_alpha) + "; ";
+    }
+    //marges
+    if (b.marges > 0)
+    {
+      txt += "padding: " + b.marges + "px; ";
+    }
+    txt += "}\n";
+  }
+  return txt;
+}
+
 function g_exporter()
 {
   // on commence le décodage
-  var txt = document.getElementById("html").value;
+  var txt = "<style>\n" + file_create_css() + "</style>\n\n";
+  txt += document.getElementById("html").value;
   
   var zip = new JSZip();
   zip.file("exo.php", txt);
-  for (i=0; i<imgs.length; i++)
+  for (i=0; i<blocs.length; i++)
   {
-    zip.file("img_" + i + "." + imgs_ext[i], imgs[i]);
+    if (blocs[i].tpe == "image")
+    {
+      if (blocs[i].img) zip.file("img_" + blocs[i].id + "." + blocs[i].img_ext, blocs[i].img);
+    }
+    
   }
-
+  zip.file("exo.css", file_css());
+  zip.file("exo.js", file_js());
+  zip.file("charge.php", file_charge());
+  zip.file("sauve.php", file_sauve());
+  zip.file("exo_sav.txt", JSON.stringify(blocs) + "ǂ" + JSON.stringify(infos));
+  
   zip.generateAsync({type:"blob"})
   .then(function(content) {
       // see FileSaver.js
@@ -57,15 +112,15 @@ function g_sauver()
   txt = JSON.stringify(blocs);
   localStorage.setItem('create_exo_blocs', txt);
 }
-function g_restaurer()
+function g_sauver_info()
+{
+  txt = JSON.stringify(infos);
+  localStorage.setItem('create_exo_infos', txt);
+}
+function g_restaurer(init)
 {
   //on nettoie
-  var e = document.getElementById("cr_selection");
-  while(e.length>0)
-  {
-    e.remove(0);
-  }
-  rendu_ini();
+  if (init) g_reinit();
   
   //on refait
   b = JSON.parse(localStorage.getItem('create_exo_blocs'));
@@ -85,6 +140,29 @@ function g_restaurer()
     if (blocs[i].id > last_id) last_id = blocs[i].id;
   }
 }
+function g_restaurer_info(init)
+{
+  if (init) g_reinit();
+  i = JSON.parse(localStorage.getItem('create_exo_infos'));
+  if (i)
+  {
+    infos = i;
+    document.getElementById("cri_titre").value = infos.titre;
+    document.getElementById("cri_coul").value = infos.coul;
+    document.getElementById("cri_consigne").value = infos.consigne;
+    document.getElementById("cri_total").value = infos.total;
+    document.getElementById("cri_arrondi").value = infos.arrondi;
+    document.getElementById("cri_essais").value = infos.essais;
+    for (j=0; j<6; j++)
+    {
+      document.getElementById((j+1) + "_cri_a_min").value = infos.a[j].min;
+      document.getElementById((j+1) + "_cri_a_coul").value = infos.a[j].coul;
+      document.getElementById((j+1) + "_cri_a_re").value = infos.a[j].re;
+      document.getElementById((j+1) + "_cri_a_txt").value = infos.a[j].txt;
+    }
+  }
+}
+
 function g_reinit()
 {
   //on nettoie
@@ -94,8 +172,10 @@ function g_reinit()
     e.remove(0);
   }
   rendu_ini();
-  blocs = new Array();
+  blocs = [];
   last_id = 0;
+  infos = {};
+  infos.a = [{}, {}, {}, {}, {}, {}];
 }
 
 function bloc_new(tpe, txt)
@@ -351,369 +431,6 @@ function selection_update()
       image_sel_update();
       break;
   }
-}
-
-function cr_coul_nb_change(e, modif)
-{
-  var elems = document.getElementsByClassName('cr_coul');
-  nb = e.value;
-  elems[0].style.display = 'block';
-  for (i=1; i<elems.length; i++)
-  {
-    if (i>nb) elems[i].style.display = 'none';
-    else elems[i].style.display = 'block';
-  }
-  
-  //on met à jour le bloc si besoin
-  if (modif)
-  {
-    cr_coul_change(null);
-  }
-}
-
-function cr_selection_change()
-{
-  selid = document.getElementById("cr_selection").value;
-  bloc = null;
-  for (i=0; i<blocs.length; i++)
-  {
-    if (blocs[i].id == selid)
-    {
-      bloc = blocs[i];
-      break;
-    }
-  }
-  if (!bloc)
-  {
-    alert("BUG\nbloc " + selid + " introuvable");
-    return;
-  }
-  rendu_select_bloc(bloc);
-  selection = [bloc];
-  selection_update();
-}
-
-function cr_img_get_change(event)
-{
-  ext = event.target.files[0].name.split(".").pop();
-  
-  // on récupère le bloc sélectionné
-  if (selection.length < 1) return;
-  bloc = selection[0];
-  if (bloc.tpe != "image") return;
-  
-  // on met à jour les valeurs
-  bloc.img_ext = ext;
-  bloc.img = event.target.files[0];
-  
-  // on modifie le code html en conséquence
-  image_create_html(bloc, "");
-  document.getElementById("cr_html").value = bloc.html;
-  
-  // quand l'image aura été chargée, on mettra à jour la taille du cadre autour
-  document.getElementById(bloc.id).onload = function () {
-        rendu_get_superbloc(bloc).style.height = document.getElementById(bloc.id).getBoundingClientRect().height + "px";        
-    };
-  // on met à jour le rendu
-  document.getElementById(bloc.id).src = URL.createObjectURL(bloc.img);
-  //on sauvegarde
-  g_sauver();
-}
-
-function cr_new_txt_click(e)
-{
-  // on récupère le bloc sélectionné
-  if (selection.length < 1) return;
-  bloc = selection[0];
-  txt = document.getElementById("cr_txt_ini").value;
-  
-  // on modifie le code html
-  switch (bloc.tpe)
-  {
-    case "radio":
-    case "check":
-    case "radiobtn":
-      radio_create_html(bloc, txt);
-      break;
-    case "multi":
-      multi_create_html(bloc, txt);
-      break;
-    case "combo":
-      combo_create_html(bloc, txt);
-      break;
-    case "texte":
-      texte_create_html(bloc, txt);
-      break;
-    default:
-      return;
-  }
-  document.getElementById("cr_html").value = bloc.html;
-  
-  // et on modifie le rendu itou
-  rendu_get_superbloc(bloc).innerHTML = bloc.html;
-  //on sauvegarde
-  g_sauver(); 
-}
-
-function cr_coul_change(e)
-{
-  for (i=0; i<selection.length; i++)
-  {
-    bloc = selection[i];
-    switch (bloc.tpe)
-    {
-      case "radiobtn":
-        // on change les options et le rendu
-        bloc.radiobtn_coul1 = "#" + document.getElementById("cr_coul1").jscolor;
-        bloc.radiobtn_coul2 = "#" + document.getElementById("cr_coul2").jscolor;
-        radio_create_html(bloc, document.getElementById("cr_txt_ini").value);
-        break;
-      case "multi":
-        // on change juste les options
-        bloc.multi_coul = new Array();
-        for (i=0; i<document.getElementById("cr_coul_nb").value; i++)
-        {
-          bloc.multi_coul.push("#" + document.getElementById("cr_coul" + (i+1)).jscolor);
-        }
-        multi_create_html(bloc, document.getElementById("cr_txt_ini").value);
-        break;
-      default:
-        continue;
-    }
-    //on change le rendu
-    document.getElementById("cr_html").value = bloc.html;
-    rendu_get_superbloc(bloc).innerHTML = bloc.html;
-  }
-  //on sauvegarde
-  g_sauver();
-}
-
-function cr_texte_change(e)
-{
-  for (i=0; i<selection.length; i++)
-  {
-    bloc = selection[i];
-    if (bloc.tpe != "texte") continue;
-    bloc.texte_l = document.getElementById("cr_texte_l").value;
-    bloc.texte_h = document.getElementById("cr_texte_h").value;
-    bloc.texte_e = document.getElementById("cr_texte_e").value;
-    bloc.texte_c = document.getElementById("cr_texte_c").value;
-    
-    texte_create_html(bloc, document.getElementById("cr_txt_ini").value);
-    document.getElementById("cr_html").value = bloc.html;
-    
-    rendu_get_superbloc(bloc).innerHTML = bloc.html; 
-  }
-  //on sauvegarde
-  g_sauver();
-}
-
-function cr_font_fam_change(e)
-{
-  f = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].font_fam = f;
-    document.getElementById(selection[i].id).style.fontFamily = f;
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_font_size_change(e)
-{
-  s1 = e.value;
-  s2 = s1*0.65;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].font_size = s1;
-    document.getElementById(selection[i].id).style.fontSize = s2 + "px";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_font_coul_change(jscolor)
-{
-  v = "#" + jscolor;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].font_coul = v;
-    document.getElementById(selection[i].id).style.color = v;
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_font_g_change(e)
-{
-  v = e.checked;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].font_g = v;
-    if (v) document.getElementById(selection[i].id).style.fontWeight = "bold";
-    else document.getElementById(selection[i].id).style.fontWeight = "normal";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_font_i_change(e)
-{
-  v = e.checked;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].font_i = v;
-    if (v) document.getElementById(selection[i].id).style.fontStyle = "italic";
-    else document.getElementById(selection[i].id).style.fontStyle = "normal";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_font_s_change(e)
-{
-  v = e.checked;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].font_s = v;
-    if (v) document.getElementById(selection[i].id).style.textDecoration = "underline";
-    else document.getElementById(selection[i].id).style.textDecoration = "none";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_font_b_change(e)
-{
-  v = e.checked;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].font_b = v;
-    if (v) document.getElementById(selection[i].id).style.textDecoration = "line-through";
-    else document.getElementById(selection[i].id).style.textDecoration = "none";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-
-function cr_tp_w_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].width = v;
-    document.getElementById(selection[i].id).style.width = v + "px";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_tp_h_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].height = v;
-    document.getElementById(selection[i].id).style.height = v + "px";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_tp_t_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].top = v;
-    rendu_get_superbloc(selection[i]).style.top = v + "px";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_tp_l_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].left = v;
-    rendu_get_superbloc(selection[i]).style.left = v + "px";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-
-function cr_bord_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].bord = v;
-    document.getElementById(selection[i].id).style.borderStyle = v;
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_bord_coul_change(jscolor)
-{
-  v = "#" + jscolor;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].bord_coul = v;
-    document.getElementById(selection[i].id).style.borderColor = v;
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_bord_size_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].bord_size = v;
-    document.getElementById(selection[i].id).style.borderWidth = v + "px";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_bord_rond_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].bord_rond = v;
-    document.getElementById(selection[i].id).style.borderRadius = v + "px";
-  }
-  //on sauvegarde
-  g_sauver();
-}
-
-function cr_fond_coul_change(jscolor)
-{
-  v = "#" + jscolor;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].fond_coul = v;
-    document.getElementById(selection[i].id).style.backgroundColor = hex2rgba(v, selection[i].fond_alpha);
-  }
-  //on sauvegarde
-  g_sauver();
-}
-function cr_fond_alpha_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].fond_alpha = v;
-    document.getElementById(selection[i].id).style.backgroundColor = hex2rgba(selection[i].fond_coul, v);
-  }
-  //on sauvegarde
-  g_sauver();
-}
-
-function cr_marges_change(e)
-{
-  v = e.value;
-  for (i=0; i<selection.length; i++)
-  {
-    selection[i].marges = v;
-    document.getElementById(selection[i].id).style.padding = v + "px";
-  }
-  //on sauvegarde
-  g_sauver();
 }
 
 function check_new()

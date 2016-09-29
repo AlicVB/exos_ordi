@@ -72,7 +72,7 @@ button.jscolor {
   align-items: center;
   padding: 4px;
 }
-.cr_opt_ligne input[type="number"] {
+input[type="number"] {
   width: 40px;
 }
 .cr_opt_ligne > * {
@@ -105,6 +105,25 @@ button.jscolor {
   vertical-align: top;
   width: 1100px;
 }
+#cr_tab_div {
+  width: 95%;
+  padding-left: 10px;
+}
+.cr_tab_btn {
+  display: inline-block;
+  width: 200px;
+  border: 1px solid grey;
+  border-radius: 5px 5px 0px 0px;
+  text-align: center;
+  padding: 3px;
+}
+.cr_pa1 {
+  width: 95%;
+  padding: 5px;
+  background-color: #6D7BCF;
+  border: 5px solid grey;
+  border-radius: 5px;
+}
 #cr_panel2 {
   display: inline-block;
   vertical-align: top;
@@ -119,4 +138,19 @@ button.jscolor {
   text-align: center;
   font-size: 20px;
   font-weight: bold;
+}
+.cri_a_txt {
+  width: 600px;
+  height: 42px;
+}
+.cri_table {
+  border-collapse: collapse;
+  width: 98%;
+}
+.cri_table th {
+  border: 1px solid black;
+}
+#cri_consigne {
+  width: 800px;
+  height: 42px;
 }
