@@ -1,1 +1,1 @@
-# exos_ordi
+# exostice

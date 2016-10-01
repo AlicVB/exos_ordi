@@ -435,7 +435,8 @@ function cri_a_coul_change(e)
 function cri_a_re_change(e)
 {
   nb = parseInt(e.id.substr(0,1));
-  infos.a[nb-1].re = e.value;
+  if (e.checked) infos.a[nb-1].re = "1";
+  else infos.a[nb-1].re = "0";
   g_sauver_info();
 }
 function cri_a_txt_change(e)

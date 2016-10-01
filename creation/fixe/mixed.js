@@ -53,8 +53,11 @@ function file_create_css()
     txt += "position: absolute; ";
     txt += "left: " + b.left*100/443 + "%; ";
     txt += "top: " + b.top*100/641 + "%; ";
-    txt += "width: " + b.width*100/443 + "%; ";
-    txt += "height: " + b.height*100/641 + "%; ";
+    if (b.size == "manuel")
+    {
+      txt += "width: " + b.width*100/443 + "%; ";
+      txt += "height: " + b.height*100/641 + "%; ";
+    }
     //bords
     if (b.bord != "hidden")
     {
@@ -78,11 +81,44 @@ function file_create_css()
   return txt;
 }
 
+function file_create_infos()
+{
+  txt = infos.titre + "\n";
+  txt += infos.consigne.replace(/(?:\r\n|\r|\n)/g, '<br />') + "\n";
+  txt += infos.total + "|" + infos.arrondi + "\n";
+  for(i=0; i<6; i++)
+  {
+    txt += infos.a[i].min + "|" + infos.a[i].coul + "|";
+    txt += infos.a[i].txt.replace(/(?:\r\n|\r|\n)/g, '<br />') + "|";
+    txt += infos.a[i].re;
+    txt += "\n";
+  }
+  txt += infos.essais + "\n";
+  txt += infos.coul;
+  
+  return txt;
+}
+function g_verifie()
+{
+  txt = "";
+  
+  return txt;
+}
 function g_exporter()
 {
+  //on vérifie que les infos nécessaires sont là
+  txt = g_verifie();
+  if (txt != "")
+  {
+    alert("IL MANQUE DES INFOS :\n\n" + txt);
+    return;
+  }
   // on commence le décodage
-  var txt = "<style>\n" + file_create_css() + "</style>\n\n";
-  txt += document.getElementById("html").value;
+  txt = "<style>\n" + file_create_css() + "</style>\n\n";
+  for (i=0; i<blocs.length; i++)
+  {
+    txt += blocs[i].html + "\n";
+  }
   
   var zip = new JSZip();
   zip.file("exo.php", txt);
@@ -98,6 +134,7 @@ function g_exporter()
   zip.file("exo.js", file_js());
   zip.file("charge.php", file_charge());
   zip.file("sauve.php", file_sauve());
+  zip.file("exo.txt", file_create_infos());
   zip.file("exo_sav.txt", JSON.stringify(blocs) + "ǂ" + JSON.stringify(infos));
   
   zip.generateAsync({type:"blob"})
@@ -132,7 +169,7 @@ function g_restaurer(init)
     var option = document.createElement("option");
     option.text = blocs[i].id + " (" + blocs[i].tpe + ")";
     option.value = blocs[i].id;
-    e.add(option);
+    document.getElementById("cr_selection").add(option);
     
     // et au rendu
     rendu_add_bloc(blocs[i]);
@@ -144,22 +181,21 @@ function g_restaurer_info(init)
 {
   if (init) g_reinit();
   i = JSON.parse(localStorage.getItem('create_exo_infos'));
-  if (i)
+  if (i) infos = i;
+  else infos_ini();
+  
+  document.getElementById("cri_titre").value = infos.titre;
+  document.getElementById("cri_coul").value = infos.coul;
+  document.getElementById("cri_consigne").value = infos.consigne;
+  document.getElementById("cri_total").value = infos.total;
+  document.getElementById("cri_arrondi").value = infos.arrondi;
+  document.getElementById("cri_essais").value = infos.essais;
+  for (j=0; j<6; j++)
   {
-    infos = i;
-    document.getElementById("cri_titre").value = infos.titre;
-    document.getElementById("cri_coul").value = infos.coul;
-    document.getElementById("cri_consigne").value = infos.consigne;
-    document.getElementById("cri_total").value = infos.total;
-    document.getElementById("cri_arrondi").value = infos.arrondi;
-    document.getElementById("cri_essais").value = infos.essais;
-    for (j=0; j<6; j++)
-    {
-      document.getElementById((j+1) + "_cri_a_min").value = infos.a[j].min;
-      document.getElementById((j+1) + "_cri_a_coul").value = infos.a[j].coul;
-      document.getElementById((j+1) + "_cri_a_re").value = infos.a[j].re;
-      document.getElementById((j+1) + "_cri_a_txt").value = infos.a[j].txt;
-    }
+    document.getElementById((j+1) + "_cri_a_min").value = infos.a[j].min;
+    document.getElementById((j+1) + "_cri_a_coul").value = infos.a[j].coul;
+    document.getElementById((j+1) + "_cri_a_re").checked = (infos.a[j].re == "1");
+    document.getElementById((j+1) + "_cri_a_txt").value = infos.a[j].txt;
   }
 }
 
@@ -174,8 +210,7 @@ function g_reinit()
   rendu_ini();
   blocs = [];
   last_id = 0;
-  infos = {};
-  infos.a = [{}, {}, {}, {}, {}, {}];
+  infos_ini();
 }
 
 function bloc_new(tpe, txt)
@@ -241,6 +276,7 @@ function bloc_ini(bloc)
   bloc.top = "300";
   bloc.width = "0";
   bloc.height = "0";
+  bloc.size = "auto";
   //bordures
   bloc.bord = "hidden";
   bloc.bord_size = "1";
@@ -269,6 +305,42 @@ function bloc_get_from_id(id)
   {
     if (blocs[i].id == id) return blocs[i];
   }
+}
+
+function infos_ini()
+{
+  infos = {};
+  infos.titre = "exercice";
+  infos.coul = "#ffffff";
+  infos.consigne = "";
+  infos.total = "-1";
+  infos.arrondi = "1";
+  infos.essais = "1";
+  infos.a = [{}, {}, {}, {}, {}, {}];
+  infos.a[0].min = "0";
+  infos.a[1].min = "2";
+  infos.a[2].min = "4";
+  infos.a[3].min = "6";
+  infos.a[4].min = "8";
+  infos.a[5].min = "10";
+  infos.a[0].coul = "n";
+  infos.a[1].coul = "r";
+  infos.a[2].coul = "j";
+  infos.a[3].coul = "b";
+  infos.a[4].coul = "v";
+  infos.a[5].coul = "c";
+  infos.a[0].re = "0";
+  infos.a[1].re = "0";
+  infos.a[2].re = "0";
+  infos.a[3].re = "0";
+  infos.a[4].re = "0";
+  infos.a[5].re = "0";
+  infos.a[0].txt = "OH !\nTu n'as pas compris la consigne ou la règle !\nDemande de l'aide à quelqu'un\net passe à la suite...";
+  infos.a[1].txt = "Tu as encore fait trop d'erreurs !\nDemande de l'aide à quelqu'un\net passe à la suite...";
+  infos.a[2].txt = "Tu as encore fait trop d'erreurs !\nRelis la règle\net passe à la suite...";
+  infos.a[3].txt = "Tu commences à comprendre,\nmais il reste encore des erreurs !\Passe à la suite...";
+  infos.a[4].txt = "BIEN !\nTu n'as presque plus d'erreurs.\Sauras-tu faire encore mieux\nau prochain exercice ?";
+  infos.a[5].txt = "BRAVO !\nSeras-tu capable de faire aussi bien\nau prochain exercice ?";
 }
 
 //on initialise la zone de rendu (uniquement le prénom)
@@ -319,6 +391,12 @@ function rendu_add_bloc(bloc)
       // on triche un peu pour éviter les trucs bizarres (on initialise à un carré)
       b.style.height = bloc.width + "px";
     }
+  }
+  else
+  {
+    // le bloc est en ligne, on connait donc ses vraies dimensions
+    bloc.width = e.offsetWidth;
+    bloc.height = e.offsetHeight;
   }
   b.style.left = bloc.left + "px";
   b.style.top = bloc.top + "px";
@@ -816,6 +894,7 @@ function image_ini(bloc)
   bloc.img = null;
   bloc.img_ext = "";
   bloc.width = "50";
+  bloc.size = "manuel";
 }
 function image_sel_update()
 {
@@ -826,7 +905,6 @@ function image_sel_update()
   document.getElementById("cr_expl").innerHTML = "<b>image</b><br/>Sélectionner l'image choisie.<br/>Attention, les images sont \"perdues\" lors de la fermeture de la page (elles devront être rechargées) !";
   document.getElementById("cr_img_get").style.display = "inline";
   
-  document.getElementById("cr_tp_w").value = bloc.width;
   document.getElementById("cr_tp_w").disabled = false;
 }
 
