@@ -372,41 +372,40 @@ function read_details(txt_exo)
   // on récupère celles qui nous interresse
   for (var i=0; i<6; i++)
   {
-    msgs[i] = new Array(6); // min;max;flag;couleur;texte;retry
+    msgs[i] = {}; // min;max;flag;couleur;texte;retry
     var v = vals[i+3].split("|");
-    msgs[i][0] = v[0];
-    msgs[i][1] = v[1];
-    msgs[i][4] = v[3];
-    msgs[i][5] = v[4];
-    if (v[2] == "n")
+    msgs[i].min = v[0];
+    msgs[i].txt = v[2];
+    msgs[i].re = v[3];
+    if (v[1] == "n")
     {
-      msgs[i][2] = root + "icons/flag-black.svg";
-      msgs[i][3] = "black";
+      msgs[i].icon = root + "icons/flag-black.svg";
+      msgs[i].coul = "black";
     }
-    else if (v[2] == "r")
+    else if (v[1] == "r")
     {
-      msgs[i][2] = root + "icons/flag-red.svg";
-      msgs[i][3] = "red";
+      msgs[i].icon = root + "icons/flag-red.svg";
+      msgs[i].coul = "red";
     }
-    else if (v[2] == "j")
+    else if (v[1] == "j")
     {
-      msgs[i][2] = root + "icons/flag-yellow.svg";
-      msgs[i][3] = "#ffff00";
+      msgs[i].icon = root + "icons/flag-yellow.svg";
+      msgs[i].coul = "#ffff00";
     }
-    else if (v[2] == "b")
+    else if (v[1] == "b")
     {
-      msgs[i][2] = root + "icons/flag-blue.svg";
-      msgs[i][3] = "#0000ff";
+      msgs[i].icon = root + "icons/flag-blue.svg";
+      msgs[i].coul = "#0000ff";
     }
-    else if (v[2] == "v")
+    else if (v[1] == "v")
     {
-      msgs[i][2] = root + "icons/flag-green.svg";
-      msgs[i][3] = "#00ff00";
+      msgs[i].icon = root + "icons/flag-green.svg";
+      msgs[i].coul = "#00ff00";
     }
-    else if (v[2] == "c")
+    else if (v[1] == "c")
     {
-      msgs[i][2] = root + "icons/games-highscores.svg";
-      msgs[i][3] = "white";
+      msgs[i].icon = root + "icons/games-highscores.svg";
+      msgs[i].coul = "white";
     }
   }
   total = vals[2];
@@ -562,15 +561,15 @@ function affiche_score(sauve)
   escore.innerHTML = "score : " + ns + "/" + nt;
   
   // on définit le drapeau, etc...
-  for (var i=0; i<6; i++)
+  for (var i=5; i>=0; i--)
   {
-    if (ns>=msgs[i][0] && ns<=msgs[i][1])
+    if (ns>=msgs[i].min)
     {
-      if (msgs[i][5] == "1") btn = "<br/><a href=\\"javascript:window.location.reload(true)\\" id=\\"rea\\">Réessayer</a>";
+      if (msgs[i].re == "1") btn = "<br/><a href=\\"javascript:window.location.reload(true)\\" id=\\"rea\\">Réessayer</a>";
       else btn = "";
-      etxt.innerHTML = msgs[i][4] + btn;
-      etxt.style.borderColor = msgs[i][3];
-      eflagimg.src = msgs[i][2];
+      etxt.innerHTML = msgs[i].txt + btn;
+      etxt.style.borderColor = msgs[i].coul;
+      eflagimg.src = msgs[i].icon;
       break;
     }
   }
