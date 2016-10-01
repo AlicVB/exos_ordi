@@ -245,9 +245,17 @@ function bloc_new(tpe, txt)
       multi_ini(bloc);
       multi_create_html(bloc, txt);
       break;
+    case "cible":
+      cible_ini(bloc);
+      cible_create_html(bloc, txt);
+      break;
     case "image":
       image_ini(bloc);
       image_create_html(bloc, txt);
+      break;
+    case "texte_simple":
+      texte_simple_ini(bloc);
+      texte_simple_create_html(bloc, txt);
       break;
   }
   blocs.push(bloc);
@@ -356,6 +364,7 @@ function rendu_add_bloc(bloc)
   // on crée le bloc
   htm = "<div class=\"cr_rendu_bloc ";
   if (bloc.tpe == "image") htm += "mv_rs\" ";
+  else if (bloc.tpe == "cible") htm += "mv_rsl\" ";
   else htm += "mv\" ";
   htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this)\">\n";
   htm += bloc.html;
@@ -505,8 +514,14 @@ function selection_update()
     case "multi":
       multi_sel_update();
       break;
+    case "cible":
+      cible_sel_update();
+      break;
     case "image":
       image_sel_update();
+      break;
+    case "texte_simple":
+      texte_simple_sel_update();
       break;
   }
 }
@@ -870,6 +885,51 @@ function multi_sel_update()
   cr_coul_nb_change(document.getElementById("cr_coul_nb"), false);
 }
 
+function cible_new()
+{
+  //on demande le texte initial
+  txt = prompt("zone cible\n\nIdentifiant des objet qui peuvent être posés\nséparer les identifiant par '|'", "");
+  if (!txt) return;
+  
+  //on crée le nouveau bloc
+  bloc_new("cible", txt);
+  
+  //on le sélectionne
+  selection = [blocs.length-1];
+  document.getElementById("cr_selection").value = last_id;
+  cr_selection_change();
+}
+function cible_create_html(bloc, txt)
+{
+  // on récupère les infos de la zone de texte
+  l = bloc.texte_l;
+  h = bloc.texte_h;
+  enter = bloc.texte_e;
+  comp = bloc.texte_c;
+  
+  htm = "<div class=\"item lignef cible\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\">\n";
+  htm += "</div>\n";
+  
+  bloc.html = htm;
+}
+function cible_ini(bloc)
+{
+  bloc.width = "50";
+  bloc.height = "50";
+  bloc.size = "manuel";
+  bloc.fond_coul = "#6B6B6B";
+  bloc.fond_alpha = "20";
+}
+function cible_sel_update()
+{
+  // on récupère le bloc sélectionné
+  if (selection.length != 1) return;
+  bloc = selection[0];
+  
+  document.getElementById("cr_expl").innerHTML = "<b>zone cible</b><br/>Identifiant des objet qui peuvent être posés<br/>séparer les identifiant par '|'";
+  document.getElementById("cr_txt_ini_div").style.display = "inline";
+}
+
 function image_new()
 {
   //on crée le nouveau bloc
@@ -908,6 +968,48 @@ function image_sel_update()
   document.getElementById("cr_tp_w").disabled = false;
 }
 
+function texte_simple_new()
+{
+  //on demande le texte initial
+  txt = prompt("texte\n\nTexte à insérer", "");
+  if (!txt) return;
+  
+  //on crée le nouveau bloc
+  bloc_new("texte_simple", txt);
+  
+  //on le sélectionne
+  selection = [blocs.length-1];
+  document.getElementById("cr_selection").value = last_id;
+  cr_selection_change();
+}
+function texte_simple_create_html(bloc, txt)
+{
+  // on récupère les infos de la zone de texte
+  l = bloc.texte_l;
+  h = bloc.texte_h;
+  enter = bloc.texte_e;
+  comp = bloc.texte_c;
+  
+  htm = "<div class=\"item lignef texte_simple\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\">\n";
+  htm += txt.replace(/(?:\r\n|\r|\n)/g, '<br />');
+  htm += "</div>\n";
+  
+  bloc.html = htm;
+}
+function texte_simple_ini(bloc)
+{
+  // rien à faire
+}
+function texte_simple_sel_update()
+{
+  // on récupère le bloc sélectionné
+  if (selection.length != 1) return;
+  bloc = selection[0];
+  
+  document.getElementById("cr_expl").innerHTML = "<b>texte simple</b><br/>Entrer le texte";
+  document.getElementById("cr_txt_ini_div").style.display = "inline";
+}
+
 function _mv_ini()
 {
   inter = interact('.mv_rs');
@@ -927,24 +1029,7 @@ function _mv_ini()
     onend: _drag_rs_end,
     edges: { left: true, right: true, bottom: true, top: true }
   });
-  inter.on('resizemove', function (event) {
-    var target = event.target;
-    bloc = bloc_get_from_id(target.id.substr(9));
-
-    // update the element's style
-    target.style.width  = event.rect.width + 'px';
-    target.style.height = event.rect.height + 'px';
-    document.getElementById("cr_tp_w").value = event.rect.width;
-    document.getElementById("cr_tp_h").value = event.rect.height;
-    bloc.width = event.rect.width;
-    bloc.height = event.rect.height;
-
-    // translate when resizing from top or left edges
-    bloc.left += event.deltaRect.left;
-    bloc.top += event.deltaRect.top;
-    target.style.left = bloc.left + "px";
-    target.style.top = bloc.top + "px";
-  });
+  inter.on('resizemove', _drag_rsl_resize);
   
   inter2 = interact('.mv');
   inter2.draggable({
@@ -958,6 +1043,25 @@ function _mv_ini()
       endOnly: false,
       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }}
   });
+  
+  inter3 = interact('.mv_rsl');
+  inter3.draggable({
+    onmove: _dragMoveListener,
+    onend: _drag_rs_end,
+    // enable inertial throwing
+    inertia: true,
+    // keep the element within the area of it's parent
+    restrict: {
+      restriction: "parent",
+      endOnly: false,
+      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }}
+  });
+  inter3.resizable({
+    preserveAspectRatio: false,
+    onend: _drag_rs_end,
+    edges: { left: true, right: true, bottom: true, top: true }
+  });
+  inter3.on('resizemove', _drag_rsl_resize);
 }
 
 function _dragMoveListener (event)
@@ -980,4 +1084,23 @@ function _dragMoveListener (event)
 function _drag_rs_end(event)
 {
   g_sauver();
+}
+function _drag_rsl_resize(event)
+{
+  var target = event.target;
+  bloc = bloc_get_from_id(target.id.substr(9));
+
+  // update the element's style
+  target.style.width  = event.rect.width + 'px';
+  target.style.height = event.rect.height + 'px';
+  document.getElementById("cr_tp_w").value = event.rect.width;
+  document.getElementById("cr_tp_h").value = event.rect.height;
+  bloc.width = event.rect.width;
+  bloc.height = event.rect.height;
+
+  // translate when resizing from top or left edges
+  bloc.left += event.deltaRect.left;
+  bloc.top += event.deltaRect.top;
+  target.style.left = bloc.left + "px";
+  target.style.top = bloc.top + "px";
 }

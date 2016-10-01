@@ -25,6 +25,9 @@ button.jscolor {
   box-sizing: border-box;
   position: relative;
 }
+.cr_rendu_bloc {
+  position: absolute;
+}
 #cr_new_txt {
   width: 40px;
   vertical-align: middle;
@@ -116,6 +119,7 @@ input[type="number"] {
   border-radius: 5px 5px 0px 0px;
   text-align: center;
   padding: 3px;
+  cursor: pointer;
 }
 .cr_pa1 {
   width: 95%;
@@ -129,7 +133,7 @@ input[type="number"] {
   vertical-align: top;
 }
 .cr_long {
-  width: 1000px;
+  width: 950px;
 }
 #cr_btn_div {
   text-align: center;

@@ -30,6 +30,9 @@ div.ligne2f {
 .image {
   box-sizing: border-box;
 }
+.cible {
+  box-sizing: border-box;
+}
 .radio form {
   text-align: left;
   font-weight: bold;
@@ -87,16 +90,6 @@ span.multi_corr {
 img.multi_cim {
   width: 17px; /*2.5vh*/
   vertical-align: bottom;
-}
-.mv_rs {
-  position: absolute;
-  left: 0%;
-  top: 45%;
-}
-.mv {
-  position: absolute;
-  left: 0%;
-  top: 45%;
 }
 `;
 }
