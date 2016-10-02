@@ -31,6 +31,9 @@ div.ligne2f {
 .cible {
   box-sizing: border-box;
 }
+.texte_simple {
+  box-sizing: border-box;
+}
 .radio form {
   text-align: left;
   font-weight: bold;

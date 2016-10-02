@@ -44,28 +44,6 @@ function cr_coul_nb_change(e, modif)
   }
 }
 
-function cr_selection_change()
-{
-  selid = document.getElementById("cr_selection").value;
-  bloc = null;
-  for (i=0; i<blocs.length; i++)
-  {
-    if (blocs[i].id == selid)
-    {
-      bloc = blocs[i];
-      break;
-    }
-  }
-  if (!bloc)
-  {
-    alert("BUG\nbloc " + selid + " introuvable");
-    return;
-  }
-  rendu_select_bloc(bloc);
-  selection = [bloc];
-  selection_update();
-}
-
 function cr_img_get_change(event)
 {
   ext = event.target.files[0].name.split(".").pop();
@@ -98,28 +76,10 @@ function cr_new_txt_click(e)
   // on récupère le bloc sélectionné
   if (selection.length < 1) return;
   bloc = selection[0];
-  txt = document.getElementById("cr_txt_ini").value;
+  bloc.txt = document.getElementById("cr_txt_ini").value;
   
   // on modifie le code html
-  switch (bloc.tpe)
-  {
-    case "radio":
-    case "check":
-    case "radiobtn":
-      radio_create_html(bloc, txt);
-      break;
-    case "multi":
-      multi_create_html(bloc, txt);
-      break;
-    case "combo":
-      combo_create_html(bloc, txt);
-      break;
-    case "texte":
-      texte_create_html(bloc, txt);
-      break;
-    default:
-      return;
-  }
+  bloc_create_html(bloc);
   document.getElementById("cr_html").value = bloc.html;
   
   // et on modifie le rendu itou
@@ -139,7 +99,6 @@ function cr_coul_change(e)
         // on change les options et le rendu
         bloc.radiobtn_coul1 = "#" + document.getElementById("cr_coul1").jscolor;
         bloc.radiobtn_coul2 = "#" + document.getElementById("cr_coul2").jscolor;
-        radio_create_html(bloc, document.getElementById("cr_txt_ini").value);
         break;
       case "multi":
         // on change juste les options
@@ -148,12 +107,12 @@ function cr_coul_change(e)
         {
           bloc.multi_coul.push("#" + document.getElementById("cr_coul" + (i+1)).jscolor);
         }
-        multi_create_html(bloc, document.getElementById("cr_txt_ini").value);
         break;
       default:
         continue;
     }
     //on change le rendu
+    bloc_create_html(bloc);
     document.getElementById("cr_html").value = bloc.html;
     rendu_get_superbloc(bloc).innerHTML = bloc.html;
   }
@@ -387,6 +346,84 @@ function cr_marges_change(e)
   }
   //on sauvegarde
   g_sauver();
+}
+
+function cr_inter_change(e)
+{
+  for (i=0; i<selection.length; i++)
+  {
+    if (e.checked && e.id == "cr_inter_0")
+    {
+      selection[i].inter = "0";
+      selection[i].relie_id = "";
+      selection[i].relie_cible_de = "";
+    }
+    else if (e.checked && e.id == "cr_inter_2")
+    {
+      selection[i].inter = "2";
+      selection[i].relie_id = "";
+      selection[i].relie_cible_de = "";
+    }
+    else if (e.checked && e.id == "cr_inter_1")
+    {
+      selection[i].inter = "1";
+      selection[i].relie_cible_de = "";
+    }
+    bloc_create_html(selection[i]);
+  }
+  //on sauvegarde
+  g_sauver();
+}
+
+function cr_relie_id_change(e)
+{
+  v = e.value;
+  for (i=0; i<selection.length; i++)
+  {
+    bloc = selection[i];
+    bloc.relie_id = v;
+    bloc.relie_cible_de = "";
+    bloc_create_html(bloc);
+    //on change aussi la cible
+    b2 = bloc_get_from_id(v);
+    if (b2)
+    {
+      b2.inter = "1";
+      b2.relie_id = "";
+      b2.relie_cible_de = bloc.id;
+      bloc_create_html(b2);
+    }
+  }
+  //on sauvegarde
+  g_sauver();
+}
+
+function cr_points_change(e)
+{
+  v = e.value;
+  for (i=0; i<selection.length; i++)
+  {
+    selection[i].points = v;
+    bloc_create_html(selection[i]);
+  }
+  //on sauvegarde
+  g_sauver();
+}
+
+function cr_aligne_change(e)
+{
+  
+  e.selectedIndex = 0;
+}
+function cr_repart_change(e)
+{
+  
+  e.selectedIndex = 0;
+}
+function cr_plan_change(e)
+{
+  
+  e.selectedIndex = 0;
 }
 
 function cri_titre_change(e)

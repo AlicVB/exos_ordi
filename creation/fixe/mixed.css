@@ -158,3 +158,10 @@ input[type="number"] {
   width: 800px;
   height: 42px;
 }
+.cr_img_btn {
+  padding: 0;
+}
+.cr_img_btn img {
+  width: 20px;
+  vertical-align: middle;
+}

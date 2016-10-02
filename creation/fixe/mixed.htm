@@ -161,9 +161,8 @@
         <button onclick="texte_simple_new()">texte</button>
       </div>
       <div id="cr_nom">
-        élément sélectionné :
-        <select id="cr_selection" onChange="cr_selection_change()">
-        </select>
+        élément sélectionné :&nbsp;
+        <span id="cr_selection"></span>
       </div>
       <div class="cr_opt_full">
         <div id="cr_expl">
@@ -272,15 +271,21 @@
           <div class="cr_opt_ligne">
             Interaction :
             <div>
-              <input type="radio" value="0" name="cr_inter" id="cr_inter_0" checked="true"/>
+              <input type="radio" value="0" name="cr_inter" id="cr_inter_0" checked="true" onchange="cr_inter_change(this)"/>
               <label for="cr_inter_0">Aucune</label>
               <br/>
-              <input type="radio" value="1" name="cr_inter" id="cr_inter_1"/>
-              <label for="cr_inter_1">Relier</label>
+              <input type="radio" value="1" name="cr_inter" id="cr_inter_1" onchange="cr_inter_change(this)" title="Cet élément peut être relié avec un autre."/>
+              <label for="cr_inter_1" title="Cet élément peut être relié avec un autre.">Relier</label>
               <br/>
-              <input type="radio" value="2" name="cr_inter" id="cr_inter_2"/>
-              <label for="cr_inter_2">Déplacer</label>
+              <input type="radio" value="2" name="cr_inter" id="cr_inter_2" onchange="cr_inter_change(this)" title="Autoriser l'élément à être déplacé sur une zone cible"/>
+              <label for="cr_inter_2" title="Autoriser l'élément à être déplacé sur une zone cible">Déplacer</label>
             </div>
+            avec
+            <input type="text" value="" id="cr_relie_id" onchange="cr_relie_id_change(this)" size="2" title="identifiant de l'autre élément"/>
+          </div>
+          <div class="cr_opt_ligne">
+            nombre de points de l'item :
+            <input id="cr_points" type="number" value="1" min="0" max="50" onchange="cr_points_change(this)" title="nombre de points de l'item"/>
           </div>
         </div>
         <div>
@@ -293,6 +298,29 @@
   </div>
   <div id="cr_panel2">
     <div id="cr_rendu"></div>
+    <select id="cr_aligne" onchange="cr_aligne_change(this)">
+      <option value="-1">Alignement...</option>
+      <option value="-1">--horizontal--</option>
+      <option value="1">gauche</option>
+      <option value="2">centré</option>
+      <option value="3">droite</option>
+      <option value="-1">--vertical--</option>
+      <option value="4">haut</option>
+      <option value="5">centré</option>
+      <option value="6">bas</option>
+    </select>
+    <select id="cr_repart" onchange="cr_repart_change(this)">
+      <option value="-1">Répartition...</option>
+      <option value="1">horizontale</option>
+      <option value="2">verticale</option>
+    </select>
+    <select id="cr_plan" onchange="cr_plan_change(this)">
+      <option value="-1">Ordre...</option>
+      <option value="1">premier plan</option>
+      <option value="2">arrière plan</option>
+      <option value="3">avancer</option>
+      <option value="4">reculer</option>
+    </select>
     <br/><br/>
     <button id="cr_sauve" onClick="g_exporter();">Sauvegarder l'exercice</button>
     <button id="cr_sauve" onClick="g_reinit();">remettre à zéro</button>

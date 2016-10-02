@@ -165,12 +165,6 @@ function g_restaurer(init)
   last_id = 0;
   for (i=0; i<blocs.length; i++)
   {
-    //on ajoute le bloc à la liste
-    var option = document.createElement("option");
-    option.text = blocs[i].id + " (" + blocs[i].tpe + ")";
-    option.value = blocs[i].id;
-    document.getElementById("cr_selection").add(option);
-    
     // et au rendu
     rendu_add_bloc(blocs[i]);
     
@@ -224,40 +218,32 @@ function bloc_new(tpe, txt)
   switch (tpe)
   {
     case "radio":
-      radio_ini(bloc)
-      radio_create_html(bloc, txt);
+      radio_ini(bloc);
     case "radiobtn":
-      radiobtn_ini(bloc)
-      radio_create_html(bloc, txt);
+      radiobtn_ini(bloc);
     case "check":
-      check_ini(bloc)
-      radio_create_html(bloc, txt);
+      check_ini(bloc);
       break;
     case "texte":
       texte_ini(bloc);
-      texte_create_html(bloc, txt);
       break;
     case "combo":
       combo_ini(bloc);
-      combo_create_html(bloc, txt);
       break;
     case "multi":
       multi_ini(bloc);
-      multi_create_html(bloc, txt);
       break;
     case "cible":
       cible_ini(bloc);
-      cible_create_html(bloc, txt);
       break;
     case "image":
       image_ini(bloc);
-      image_create_html(bloc, txt);
       break;
     case "texte_simple":
       texte_simple_ini(bloc);
-      texte_simple_create_html(bloc, txt);
       break;
   }
+  bloc_create_html(bloc);
   blocs.push(bloc);
   // on ajoute une entrée à la liste de sélection
   var e = document.getElementById("cr_selection");
@@ -295,16 +281,46 @@ function bloc_ini(bloc)
   bloc.fond_alpha = "0";
   //marges
   bloc.marges = "2";
+  //points
+  bloc.points = "1";
+  //interactions
+  bloc.inter = "0";
+  bloc.relie_id = "";
+  bloc.relie_cible_de = "";
 }
 
-function bloc_mousedown(e)
+function bloc_mousedown(elem, event)
 {
   // on récupère le bloc correspondant
-  bloc = bloc_get_from_id(e.id.substr(9));
+  bloc = bloc_get_from_id(elem.id.substr(9));
   
-  // si pas ctrl, alors on sélectionne
-  document.getElementById("cr_selection").value = bloc.id;
-  cr_selection_change();
+  //on regarde si il est déjà sélectionné
+  deja = -1;
+  for (i=0; i<selection.length; i++)
+  {
+    if (selection[i].id == bloc.id)
+    {
+      deja = i;
+      break;
+    }
+  }
+  if (event.ctrlKey || event.shiftKey)
+  {
+    // si elem est déjà sélectionné, on le déselectionne
+    //sinon, on l'ajoute à la sélection
+    if (deja>=0) selection.splice(deja,1);
+    else selection.push(bloc);
+    selection_change();
+  }
+  else
+  {
+    // si pas ctrl et pas sélectionné, alors on sélectionne
+    if (deja == -1)
+    {
+      selection = [bloc];
+      selection_change();
+    }
+  }
 }
 
 function bloc_get_from_id(id)
@@ -312,6 +328,38 @@ function bloc_get_from_id(id)
   for (i=0; i<blocs.length; i++)
   {
     if (blocs[i].id == id) return blocs[i];
+  }
+}
+
+function bloc_create_html(bloc)
+{
+  switch (bloc.tpe)
+  {
+    case "radio":
+      radio_create_html(bloc, bloc.txt);
+    case "radiobtn":
+      radio_create_html(bloc, bloc.txt);
+    case "check":
+      radio_create_html(bloc, bloc.txt);
+      break;
+    case "texte":
+      texte_create_html(bloc, bloc.txt);
+      break;
+    case "combo":
+      combo_create_html(bloc, bloc.txt);
+      break;
+    case "multi":
+      multi_create_html(bloc, bloc.txt);
+      break;
+    case "cible":
+      cible_create_html(bloc, bloc.txt);
+      break;
+    case "image":
+      image_create_html(bloc, bloc.txt);
+      break;
+    case "texte_simple":
+      texte_simple_create_html(bloc, bloc.txt);
+      break;
   }
 }
 
@@ -366,7 +414,7 @@ function rendu_add_bloc(bloc)
   if (bloc.tpe == "image") htm += "mv_rs\" ";
   else if (bloc.tpe == "cible") htm += "mv_rsl\" ";
   else htm += "mv\" ";
-  htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this)\">\n";
+  htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
   htm += bloc.html;
   htm += "\n</div>\n";
   
@@ -422,17 +470,16 @@ function rendu_add_bloc(bloc)
 
 function rendu_select_bloc(bloc)
 {
+  // on enlève toutes les bordures
   var elems = document.getElementsByClassName('cr_rendu_bloc');
   for (i=0; i<elems.length; i++)
   {
-    if (elems[i].id.substr(9) == bloc.id)
-    {
-      elems[i].style.border = "1px dashed red";
-    }
-    else
-    {
-      elems[i].style.border = "hidden";
-    }
+    elems[i].style.border = "hidden";
+  }
+  // on rajoute celles sélectionnées
+  for (i=0; i<selection.length; i++)
+  {
+    rendu_get_superbloc(selection[i]).style.border = "1px dashed red";
   }
 }
 
@@ -441,11 +488,33 @@ function rendu_get_superbloc(bloc)
   return document.getElementById("cr_rendu_" + bloc.id);
 }
 
+function selection_is_homogene(tpe)
+{
+  for (i=0; i<selection.length; i++)
+  {
+    if (selection[i].tpe != tpe) return false;
+  }
+  return true;
+}
+function selection_change()
+{
+  txt = "";
+  for (j=0; j<selection.length; j++)
+  {
+    if (j>0) txt += " + ";
+    txt += selection[j].id + "(" + selection[j].tpe + ")";
+    rendu_select_bloc(selection[j]);
+  }
+  document.getElementById("cr_selection").innerHTML = txt;
+
+  selection_update();
+}
+
 // on met à jour le panels des options, ...
 function selection_update()
 {
-  // on récupère le bloc sélectionné
-  if (selection.length != 1) return;
+  if (selection.length == 0) return;
+  // on récupère le premier bloc sélectionné
   bloc = selection[0];
   
   // on règles les options générales
@@ -476,7 +545,8 @@ function selection_update()
   document.getElementById("cr_marges").value = bloc.marges;
   
   //code html
-  document.getElementById("cr_html").value = bloc.html;
+  if (selection.length == 1) document.getElementById("cr_html").value = bloc.html;
+  else document.getElementById("cr_html").value = "";
   
   // on masque toutes les options
   var elems = document.getElementsByClassName('cr_coul');
@@ -493,37 +563,92 @@ function selection_update()
   document.getElementById("cr_txt_ini_div").style.display = "none";
   document.getElementById("cr_img_get").style.display = "none";
   
+  //les interactions
+  document.getElementById("cr_inter_0").disabled = true;
+  document.getElementById("cr_inter_1").disabled = true;
+  document.getElementById("cr_inter_2").disabled = true;
+  document.getElementById("cr_relie_id").disabled = true;
+  document.getElementById("cr_points").disabled = false;
+  document.getElementById("cr_points").value = bloc.points;
+
   // on fait les réglages spécifiques
-  switch (bloc.tpe)
+  for (i=0; i<selection.length; i++)
   {
-    case "radio":
-      radio_sel_update();
+    switch (selection[i].tpe)
+    {
+      case "radio":
+        radio_sel_update();
+        break;
+      case "radiobtn":
+        radiobtn_sel_update();
+        break;
+      case "check":
+        check_sel_update();
+        break;
+      case "texte":
+        texte_sel_update();
+        break;
+      case "combo":
+        combo_sel_update();
+        break;
+      case "multi":
+        multi_sel_update();
+        break;
+      case "cible":
+        cible_sel_update();
+        break;
+      case "image":
+        image_sel_update();
+        break;
+      case "texte_simple":
+        texte_simple_sel_update();
+        break;
+    }
+  }
+  
+  // on s'occupe aussi des controles sous le rendu
+  document.getElementById("cr_aligne").disabled = true;
+  document.getElementById("cr_repart").disabled = true;
+  document.getElementById("cr_plan").disabled = true;
+  if (selection.length > 0) document.getElementById("cr_plan").disabled = false;
+  if (selection.length > 1) document.getElementById("cr_aligne").disabled = false;
+  if (selection.length > 2) document.getElementById("cr_repart").disabled = false;
+}
+
+function selection_update_interactions()
+{
+  if (selection.length == 0) return;
+  bloc = selection[0];
+  //interactions
+  document.getElementById("cr_inter_0").disabled = false;
+  document.getElementById("cr_inter_1").disabled = false;
+  document.getElementById("cr_inter_2").disabled = false;
+  
+  switch (bloc.inter)
+  {
+    case "0":
+      document.getElementById("cr_inter_0").checked = true;
       break;
-    case "radiobtn":
-      radiobtn_sel_update();
+    case "1":
+      document.getElementById("cr_inter_1").checked = true;
+      if (selection.length == 1) document.getElementById("cr_relie_id").disabled = false;
+      document.getElementById("cr_points").disabled = false;
       break;
-    case "check":
-      check_sel_update();
-      break;
-    case "texte":
-      texte_sel_update();
-      break;
-    case "combo":
-      combo_sel_update();
-      break;
-    case "multi":
-      multi_sel_update();
-      break;
-    case "cible":
-      cible_sel_update();
-      break;
-    case "image":
-      image_sel_update();
-      break;
-    case "texte_simple":
-      texte_simple_sel_update();
+    case "2":
+      document.getElementById("cr_inter_2").checked = true;
       break;
   }
+  if (bloc.relie_cible_de != "")
+  {
+    // ça veut dire que le réglage a été fait ailleurs
+    document.getElementById("cr_relie_id").value = bloc.relie_cible_de;
+    document.getElementById("cr_inter_0").disabled = true;
+    document.getElementById("cr_inter_1").disabled = true;
+    document.getElementById("cr_inter_2").disabled = true;
+    document.getElementById("cr_relie_id").disabled = true;
+    document.getElementById("cr_points").disabled = true;
+  }
+  else document.getElementById("cr_relie_id").value = bloc.relie_id;
 }
 
 function check_new()
@@ -575,17 +700,23 @@ function radiobtn_ini(bloc)
 }
 function radiobtn_sel_update()
 {
-  // on récupère le bloc sélectionné
-  if (selection.length != 1) return;
-  bloc = selection[0];
-  
-  document.getElementById("cr_expl").innerHTML = "<b>boutons choix</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |$des plantes$des oiseaux*des félins|)";
-  document.getElementById("cr_txt_ini_div").style.display = "inline";
-  var elems = document.getElementsByClassName('cr_coul');
-  elems[1].style.display = "block";
-  elems[2].style.display = "block";
-  document.getElementById("cr_coul1").jscolor.fromString(bloc.radiobtn_coul1);
-  document.getElementById("cr_coul2").jscolor.fromString(bloc.radiobtn_coul2);
+  // on affiche le texte de création
+  if (selection.length == 1)
+  {
+    bloc = selection[0];
+    
+    document.getElementById("cr_expl").innerHTML = "<b>boutons choix</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |$des plantes$des oiseaux*des félins|)";
+    document.getElementById("cr_txt_ini_div").style.display = "inline";
+  }
+  //on regarde si la sélection est homogène
+  if (selection.length>0 && selection_is_homogene("radiobtn"))
+  {
+    var elems = document.getElementsByClassName('cr_coul');
+    elems[1].style.display = "block";
+    elems[2].style.display = "block";
+    document.getElementById("cr_coul1").jscolor.fromString(selection[0].radiobtn_coul1);
+    document.getElementById("cr_coul2").jscolor.fromString(selection[0].radiobtn_coul2);
+  }
 }
 
 function radio_new()
@@ -632,7 +763,7 @@ function radio_create_html(bloc, txt)
     htm += "<style>[id=\"" + bloc.id + "\"] label {background-color: " + bloc.radiobtn_coul1;
     htm += ";} [id=\"" + bloc.id + "\"] input[type=\"radio\"]:checked + label {background-color: " + bloc.radiobtn_coul2 + ";}</style>\n";
   }
-  htm += "<div class=\"item lignef " + cl + "\" tpe=\"" + bloc.tpe + "\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" ";
+  htm += "<div class=\"item lignef " + cl + "\" tpe=\"" + bloc.tpe + "\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.tpe == "radiobtn") htm += "options=\"" + bloc.radiobtn_coul1 + "|" + bloc.radiobtn_coul2 + "\" ";
   htm += ">\n";
   //on coupe suivant '|'
@@ -689,7 +820,7 @@ function combo_new()
 function combo_create_html(bloc, txt)
 {
   htm = "";
-  htm += "<div class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\">\n";
+  htm += "<div class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
   if (vals.length>0) htm += "  <div>" + vals[0] + "</div>\n";
@@ -759,7 +890,7 @@ function texte_create_html(bloc, txt)
   comp = bloc.texte_c;
   
   htm = "";
-  htm += "<div class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" options=\"";
+  htm += "<div class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
   htm += comp + "|" + enter + "\" >\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
@@ -795,17 +926,21 @@ function texte_ini(bloc)
 function texte_sel_update()
 {
   // on récupère le bloc sélectionné
-  if (selection.length != 1) return;
-  bloc = selection[0];
-  
-  document.getElementById("cr_expl").innerHTML = "<b>zone de texte</b><br/>Encadrer le texte juste par '|' ('#' = tout est juste)<br/>(La souris|a|peur du chat)";
-  document.getElementById("cr_txt_ini_div").style.display = "inline";
-  
-  document.getElementById("cr_texte_l").value = bloc.texte_l;
-  document.getElementById("cr_texte_h").value = bloc.texte_h;
-  document.getElementById("cr_texte_e").value = bloc.texte_e;
-  document.getElementById("cr_texte_c").value = bloc.texte_c;
-  document.getElementById("cr_texte_div").style.display = "block";
+  if (selection.length == 1)
+  {
+    bloc = selection[0];
+    document.getElementById("cr_expl").innerHTML = "<b>zone de texte</b><br/>Encadrer le texte juste par '|' ('#' = tout est juste)<br/>(La souris|a|peur du chat)";
+    document.getElementById("cr_txt_ini_div").style.display = "inline";
+  }
+  if (selection.length > 0 && selection_is_homogene("texte"))
+  {
+    bloc = selection[0];
+    document.getElementById("cr_texte_l").value = bloc.texte_l;
+    document.getElementById("cr_texte_h").value = bloc.texte_h;
+    document.getElementById("cr_texte_e").value = bloc.texte_e;
+    document.getElementById("cr_texte_c").value = bloc.texte_c;
+    document.getElementById("cr_texte_div").style.display = "block";
+  }
 }
 
 function multi_new()
@@ -825,7 +960,7 @@ function multi_new()
 function multi_create_html(bloc, txt)
 {
   htm = "";
-  htm += "<div class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\"";
+  htm += "<div class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
   opts = "";
   for (i=0; i<bloc.multi_coul.length; i++)
   {
@@ -869,20 +1004,25 @@ function multi_ini(bloc)
 function multi_sel_update()
 {
   // on récupère le bloc sélectionné
-  if (selection.length != 1) return;
-  bloc = selection[0];
-  
-  document.getElementById("cr_expl").innerHTML = "<b>blocs multi-positions</b><br/>Encadrer les blocs par '|' ; Le blocs à colorer commencent par le numéro de la couleur<br/>(1Le chat|2mange|les souris.)";
-  document.getElementById("cr_txt_ini_div").style.display = "inline";
-  
-  document.getElementById("cr_coul_nb").value = bloc.multi_coul.length;
-  for (i=0; i<bloc.multi_coul.length; i++)
+  if (selection.length == 1)
   {
-    tx = "cr_coul" + (i+1);
-    document.getElementById(tx).jscolor.fromString(bloc.multi_coul[i]);
+    bloc = selection[0];
+    document.getElementById("cr_expl").innerHTML = "<b>blocs multi-positions</b><br/>Encadrer les blocs par '|' ; Le blocs à colorer commencent par le numéro de la couleur<br/>(1Le chat|2mange|les souris.)";
+    document.getElementById("cr_txt_ini_div").style.display = "inline";
   }
-  document.getElementById("cr_coul_nb").style.display = "block";
-  cr_coul_nb_change(document.getElementById("cr_coul_nb"), false);
+  
+  if (selection.length > 0 && selection_is_homogene("texte"))
+  {
+    bloc = selection[0];
+    document.getElementById("cr_coul_nb").value = bloc.multi_coul.length;
+    for (i=0; i<bloc.multi_coul.length; i++)
+    {
+      tx = "cr_coul" + (i+1);
+      document.getElementById(tx).jscolor.fromString(bloc.multi_coul[i]);
+    }
+    document.getElementById("cr_coul_nb").style.display = "block";
+    cr_coul_nb_change(document.getElementById("cr_coul_nb"), false);
+  }
 }
 
 function cible_new()
@@ -907,7 +1047,7 @@ function cible_create_html(bloc, txt)
   enter = bloc.texte_e;
   comp = bloc.texte_c;
   
-  htm = "<div class=\"item lignef cible\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\">\n";
+  htm = "<div class=\"item lignef cible\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
   htm += "</div>\n";
   
   bloc.html = htm;
@@ -943,7 +1083,7 @@ function image_new()
 function image_create_html(bloc, txt)
 {
   htm = "";
-  htm += "<img class=\"image\" tpe=\"image\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" src=\"";
+  htm += "<img class=\"image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" id=\"" + bloc.id + "\" src=\"";
   htm += "<?php echo $exos[$exo]; ?>/img_" + bloc.id + "." + bloc.img_ext;
   htm += "\" id=\"" + bloc.id + "\" />";
   bloc.html = htm;
@@ -955,17 +1095,20 @@ function image_ini(bloc)
   bloc.img_ext = "";
   bloc.width = "50";
   bloc.size = "manuel";
+  bloc.points = "0";
 }
 function image_sel_update()
 {
   // on récupère le bloc sélectionné
-  if (selection.length != 1) return;
-  bloc = selection[0];
-  
-  document.getElementById("cr_expl").innerHTML = "<b>image</b><br/>Sélectionner l'image choisie.<br/>Attention, les images sont \"perdues\" lors de la fermeture de la page (elles devront être rechargées) !";
-  document.getElementById("cr_img_get").style.display = "inline";
-  
-  document.getElementById("cr_tp_w").disabled = false;
+  if (selection.length == 1)
+  {
+    bloc = selection[0];
+    
+    document.getElementById("cr_expl").innerHTML = "<b>image</b><br/>Sélectionner l'image choisie.<br/>Attention, les images sont \"perdues\" lors de la fermeture de la page (elles devront être rechargées) !";
+    document.getElementById("cr_img_get").style.display = "inline";
+  }
+  if (selection.length > 0) document.getElementById("cr_tp_w").disabled = false;
+  if (selection.length > 0 && selection_is_homogene("image")) selection_update_interactions();
 }
 
 function texte_simple_new()
@@ -990,7 +1133,7 @@ function texte_simple_create_html(bloc, txt)
   enter = bloc.texte_e;
   comp = bloc.texte_c;
   
-  htm = "<div class=\"item lignef texte_simple\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\">\n";
+  htm = "<div class=\"item lignef texte_simple\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
   htm += txt.replace(/(?:\r\n|\r|\n)/g, '<br />');
   htm += "</div>\n";
   
@@ -1003,11 +1146,14 @@ function texte_simple_ini(bloc)
 function texte_simple_sel_update()
 {
   // on récupère le bloc sélectionné
-  if (selection.length != 1) return;
-  bloc = selection[0];
+  if (selection.length == 1)
+  {
+    bloc = selection[0];
+    document.getElementById("cr_expl").innerHTML = "<b>texte simple</b><br/>Entrer le texte";
+    document.getElementById("cr_txt_ini_div").style.display = "inline";
+  }
   
-  document.getElementById("cr_expl").innerHTML = "<b>texte simple</b><br/>Entrer le texte";
-  document.getElementById("cr_txt_ini_div").style.display = "inline";
+  if (selection.length > 0 && selection_is_homogene("texte_simple")) selection_update_interactions();
 }
 
 function _mv_ini()
