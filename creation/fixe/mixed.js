@@ -8,7 +8,7 @@ var last_id = 0;    // dernier id utilisé
 function change(e)
 {
 }
-  
+
 function start()
 {
   _mv_ini();
@@ -37,7 +37,7 @@ function hex2rgba(hex, alpha)
 function file_create_css()
 {
   txt = "";
-  for (i=0; i<blocs.length; i++)
+  for (let i=0; i<blocs.length; i++)
   {
     b = blocs[i];
     txt += "[id=\"" + b.id + "\"] {";
@@ -115,14 +115,14 @@ function g_exporter()
   }
   // on commence le décodage
   txt = "<style>\n" + file_create_css() + "</style>\n\n";
-  for (i=0; i<blocs.length; i++)
+  for (let i=0; i<blocs.length; i++)
   {
     txt += blocs[i].html + "\n";
   }
   
   var zip = new JSZip();
   zip.file("exo.php", txt);
-  for (i=0; i<blocs.length; i++)
+  for (let i=0; i<blocs.length; i++)
   {
     if (blocs[i].tpe == "image")
     {
@@ -163,7 +163,7 @@ function g_restaurer(init)
   b = JSON.parse(localStorage.getItem('create_exo_blocs'));
   if (b) blocs = b;
   last_id = 0;
-  for (i=0; i<blocs.length; i++)
+  for (let i=0; i<blocs.length; i++)
   {
     // et au rendu
     rendu_add_bloc(blocs[i]);
@@ -184,7 +184,7 @@ function g_restaurer_info(init)
   document.getElementById("cri_total").value = infos.total;
   document.getElementById("cri_arrondi").value = infos.arrondi;
   document.getElementById("cri_essais").value = infos.essais;
-  for (j=0; j<6; j++)
+  for (let j=0; j<6; j++)
   {
     document.getElementById((j+1) + "_cri_a_min").value = infos.a[j].min;
     document.getElementById((j+1) + "_cri_a_coul").value = infos.a[j].coul;
@@ -196,15 +196,12 @@ function g_restaurer_info(init)
 function g_reinit()
 {
   //on nettoie
-  var e = document.getElementById("cr_selection");
-  while(e.length>0)
-  {
-    e.remove(0);
-  }
   rendu_ini();
   blocs = [];
+  selection = [];
   last_id = 0;
   infos_ini();
+  selection_change();
 }
 
 function bloc_new(tpe, txt)
@@ -287,16 +284,28 @@ function bloc_ini(bloc)
   bloc.inter = "0";
   bloc.relie_id = "";
   bloc.relie_cible_de = "";
+  //autre
+  bloc.html = "";
+  bloc.css = "";
 }
 
 function bloc_mousedown(elem, event)
 {
+  if (event.target && event.target.id == "cr_rendu")
+  {
+    // on déselectionne tout
+    selection = [];
+    selection_change();
+    return;
+  }
+  if (elem.id == "cr_rendu") return;
+  
   // on récupère le bloc correspondant
   bloc = bloc_get_from_id(elem.id.substr(9));
   
   //on regarde si il est déjà sélectionné
   deja = -1;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     if (selection[i].id == bloc.id)
     {
@@ -325,7 +334,7 @@ function bloc_mousedown(elem, event)
 
 function bloc_get_from_id(id)
 {
-  for (i=0; i<blocs.length; i++)
+  for (let i=0; i<blocs.length; i++)
   {
     if (blocs[i].id == id) return blocs[i];
   }
@@ -468,16 +477,16 @@ function rendu_add_bloc(bloc)
   e.style.padding = bloc.marges + "px";
 }
 
-function rendu_select_bloc(bloc)
+function rendu_select_blocs()
 {
   // on enlève toutes les bordures
   var elems = document.getElementsByClassName('cr_rendu_bloc');
-  for (i=0; i<elems.length; i++)
+  for (let i=0; i<elems.length; i++)
   {
     elems[i].style.border = "hidden";
   }
   // on rajoute celles sélectionnées
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     rendu_get_superbloc(selection[i]).style.border = "1px dashed red";
   }
@@ -490,7 +499,7 @@ function rendu_get_superbloc(bloc)
 
 function selection_is_homogene(tpe)
 {
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     if (selection[i].tpe != tpe) return false;
   }
@@ -499,12 +508,12 @@ function selection_is_homogene(tpe)
 function selection_change()
 {
   txt = "";
-  for (j=0; j<selection.length; j++)
+  for (let j=0; j<selection.length; j++)
   {
     if (j>0) txt += " + ";
     txt += selection[j].id + "(" + selection[j].tpe + ")";
-    rendu_select_bloc(selection[j]);
   }
+  rendu_select_blocs();
   document.getElementById("cr_selection").innerHTML = txt;
 
   selection_update();
@@ -513,9 +522,36 @@ function selection_change()
 // on met à jour le panels des options, ...
 function selection_update()
 {
-  if (selection.length == 0) return;
-  // on récupère le premier bloc sélectionné
-  bloc = selection[0];
+  // désactivations gloables
+  // on masque toutes les options
+  var elems = document.getElementsByClassName('cr_coul');
+  for (let i=0; i<elems.length; i++)
+  {
+    elems[i].style.display = 'none';
+  }
+  elems = document.getElementsByClassName('cr_texte_div');
+  for (let i=0; i<elems.length; i++)
+  {
+    elems[i].style.display = 'none';
+  }
+  document.getElementById("cr_txt_ini_div").style.display = "none";
+  document.getElementById("cr_img_get").style.display = "none";
+  document.getElementById("cr_aligne").disabled = true;
+  document.getElementById("cr_repart").disabled = true;
+  document.getElementById("cr_plan").disabled = true;
+  document.getElementById("cr_action").disabled = true;
+  document.getElementById("cr_expl").innerHTML = "&nbsp;";
+  
+  if (selection.length == 0)
+  {
+    bloc = {};
+    bloc.id = "-1";
+    bloc.tpe = "";
+    bloc.txt = "";
+    bloc_ini(bloc);
+    
+  }
+  else bloc = selection[0];
   
   // on règles les options générales
   // police
@@ -548,20 +584,7 @@ function selection_update()
   if (selection.length == 1) document.getElementById("cr_html").value = bloc.html;
   else document.getElementById("cr_html").value = "";
   
-  // on masque toutes les options
-  var elems = document.getElementsByClassName('cr_coul');
-  for (i=0; i<elems.length; i++)
-  {
-    elems[i].style.display = 'none';
-  }
-  elems = document.getElementsByClassName('cr_texte_div');
-  for (i=0; i<elems.length; i++)
-  {
-    elems[i].style.display = 'none';
-  }
   document.getElementById("cr_txt_ini").value = bloc.txt;
-  document.getElementById("cr_txt_ini_div").style.display = "none";
-  document.getElementById("cr_img_get").style.display = "none";
   
   //les interactions
   document.getElementById("cr_inter_0").disabled = true;
@@ -572,7 +595,7 @@ function selection_update()
   document.getElementById("cr_points").value = bloc.points;
 
   // on fait les réglages spécifiques
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     switch (selection[i].tpe)
     {
@@ -607,10 +630,11 @@ function selection_update()
   }
   
   // on s'occupe aussi des controles sous le rendu
-  document.getElementById("cr_aligne").disabled = true;
-  document.getElementById("cr_repart").disabled = true;
-  document.getElementById("cr_plan").disabled = true;
-  if (selection.length > 0) document.getElementById("cr_plan").disabled = false;
+  if (selection.length > 0)
+  {
+    document.getElementById("cr_plan").disabled = false;
+    document.getElementById("cr_action").disabled = false;
+  }
   if (selection.length > 1) document.getElementById("cr_aligne").disabled = false;
   if (selection.length > 2) document.getElementById("cr_repart").disabled = false;
 }
@@ -775,7 +799,7 @@ function radio_create_html(bloc, txt)
     // le choix
     htm += "  <form>\n";
     v = vals[1].replace(/\*/g,"|*").replace(/\$/g,"|$").split("|");
-    for (var k=0; k<v.length; k++)
+    for (let k=0; k<v.length; k++)
     {
       if (v[k].startsWith("*"))
       {
@@ -832,7 +856,7 @@ function combo_create_html(bloc, txt)
     htm += "      <option value=\"0\">--</option>\n";
     v = vals[1].replace(/\*/g,"|*").replace(/\$/g,"|$").split("|");
     juste = "";
-    for (var k=0; k<v.length; k++)
+    for (let k=0; k<v.length; k++)
     {
       if (v[k].startsWith("*"))
       {
@@ -962,7 +986,7 @@ function multi_create_html(bloc, txt)
   htm = "";
   htm += "<div class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
   opts = "";
-  for (i=0; i<bloc.multi_coul.length; i++)
+  for (let i=0; i<bloc.multi_coul.length; i++)
   {
     if (i>0) opts += "|";
     opts += hex2rgb(bloc.multi_coul[i]);
@@ -971,7 +995,7 @@ function multi_create_html(bloc, txt)
   //on coupe suivant '|'
   var vals = txt.split("|");
   htm2 = "";
-  for (i=0; i<vals.length; i++)
+  for (let i=0; i<vals.length; i++)
   {
     if (vals[i].length>0)
     {
@@ -1015,7 +1039,7 @@ function multi_sel_update()
   {
     bloc = selection[0];
     document.getElementById("cr_coul_nb").value = bloc.multi_coul.length;
-    for (i=0; i<bloc.multi_coul.length; i++)
+    for (let i=0; i<bloc.multi_coul.length; i++)
     {
       tx = "cr_coul" + (i+1);
       document.getElementById(tx).jscolor.fromString(bloc.multi_coul[i]);
@@ -1212,7 +1236,7 @@ function _mv_ini()
 
 function _dragMoveListener (event)
 {
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     bloc = selection[i];
     bloc.top = parseFloat(bloc.top) + event.dy;

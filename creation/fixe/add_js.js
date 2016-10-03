@@ -101,7 +101,7 @@ function multi_change(elem)
   
   //on fait les changements de couleur
   var ncoul = opts[0];
-  for (i=0; i<opts.length; i++)
+  for (let i=0; i<opts.length; i++)
   {
     if (elem.style.backgroundColor == opts[i])
     {
@@ -122,14 +122,14 @@ function multi_score(e, tt)
   
   // on initialise un tableau de score
   scores = new Array(opts.length);
-  for (var i=0; i<scores.length; i++)
+  for (let i=0; i<scores.length; i++)
   {
     scores[i] = 0;
   }
   
   // we look at all the subitems
   var elems = getexos(e);
-  for (var i=0; i<elems.length; i++)
+  for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = true;
     // on récupère la valeur juste
@@ -141,7 +141,7 @@ function multi_score(e, tt)
       if (nb>=0 && nb<opts.length) juste = opts[nb];
     }
     //on vérifie la couleur
-    for (j=0; j<opts.length; j++)
+    for (let j=0; j<opts.length; j++)
     {
       if (coul == opts[j])
       {
@@ -153,7 +153,7 @@ function multi_score(e, tt)
   
   //we computes all scores
   s = 0;
-  for (var i=0; i<scores.length; i++)
+  for (let i=0; i<scores.length; i++)
   {
     // on veut un score entre 0 et 1
     s += Math.min(Math.max(0,scores[i]),1);
@@ -181,7 +181,7 @@ function radio_score(e, tt)
   s = tt;
   // we look at all the subitems to search for error
   var elems = getexos(e);
-  for (var i=0; i<elems.length; i++)
+  for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = true;
     if ((elems[i].checked && elems[i].value == "0") || (!elems[i].checked && elems[i].value == "1"))
@@ -193,7 +193,7 @@ function radio_score(e, tt)
   // we show correction
   if (s == 0)
   {
-    for (var i=0; i<elems.length; i++)
+    for (let i=0; i<elems.length; i++)
     {
       if (elems[i].value == 1)
       {
@@ -273,7 +273,7 @@ function zone_score(e, tt)
   s = tt;
   // we look at all the subitems to search for error
   var elems = getexos(e);
-  for (var i=0; i<elems.length; i++)
+  for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = true;
     ok = elems[i].getAttribute('ok');
@@ -295,13 +295,13 @@ function line_score(e, tt)
   r = getrootitem(e);
   sel = "[itemid=\\"" + r.getAttribute('item') + "\\"]";
   elems = r.querySelectorAll(sel);
-  for (var i=0; i<elems.length; i++)
+  for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = true;
   }
   // we look at all the subitems to search for error
   elems = getexos(e);
-  for (var i=0; i<elems.length; i++)
+  for (let i=0; i<elems.length; i++)
   {
     alert(i + " " + elems[i].getAttribute('score'));
     s += parseInt(elems[i].getAttribute('score'));
@@ -349,7 +349,7 @@ function sauve()
   // on construit le fichier de sauvegarde
   tx = "";
   var elems = document.getElementsByClassName('exo');
-  for (var i=0; i<elems.length; i++)
+  for (let i=0; i<elems.length; i++)
   {
     if (i>0) tx += "|";
     tx += encodeURIComponent(getvalue(elems[i]));
@@ -370,7 +370,7 @@ function read_details(txt_exo)
   var vals = txt_exo.split("§");
   
   // on récupère celles qui nous interresse
-  for (var i=0; i<6; i++)
+  for (let i=0; i<6; i++)
   {
     msgs[i] = {}; // min;max;flag;couleur;texte;retry
     var v = vals[i+3].split("|");
@@ -428,7 +428,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   var drake = dragula();
   drake.containers.push(document.getElementsByClassName('mv_src')[0]);
   elems = document.getElementsByClassName('mv_dest');
-  for (i=0;i<elems.length;i++)
+  for (let i=0;i<elems.length;i++)
   {
     drake.containers.push(elems[i]);
   }
@@ -441,7 +441,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
       // on met les bonnes valeurs aux bons endroits
       var elems = document.getElementsByClassName('exo');
       var vals = xhr.responseText.split("|");
-      for (var i=0; i<elems.length && i<vals.length; i++)
+      for (let i=0; i<elems.length && i<vals.length; i++)
       {
         setvalue(elems[i], decodeURIComponent(vals[i]));
       }
@@ -498,7 +498,7 @@ function affiche_score(sauve)
   s = 0;
   t = 0;
   var elems = document.getElementsByClassName('item');
-  for (var i=0; i<elems.length; i++)
+  for (let i=0; i<elems.length; i++)
   {
     e = elems[i];
     if (e.hasAttribute('tpe'))
@@ -561,7 +561,7 @@ function affiche_score(sauve)
   escore.innerHTML = "score : " + ns + "/" + nt;
   
   // on définit le drapeau, etc...
-  for (var i=5; i>=0; i--)
+  for (let i=5; i>=0; i--)
   {
     if (ns>=msgs[i].min)
     {

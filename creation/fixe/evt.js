@@ -31,7 +31,7 @@ function cr_coul_nb_change(e, modif)
   var elems = document.getElementsByClassName('cr_coul');
   nb = e.value;
   elems[0].style.display = 'block';
-  for (i=1; i<elems.length; i++)
+  for (let i=1; i<elems.length; i++)
   {
     if (i>nb) elems[i].style.display = 'none';
     else elems[i].style.display = 'block';
@@ -90,7 +90,7 @@ function cr_new_txt_click(e)
 
 function cr_coul_change(e)
 {
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     bloc = selection[i];
     switch (bloc.tpe)
@@ -103,7 +103,7 @@ function cr_coul_change(e)
       case "multi":
         // on change juste les options
         bloc.multi_coul = new Array();
-        for (i=0; i<document.getElementById("cr_coul_nb").value; i++)
+        for (let i=0; i<document.getElementById("cr_coul_nb").value; i++)
         {
           bloc.multi_coul.push("#" + document.getElementById("cr_coul" + (i+1)).jscolor);
         }
@@ -122,7 +122,7 @@ function cr_coul_change(e)
 
 function cr_texte_change(e)
 {
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     bloc = selection[i];
     if (bloc.tpe != "texte") continue;
@@ -143,7 +143,7 @@ function cr_texte_change(e)
 function cr_font_fam_change(e)
 {
   f = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].font_fam = f;
     document.getElementById(selection[i].id).style.fontFamily = f;
@@ -155,7 +155,7 @@ function cr_font_size_change(e)
 {
   s1 = e.value;
   s2 = s1*0.65;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].font_size = s1;
     document.getElementById(selection[i].id).style.fontSize = s2 + "px";
@@ -166,7 +166,7 @@ function cr_font_size_change(e)
 function cr_font_coul_change(jscolor)
 {
   v = "#" + jscolor;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].font_coul = v;
     document.getElementById(selection[i].id).style.color = v;
@@ -177,7 +177,7 @@ function cr_font_coul_change(jscolor)
 function cr_font_g_change(e)
 {
   v = e.checked;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].font_g = v;
     if (v) document.getElementById(selection[i].id).style.fontWeight = "bold";
@@ -189,7 +189,7 @@ function cr_font_g_change(e)
 function cr_font_i_change(e)
 {
   v = e.checked;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].font_i = v;
     if (v) document.getElementById(selection[i].id).style.fontStyle = "italic";
@@ -201,7 +201,7 @@ function cr_font_i_change(e)
 function cr_font_s_change(e)
 {
   v = e.checked;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].font_s = v;
     if (v) document.getElementById(selection[i].id).style.textDecoration = "underline";
@@ -213,7 +213,7 @@ function cr_font_s_change(e)
 function cr_font_b_change(e)
 {
   v = e.checked;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].font_b = v;
     if (v) document.getElementById(selection[i].id).style.textDecoration = "line-through";
@@ -226,7 +226,7 @@ function cr_font_b_change(e)
 function cr_tp_w_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].width = v;
     document.getElementById(selection[i].id).style.width = v + "px";
@@ -237,7 +237,7 @@ function cr_tp_w_change(e)
 function cr_tp_h_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].height = v;
     document.getElementById(selection[i].id).style.height = v + "px";
@@ -248,7 +248,7 @@ function cr_tp_h_change(e)
 function cr_tp_t_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].top = v;
     rendu_get_superbloc(selection[i]).style.top = v + "px";
@@ -259,7 +259,7 @@ function cr_tp_t_change(e)
 function cr_tp_l_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].left = v;
     rendu_get_superbloc(selection[i]).style.left = v + "px";
@@ -271,7 +271,7 @@ function cr_tp_l_change(e)
 function cr_bord_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].bord = v;
     document.getElementById(selection[i].id).style.borderStyle = v;
@@ -282,7 +282,7 @@ function cr_bord_change(e)
 function cr_bord_coul_change(jscolor)
 {
   v = "#" + jscolor;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_coul = v;
     document.getElementById(selection[i].id).style.borderColor = v;
@@ -293,7 +293,7 @@ function cr_bord_coul_change(jscolor)
 function cr_bord_size_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_size = v;
     document.getElementById(selection[i].id).style.borderWidth = v + "px";
@@ -304,7 +304,7 @@ function cr_bord_size_change(e)
 function cr_bord_rond_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_rond = v;
     document.getElementById(selection[i].id).style.borderRadius = v + "px";
@@ -316,7 +316,7 @@ function cr_bord_rond_change(e)
 function cr_fond_coul_change(jscolor)
 {
   v = "#" + jscolor;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].fond_coul = v;
     document.getElementById(selection[i].id).style.backgroundColor = hex2rgba(v, selection[i].fond_alpha);
@@ -327,7 +327,7 @@ function cr_fond_coul_change(jscolor)
 function cr_fond_alpha_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].fond_alpha = v;
     document.getElementById(selection[i].id).style.backgroundColor = hex2rgba(selection[i].fond_coul, v);
@@ -339,7 +339,7 @@ function cr_fond_alpha_change(e)
 function cr_marges_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].marges = v;
     document.getElementById(selection[i].id).style.padding = v + "px";
@@ -350,7 +350,7 @@ function cr_marges_change(e)
 
 function cr_inter_change(e)
 {
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     if (e.checked && e.id == "cr_inter_0")
     {
@@ -378,7 +378,7 @@ function cr_inter_change(e)
 function cr_relie_id_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     bloc = selection[i];
     bloc.relie_id = v;
@@ -401,7 +401,7 @@ function cr_relie_id_change(e)
 function cr_points_change(e)
 {
   v = e.value;
-  for (i=0; i<selection.length; i++)
+  for (let i=0; i<selection.length; i++)
   {
     selection[i].points = v;
     bloc_create_html(selection[i]);
@@ -420,7 +420,7 @@ function cr_aligne_change(e)
   switch (e.value)
   {
     case "1": //gauche
-      for (i=1; i<selection.length; i++)
+      for (let i=1; i<selection.length; i++)
       {
         selection[i].left = l;
         rendu_get_superbloc(selection[i]).style.left = l + "px";
@@ -428,7 +428,7 @@ function cr_aligne_change(e)
       }
       break;
     case "2": //centre h
-      for (i=1; i<selection.length; i++)
+      for (let i=1; i<selection.length; i++)
       {
         selection[i].left = ch - parseFloat(selection[i].width)/2;
         rendu_get_superbloc(selection[i]).style.left = selection[i].left + "px";
@@ -436,7 +436,7 @@ function cr_aligne_change(e)
       }
       break;
     case "3": //droite
-      for (i=1; i<selection.length; i++)
+      for (let i=1; i<selection.length; i++)
       {
         selection[i].left = l + parseFloat(selection[0].width) - parseFloat(selection[i].width);
         rendu_get_superbloc(selection[i]).style.left = selection[i].left + "px";
@@ -444,7 +444,7 @@ function cr_aligne_change(e)
       }
       break;
     case "4": //haut
-      for (i=1; i<selection.length; i++)
+      for (let i=1; i<selection.length; i++)
       {
         selection[i].top = t;
         rendu_get_superbloc(selection[i]).style.top = t + "px";
@@ -452,7 +452,7 @@ function cr_aligne_change(e)
       }
       break;
     case "5": //centre v
-      for (i=1; i<selection.length; i++)
+      for (let i=1; i<selection.length; i++)
       {
         selection[i].top = cv - parseFloat(selection[i].height)/2;
         rendu_get_superbloc(selection[i]).style.top = selection[i].top + "px";
@@ -460,7 +460,7 @@ function cr_aligne_change(e)
       }
       break;
     case "6": //bas
-      for (i=1; i<selection.length; i++)
+      for (let i=1; i<selection.length; i++)
       {
         selection[i].top = t + parseFloat(selection[0].height) - parseFloat(selection[i].height);
         rendu_get_superbloc(selection[i]).style.top = selection[i].top + "px";
@@ -487,30 +487,30 @@ function cr_repart_change(e)
     news = selection.sort(_repart_compare_h);
     //on calcule l'espace moyen entre les blocs
     espaces = 0;
-    for (i=0; i<news.length-1; i++)
+    for (let i=0; i<news.length-1; i++)
     {
       espaces += parseFloat(news[i+1].left) - (parseFloat(news[i].left) + parseFloat(news[i].width));
     }
     espace = espaces/(news.length-1);
-    for (i=1; i<news.length-1; i++)
+    for (let i=1; i<news.length-1; i++)
     {
       news[i].left = parseFloat(news[i-1].left) + parseFloat(news[i-1].width) + espace;
       rendu_get_superbloc(news[i]).style.left = news[i].left + "px";
       document.getElementById("cr_tp_l").value = news[i].left;
     }
   }
-  if (e.value == "2")
+  else if (e.value == "2")
   {
     //on reordonne la selection en fonction de left
     news = selection.sort(_repart_compare_v);
     //on calcule l'espace moyen entre les blocs
     espaces = 0;
-    for (i=0; i<news.length-1; i++)
+    for (let i=0; i<news.length-1; i++)
     {
       espaces += parseFloat(news[i+1].top) - (parseFloat(news[i].top) + parseFloat(news[i].height));
     }
     espace = espaces/(news.length-1);
-    for (i=1; i<news.length-1; i++)
+    for (let i=1; i<news.length-1; i++)
     {
       news[i].top = parseFloat(news[i-1].top) + parseFloat(news[i-1].height) + espace;
       rendu_get_superbloc(news[i]).style.top = news[i].top + "px";
@@ -523,6 +523,49 @@ function cr_repart_change(e)
 function cr_plan_change(e)
 {
   
+  e.selectedIndex = 0;
+}
+function cr_action_change(e)
+{
+  if (e.value == "1") //dupliquer
+  {
+    news = [];
+    for (let i=0; i<selection.length; i++)
+    {
+      nb = JSON.parse(JSON.stringify(selection[i]));
+      nb.left += 15;
+      nb.top += 15;
+      last_id++;
+      nb.id = last_id;
+      bloc_create_html(nb);
+      news.push(nb);
+      blocs.push(nb);
+      rendu_add_bloc(nb);
+    }
+    selection = news;
+    selection_change();
+  }
+  else if (e.value == "2")  //supprimer
+  {
+    for (let i=0; i<selection.length; i++)
+    {
+      //on suprime les blocs du rendu
+      sb = rendu_get_superbloc(selection[i]);
+      sb.parentNode.removeChild(sb);
+      // on supprime les blocs de la base
+      for (let j=0; j<blocs.length; j++)
+      {
+        if (selection[i].id == blocs[j].id)
+        {
+          blocs.splice(j,1);
+          break;
+        }
+      }
+    }
+    selection = [];
+    selection_change();
+  }
+  if (e.value >= 0) g_sauver();
   e.selectedIndex = 0;
 }
 

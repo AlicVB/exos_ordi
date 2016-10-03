@@ -297,29 +297,34 @@
     </div>
   </div>
   <div id="cr_panel2">
-    <div id="cr_rendu"></div>
-    <select id="cr_aligne" onchange="cr_aligne_change(this)">
+    <div id="cr_rendu" onmousedown="bloc_mousedown(this, event)"></div>
+    <select id="cr_aligne" onchange="cr_aligne_change(this)" disabled>
       <option value="-1">Alignement...</option>
-      <option value="-1">--horizontal--</option>
+      <option value="-2">--horizontal--</option>
       <option value="1">gauche</option>
       <option value="2">centré</option>
       <option value="3">droite</option>
-      <option value="-1">--vertical--</option>
+      <option value="-3">--vertical--</option>
       <option value="4">haut</option>
       <option value="5">centré</option>
       <option value="6">bas</option>
     </select>
-    <select id="cr_repart" onchange="cr_repart_change(this)">
+    <select id="cr_repart" onchange="cr_repart_change(this)" disabled>
       <option value="-1">Répartition...</option>
       <option value="1">horizontale</option>
       <option value="2">verticale</option>
     </select>
-    <select id="cr_plan" onchange="cr_plan_change(this)">
+    <select id="cr_plan" onchange="cr_plan_change(this)" disabled>
       <option value="-1">Ordre...</option>
       <option value="1">premier plan</option>
       <option value="2">arrière plan</option>
       <option value="3">avancer</option>
       <option value="4">reculer</option>
+    </select>
+    <select id="cr_action" onchange="cr_action_change(this)" disabled>
+      <option value="-1">Action...</option>
+      <option value="1">dupliquer</option>
+      <option value="2">supprimer</option>
     </select>
     <br/><br/>
     <button id="cr_sauve" onClick="g_exporter();">Sauvegarder l'exercice</button>
