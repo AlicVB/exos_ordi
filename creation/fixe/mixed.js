@@ -242,12 +242,6 @@ function bloc_new(tpe, txt)
   }
   bloc_create_html(bloc);
   blocs.push(bloc);
-  // on ajoute une entrée à la liste de sélection
-  var e = document.getElementById("cr_selection");
-  var option = document.createElement("option");
-  option.text = last_id + " (" + tpe + ")";
-  option.value = last_id
-  e.add(option);
   // on ajoute le bloc pour le rendu
   rendu_add_bloc(bloc);
 }
@@ -686,8 +680,7 @@ function check_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function check_ini(bloc)
 {
@@ -714,8 +707,7 @@ function radiobtn_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function radiobtn_ini(bloc)
 {
@@ -754,8 +746,7 @@ function radio_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function radio_ini(bloc)
 {
@@ -838,8 +829,7 @@ function combo_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function combo_create_html(bloc, txt)
 {
@@ -902,8 +892,7 @@ function texte_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function texte_create_html(bloc, txt)
 {
@@ -978,8 +967,7 @@ function multi_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function multi_create_html(bloc, txt)
 {
@@ -1060,8 +1048,7 @@ function cible_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function cible_create_html(bloc, txt)
 {
@@ -1071,7 +1058,7 @@ function cible_create_html(bloc, txt)
   enter = bloc.texte_e;
   comp = bloc.texte_c;
   
-  htm = "<div class=\"item lignef cible\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
+  htm = "<div class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
   htm += "</div>\n";
   
   bloc.html = htm;
@@ -1101,15 +1088,21 @@ function image_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function image_create_html(bloc, txt)
 {
   htm = "";
-  htm += "<img class=\"image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" id=\"" + bloc.id + "\" src=\"";
-  htm += "<?php echo $exos[$exo]; ?>/img_" + bloc.id + "." + bloc.img_ext;
-  htm += "\" id=\"" + bloc.id + "\" />";
+  htm += "<div";
+  if (bloc.inter == 2) htm += " class=\"mv_src\"";
+  htm += ">\n  <img class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 1)
+  {
+    htm += "line=\"1\" ";
+    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+  }
+  htm += "src=\"<?php echo $exos[$exo]; ?>/img_" + bloc.id + "." + bloc.img_ext;
+  htm += "\" id=\"" + bloc.id + "\" />\n</div>";
   bloc.html = htm;
 }
 function image_ini(bloc)
@@ -1146,8 +1139,7 @@ function texte_simple_new()
   
   //on le sélectionne
   selection = [blocs.length-1];
-  document.getElementById("cr_selection").value = last_id;
-  cr_selection_change();
+  selection_change();
 }
 function texte_simple_create_html(bloc, txt)
 {
@@ -1157,9 +1149,17 @@ function texte_simple_create_html(bloc, txt)
   enter = bloc.texte_e;
   comp = bloc.texte_c;
   
-  htm = "<div class=\"item lignef texte_simple\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
+  htm = "<div";
+  if (bloc.inter == 2) htm += " class=\"mv_src\"";
+  htm += ">\n  <div class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 1)
+  {
+    htm += "line=\"1\" ";
+    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+  }
+  htm += ">\n";
   htm += txt.replace(/(?:\r\n|\r|\n)/g, '<br />');
-  htm += "</div>\n";
+  htm += "</div>\n</div>\n";
   
   bloc.html = htm;
 }

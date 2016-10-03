@@ -57,8 +57,8 @@ function line_leave(event)
   if (!line_cur) return;
   e = event.target;
   id = "";
-  if (e.hasAttribute('ok') && e.hasAttribute('itemid')) id = e.getAttribute('itemid')
-  if (id == line_orig_id)
+  if (e.hasAttribute('line') && e.hasAttribute('itemid')) id = e.getAttribute('itemid')
+  if (e.hasAttribute('line') && e.id != line_orig.id)
   {
     //on trace la ligne bien comme il faut
     var rect = line_orig.getBoundingClientRect();
@@ -77,8 +77,16 @@ function line_leave(event)
     line_cur.style.height = length + "px";
     line_cur.style.transform = 'rotate(' + angle + 'deg)';
     // on enregistre la valeur
-    if (line_orig.id == e.getAttribute("ok")) e.setAttribute("score", "1");
-    else e.setAttribute("score", "0");
+    if (e.hasAttribute("lineok"))
+    {
+      if (e.getAttribute("lineok") == line_orig.id) e.setAttribute("score", "1");
+      else e.setAttribute("score", "0");
+    }
+    else if (line_orig.hasAttribute("lineok"))
+    {
+      if (line_orig.getAttribute("lineok") == e.id) line_orig.setAttribute("score", "1");
+      else line_orig.setAttribute("score", "0");
+    }
   }
   else
   {
@@ -268,7 +276,7 @@ function texte_score(e, tt)
   return s;
 }
 
-function zone_score(e, tt)
+function cible_score(e, tt)
 {
   s = tt;
   // we look at all the subitems to search for error
@@ -276,7 +284,7 @@ function zone_score(e, tt)
   for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = true;
-    ok = elems[i].getAttribute('ok');
+    ok = elems[i].getAttribute('juste');
     el = elems[i].firstElementChild;
     if (!el || el.id != ok)
     {
@@ -426,11 +434,21 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   
   //on initialise les drag-drop
   var drake = dragula();
-  drake.containers.push(document.getElementsByClassName('mv_src')[0]);
-  elems = document.getElementsByClassName('mv_dest');
+  elems = document.getElementsByClassName('mv_src');
   for (let i=0;i<elems.length;i++)
   {
     drake.containers.push(elems[i]);
+  }
+  elems = document.getElementsByClassName('cible');
+  for (let i=0;i<elems.length;i++)
+  {
+    drake.containers.push(elems[i]);
+  }
+  //on initialise les lignes à relier
+  elems = document.querySelectorAll([line]);
+  for (let i=0;i<elems.length;i++)
+  {
+    elems[i].addEventListener('mousedown',line_start,true);
   }
   
   // on initialise les items
@@ -524,8 +542,8 @@ function affiche_score(sauve)
         case "combo":
           s += combo_score(e, tt);
           break;
-        case "zone":
-          s += zone_score(e, tt);
+        case "cible":
+          s += cible_score(e, tt);
           break;
         case "line":
           s += line_score(e, tt);

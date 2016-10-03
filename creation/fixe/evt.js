@@ -355,6 +355,18 @@ function cr_inter_change(e)
     if (e.checked && e.id == "cr_inter_0")
     {
       selection[i].inter = "0";
+      // on enlève le lien "relier" sur l'ancienne cible
+      if (selection[i].relie_id != "")
+      {
+        b2 = bloc_get_from_id(selection[i].relie_id);
+        if (b2)
+        {
+          b2.inter = "0";
+          b2.relie_id = "";
+          b2.relie_cible_de = "";
+          bloc_create_html(b2);
+        }
+      }
       selection[i].relie_id = "";
       selection[i].relie_cible_de = "";
     }
@@ -367,10 +379,24 @@ function cr_inter_change(e)
     else if (e.checked && e.id == "cr_inter_1")
     {
       selection[i].inter = "1";
+      // on enlève le lien "relier" sur l'ancienne cible
+      if (selection[i].relie_id != "")
+      {
+        b2 = bloc_get_from_id(selection[i].relie_id);
+        if (b2)
+        {
+          b2.inter = "0";
+          b2.relie_id = "";
+          b2.relie_cible_de = "";
+          bloc_create_html(b2);
+        }
+      }
+      selection[i].relie_id = "";
       selection[i].relie_cible_de = "";
     }
     bloc_create_html(selection[i]);
   }
+  selection_update();
   //on sauvegarde
   g_sauver();
 }
@@ -394,6 +420,7 @@ function cr_relie_id_change(e)
       bloc_create_html(b2);
     }
   }
+  selection_update();
   //on sauvegarde
   g_sauver();
 }
