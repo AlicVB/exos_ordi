@@ -393,7 +393,7 @@ function cr_inter_change(e)
     else if (e.checked && e.id == "cr_inter_1")
     {
       selection[i].inter = "1";
-      if (selection[i].points == "0") selection[i].points = "1";
+      if (selection[i].points == "0" && selection[i].relie_id != "") selection[i].points = "1";
       selection[i].relie_cible_de = "";
     }
     bloc_create_html(selection[i]);

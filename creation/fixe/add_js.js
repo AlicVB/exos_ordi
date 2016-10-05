@@ -104,13 +104,19 @@ function line_relie(e1, e2, line)
   // on enregistre la valeur
   if (e2.hasAttribute("lineok"))
   {
-    if (e2.getAttribute("lineok") == e1.id) e2.setAttribute("score", "1");
-    else e2.setAttribute("score", "0");
+    if (!e2.hasAttribute("score") || e2.getAttribute("score") != "0")
+    {
+      if (e2.getAttribute("lineok") == e1.id) e2.setAttribute("score", "1");
+      else e2.setAttribute("score", "0");
+    }
   }
   else if (e1.hasAttribute("lineok"))
   {
-    if (e1.getAttribute("lineok") == e2.id) e1.setAttribute("score", "1");
-    else e1.setAttribute("score", "0");
+    if (!e1.hasAttribute("score") || e1.getAttribute("score") != "0")
+    {
+      if (e1.getAttribute("lineok") == e2.id) e1.setAttribute("score", "1");
+      else e1.setAttribute("score", "0");
+    }
   }
   e1.setAttribute("linkedto", e2.id);
 }
@@ -350,8 +356,8 @@ function cible_score(e, tt)
 function line_score(e, tt)
 {
   s = 0;
-  r.disabled = true;
-  if (r.hasAttribute("score")) s = r.getAttribute("score");
+  e.disabled = true;
+  if (e.hasAttribute("score")) s = e.getAttribute("score");
   return s*tt;
 }
 
