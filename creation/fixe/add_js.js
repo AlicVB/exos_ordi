@@ -616,11 +616,11 @@ function affiche_score(sauve)
     }
   }
   escore.innerHTML = "score : " + ns + "/" + nt;
-  
+  np = ns/nt*100;
   // on définit le drapeau, etc...
   for (let i=5; i>=0; i--)
   {
-    if (ns>=msgs[i].min)
+    if (np>=msgs[i].min)
     {
       if (msgs[i].re == "1") btn = "<br/><a href=\\"javascript:window.location.reload(true)\\" id=\\"rea\\">Réessayer</a>";
       else btn = "";

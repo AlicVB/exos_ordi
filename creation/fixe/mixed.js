@@ -377,11 +377,11 @@ function infos_ini()
   infos.essais = "1";
   infos.a = [{}, {}, {}, {}, {}, {}];
   infos.a[0].min = "0";
-  infos.a[1].min = "2";
-  infos.a[2].min = "4";
-  infos.a[3].min = "6";
-  infos.a[4].min = "8";
-  infos.a[5].min = "10";
+  infos.a[1].min = "20";
+  infos.a[2].min = "40";
+  infos.a[3].min = "60";
+  infos.a[4].min = "80";
+  infos.a[5].min = "99";
   infos.a[0].coul = "n";
   infos.a[1].coul = "r";
   infos.a[2].coul = "j";
