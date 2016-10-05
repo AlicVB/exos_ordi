@@ -355,6 +355,7 @@ function cr_inter_change(e)
     if (e.checked && e.id == "cr_inter_0")
     {
       selection[i].inter = "0";
+      selection[i].points = "0";
       // on enlève le lien "relier" sur l'ancienne cible
       if (selection[i].relie_id != "")
       {
@@ -373,12 +374,7 @@ function cr_inter_change(e)
     else if (e.checked && e.id == "cr_inter_2")
     {
       selection[i].inter = "2";
-      selection[i].relie_id = "";
-      selection[i].relie_cible_de = "";
-    }
-    else if (e.checked && e.id == "cr_inter_1")
-    {
-      selection[i].inter = "1";
+      selection[i].points = "0";
       // on enlève le lien "relier" sur l'ancienne cible
       if (selection[i].relie_id != "")
       {
@@ -392,6 +388,12 @@ function cr_inter_change(e)
         }
       }
       selection[i].relie_id = "";
+      selection[i].relie_cible_de = "";
+    }
+    else if (e.checked && e.id == "cr_inter_1")
+    {
+      selection[i].inter = "1";
+      if (selection[i].points == "0") selection[i].points = "1";
       selection[i].relie_cible_de = "";
     }
     bloc_create_html(selection[i]);
@@ -409,6 +411,8 @@ function cr_relie_id_change(e)
     bloc = selection[i];
     bloc.relie_id = v;
     bloc.relie_cible_de = "";
+    if (v != "" && bloc.points == "0") bloc.points = "1";
+    else if (v == "") bloc.points = "0";
     bloc_create_html(bloc);
     //on change aussi la cible
     b2 = bloc_get_from_id(v);
@@ -417,6 +421,7 @@ function cr_relie_id_change(e)
       b2.inter = "1";
       b2.relie_id = "";
       b2.relie_cible_de = bloc.id;
+      b2.points = "0";
       bloc_create_html(b2);
     }
   }

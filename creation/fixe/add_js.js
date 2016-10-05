@@ -17,28 +17,28 @@ var line_orig_id = "";
 function line_start(e)
 {
   //on récupère le point de départ
-  var rect = e.getBoundingClientRect();
+  var rect = e.target.getBoundingClientRect();
 
   //on crée la ligne
   li = document.createElement('div');
   li.className = "line";
-  li.style.top = rect.bottom + "px";
-  li.style.left = (rect.left + (rect.right - rect.left)/2) + "px";
+  li.style.top = (rect.top + rect.height/2) + "px";
+  li.style.left = (rect.left + rect.width/2) + "px";
   document.body.appendChild(li);
   document.body.addEventListener('mouseup',line_leave,true);
   document.body.addEventListener('mousemove',line_move,true);
   
   //on enregistre
   line_cur = li;
-  line_orig = e;
-  line_orig_id = e.getAttribute('itemid');
+  line_orig = e.target;
+  line_orig_id = e.target.id;
 }
 function line_move(event)
 {
   if (!line_cur) return;
   var rect = line_orig.getBoundingClientRect();
-  x1 = rect.left + (rect.right - rect.left)/2;
-  y1 = rect.bottom;
+  x1 = rect.left + (rect.width/2);
+  y1 = rect.top + (rect.height/2);
   
   x2 = event.pageX;
   y2 = event.pageY;
@@ -52,41 +52,92 @@ function line_move(event)
   line_cur.style.transform = 'rotate(' + angle + 'deg)';
 }
 
+function line_relie(e1, e2, line)
+{
+  if (!e1 || !e2) return;
+  if (!line)
+  {
+    line = document.createElement('div');
+    line.className = "line";
+    document.body.appendChild(line);
+  }
+  //on détecte quels côtés on utilise
+  var rect1 = e1.getBoundingClientRect();
+  var rect2 = e2.getBoundingClientRect();
+  x1 = rect1.left + (rect1.width/2);
+  y1 = rect1.top + (rect1.height/2);
+  x2 = rect2.left + (rect2.width/2);
+  y2 = rect2.top + (rect2.height/2);
+  var length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+  var angle = 180 / 3.1415 * Math.acos((y2 - y1) / length);
+  if(x2 > x1) angle *= -1;
+  
+  //on ajuste les points pour ere du bon côté
+  if (angle>=-45 && angle <=45)
+  {
+    y1 = rect1.bottom;
+    y2 = rect2.top;
+  }
+  else if (angle >45 && angle <=135)
+  {
+    x1 = rect1.left;
+    x2 = rect2.right;
+  }
+  else if (angle >= 135 || angle <= -135)
+  {
+    y1 = rect1.top;
+    y2 = rect2.bottom;
+  }
+  else if (angle >= -135 && angle <= -45)
+  {
+    x1 = rect1.right;
+    x2 = rect2.left;
+  }
+  //et on recalcule
+  length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+  angle = 180 / 3.1415 * Math.acos((y2 - y1) / length);
+  if(x2 > x1) angle *= -1;
+  line.style.left = x1 + "px";
+  line.style.top = y1 + "px";
+  line.style.height = length + "px";
+  line.style.transform = 'rotate(' + angle + 'deg)';
+  // on enregistre la valeur
+  if (e2.hasAttribute("lineok"))
+  {
+    if (e2.getAttribute("lineok") == e1.id) e2.setAttribute("score", "1");
+    else e2.setAttribute("score", "0");
+  }
+  else if (e1.hasAttribute("lineok"))
+  {
+    if (e1.getAttribute("lineok") == e2.id) e1.setAttribute("score", "1");
+    else e1.setAttribute("score", "0");
+  }
+  e1.setAttribute("linkedto", e2.id);
+}
+
 function line_leave(event)
 {
   if (!line_cur) return;
-  e = event.target;
-  id = "";
-  if (e.hasAttribute('line') && e.hasAttribute('itemid')) id = e.getAttribute('itemid')
-  if (e.hasAttribute('line') && e.id != line_orig.id)
+  ex = event.clientX;
+  ey = event.clientY;
+  var elems = document.querySelectorAll("[line]");
+  var e = null;
+  for (let i=0; i<elems.length; i++)
   {
-    //on trace la ligne bien comme il faut
-    var rect = line_orig.getBoundingClientRect();
-    x1 = rect.left + (rect.right - rect.left)/2;
-    y1 = rect.bottom;
-    
-    rect = e.getBoundingClientRect();
-    x2 = rect.left + (rect.right - rect.left)/2;
-    y2 = rect.top;
-    
-    var length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-      
-    var angle = 180 / 3.1415 * Math.acos((y2 - y1) / length);
-    if(x2 > x1) angle *= -1;
-    
-    line_cur.style.height = length + "px";
-    line_cur.style.transform = 'rotate(' + angle + 'deg)';
-    // on enregistre la valeur
-    if (e.hasAttribute("lineok"))
+    el = elems[i];
+    rect = el.getBoundingClientRect();
+    if (ex >= rect.left && ex <= (rect.left + rect.width) && ey >= rect.top && ey <= (rect.top + rect.height))
     {
-      if (e.getAttribute("lineok") == line_orig.id) e.setAttribute("score", "1");
-      else e.setAttribute("score", "0");
+      e = el;
+      break;
     }
-    else if (line_orig.hasAttribute("lineok"))
-    {
-      if (line_orig.getAttribute("lineok") == e.id) line_orig.setAttribute("score", "1");
-      else line_orig.setAttribute("score", "0");
-    }
+  }
+  id = "";
+  if (e && e.hasAttribute('line') && e.hasAttribute('itemid')) id = e.getAttribute('itemid')
+  if (e && e.hasAttribute('line') && e.id != line_orig.id)
+  {
+    line_relie(line_orig, e, line_cur);
+    change(line_orig);
   }
   else
   {
@@ -299,28 +350,9 @@ function cible_score(e, tt)
 function line_score(e, tt)
 {
   s = 0;
-  //we desactivate the source items
-  r = getrootitem(e);
-  sel = "[itemid=\\"" + r.getAttribute('item') + "\\"]";
-  elems = r.querySelectorAll(sel);
-  for (let i=0; i<elems.length; i++)
-  {
-    elems[i].disabled = true;
-  }
-  // we look at all the subitems to search for error
-  elems = getexos(e);
-  for (let i=0; i<elems.length; i++)
-  {
-    alert(i + " " + elems[i].getAttribute('score'));
-    s += parseInt(elems[i].getAttribute('score'));
-    if (elems[i].getAttribute('score') == "0")
-    {
-      elems[i].style.border = "2px solid red";
-      elems[i].style.borderRadius = "1vh";
-    }
-  }
-  alert(s + " " + (s*tt/elems.length));
-  return s*tt/elems.length;
+  r.disabled = true;
+  if (r.hasAttribute("score")) s = r.getAttribute("score");
+  return s*tt;
 }
 
 // get the root item of an element (the one with all the details)
@@ -362,7 +394,7 @@ function sauve()
     if (i>0) tx += "|";
     tx += encodeURIComponent(getvalue(elems[i]));
   }
-  
+
   // et on le sauvegarde
   var xhr = new XMLHttpRequest();
   ligne = "user=" + user +"&exoid=" + exoid + "&v=" + tx;
@@ -445,7 +477,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
     drake.containers.push(elems[i]);
   }
   //on initialise les lignes à relier
-  elems = document.querySelectorAll([line]);
+  elems = document.querySelectorAll("[line]");
   for (let i=0;i<elems.length;i++)
   {
     elems[i].addEventListener('mousedown',line_start,true);
@@ -523,7 +555,7 @@ function affiche_score(sauve)
     {
       //on augmente le total des points
       tt = 1;
-      if (e.hasAttribute('points')) tt = e.getAttribute('points');
+      if (e.hasAttribute('points')) tt = parseFloat(e.getAttribute('points'));
       t += tt;
       //on augmente le score
       switch (e.getAttribute('tpe'))
@@ -545,7 +577,8 @@ function affiche_score(sauve)
         case "cible":
           s += cible_score(e, tt);
           break;
-        case "line":
+        case "texte_simple":
+        case "image":
           s += line_score(e, tt);
           break;
       }
@@ -640,6 +673,10 @@ function setvalue(e, v)
     case "multi":
       e.style.backgroundColor = v;
       break;
+    case "texte_simple":
+    case "image":
+      if (v != "") line_relie(e, document.getElementById(v), null);
+      break;
   }
 }
 // get the text value of an element (to be saved)
@@ -657,6 +694,9 @@ function getvalue(e)
       return (e.value);
     case "multi":
       return (e.style.backgroundColor);
+    case "texte_simple":
+    case "image":
+      if (e.hasAttribute("linkedto")) return e.getAttribute("linkedto");
   }
   return "";
 }

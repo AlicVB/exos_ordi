@@ -33,6 +33,16 @@ div.ligne2f {
 .cible {
   box-sizing: border-box;
 }
+.texte_simple {
+  cursor: pointer;
+}
+.line {
+  position: absolute;
+  width: 3px;
+  background-color: #0700A3;
+  transform-origin: top left;
+  cursor: pointer;
+}
 .radio form {
   text-align: left;
   font-weight: bold;

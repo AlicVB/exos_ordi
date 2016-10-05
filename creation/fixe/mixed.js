@@ -1166,6 +1166,7 @@ function texte_simple_create_html(bloc, txt)
 function texte_simple_ini(bloc)
 {
   // rien à faire
+  bloc.points = "0";
 }
 function texte_simple_sel_update()
 {
