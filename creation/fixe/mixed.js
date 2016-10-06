@@ -55,8 +55,16 @@ function file_create_css()
     txt += "top: " + b.top*100/641 + "%; ";
     if (b.size == "manuel")
     {
-      txt += "width: " + b.width*100/443 + "%; ";
-      txt += "height: " + b.height*100/641 + "%; ";
+      if (b.tpe == "cible")
+      {
+        txt += "min-width: " + b.width*100/443 + "%; ";
+        txt += "min-height: " + b.height*100/641 + "%; ";
+      }
+      else
+      {
+        txt += "width: " + b.width*100/443 + "%; ";
+        txt += "height: " + b.height*100/641 + "%; ";
+      }
     }
     //bords
     if (b.bord != "hidden")
@@ -177,7 +185,11 @@ function g_restaurer_info(init)
   i = JSON.parse(localStorage.getItem('create_exo_infos'));
   if (i) infos = i;
   else infos_ini();
-  
+  infos_change();
+}
+
+function infos_change()
+{
   document.getElementById("cri_titre").value = infos.titre;
   document.getElementById("cri_coul").value = infos.coul;
   document.getElementById("cri_consigne").value = infos.consigne;
@@ -202,6 +214,7 @@ function g_reinit()
   last_id = 0;
   infos_ini();
   selection_change();
+  infos_change();
 }
 
 function bloc_new(tpe, txt)

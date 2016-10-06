@@ -14,6 +14,7 @@ var line_cur = null;
 var line_orig = null;
 var line_orig_id = "";
 
+
 function line_start(e)
 {
   //on récupère le point de départ
@@ -154,6 +155,22 @@ function line_leave(event)
   line_cur = null;
   line_orig = null;
   line_orig_id = "";
+}
+
+function cible_ondrop(el, target, source)
+{
+  target.setAttribute("contains", el.id);
+  el.style.position = "static";
+  change(target);
+}
+function cible_deplace(e, id)
+{
+  el = document.getElementById(id);
+  if (!el) return;
+  el.parentNode.removeChild(el);
+  e.setAttribute("contains", el.id);
+  el.style.position = "static";
+  e.appendChild(el);  
 }
 
 //Actions spécifiques de certains éléments
@@ -335,22 +352,12 @@ function texte_score(e, tt)
 
 function cible_score(e, tt)
 {
-  s = tt;
-  // we look at all the subitems to search for error
-  var elems = getexos(e);
-  for (let i=0; i<elems.length; i++)
+  if (e.hasAttribute("juste"))
   {
-    elems[i].disabled = true;
-    ok = elems[i].getAttribute('juste');
-    el = elems[i].firstElementChild;
-    if (!el || el.id != ok)
-    {
-      s = 0;
-      elems[i].style.border = "2px solid red";
-      elems[i].style.borderRadius = "1vh";
-    }
+    el = e.firstElementChild;
+    if ( el && el.id == e.getAttribute("juste")) return tt;
   }
-  return s;
+  return 0;
 }
 
 function line_score(e, tt)
@@ -471,7 +478,10 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   read_details(txt_exo);
   
   //on initialise les drag-drop
-  var drake = dragula();
+  var drake = dragula({
+    // un seul élément par conteneur
+    accepts: function (el, target, source, sibling) { return (target.childNodes.length < 2); }
+  });
   elems = document.getElementsByClassName('mv_src');
   for (let i=0;i<elems.length;i++)
   {
@@ -488,7 +498,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   {
     elems[i].addEventListener('mousedown',line_start,true);
   }
-  
+  drake.on('drop', cible_ondrop);
   // on initialise les items
   xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
@@ -683,6 +693,9 @@ function setvalue(e, v)
     case "image":
       if (v != "") line_relie(e, document.getElementById(v), null);
       break;
+    case "cible":
+      if (v != "") cible_deplace(e, v);
+      break;
   }
 }
 // get the text value of an element (to be saved)
@@ -703,6 +716,8 @@ function getvalue(e)
     case "texte_simple":
     case "image":
       if (e.hasAttribute("linkedto")) return e.getAttribute("linkedto");
+    case "cible":
+      if (e.hasAttribute("contains")) return e.getAttribute("contains");
   }
   return "";
 }
