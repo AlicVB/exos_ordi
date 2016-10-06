@@ -554,7 +554,55 @@ function cr_repart_change(e)
 }
 function cr_plan_change(e)
 {
-  
+  switch (e.value)
+  {
+    case "1": //premier plan
+      for (let i=0; i<selection.length; i++)
+      {
+        //on met en ordre la liste des blocs
+        b = selection[i];
+        for (let j=0; j<blocs.length; j++)
+        {
+          if (b.id == blocs[j].id)
+          {
+            blocs.splice(j,1);
+            break;
+          }
+        }
+        blocs.push(b);
+        //on modifie le rendu
+        sb = rendu_get_superbloc(b);
+        rd = sb.parentNode;
+        rd.removeChild(sb);
+        rd.appendChild(sb);
+      }
+      break;
+    case "2": //arrière plan
+      for (let i=0; i<selection.length; i++)
+      {
+        //on met en ordre la liste des blocs
+        b = selection[i];
+        for (let j=0; j<blocs.length; j++)
+        {
+          if (b.id == blocs[j].id)
+          {
+            blocs.splice(j,1);
+            break;
+          }
+        }
+        blocs.unshift(b);
+        //on modifie le rendu
+        sb = rendu_get_superbloc(b);
+        rd = sb.parentNode;
+        rd.removeChild(sb);
+        rd.insertBefore(sb, rd.childNodes[1]);
+      }
+      break;
+    case "3": //avancer
+      break;
+    case "4": //reculer
+      break;
+  }
   e.selectedIndex = 0;
 }
 function cr_action_change(e)
