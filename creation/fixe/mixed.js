@@ -1107,7 +1107,7 @@ function image_create_html(bloc, txt)
 {
   htm = "";
   htm += "<div";
-  if (bloc.inter == 2) htm += " class=\"mv_src\"";
+  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <img class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
@@ -1163,7 +1163,7 @@ function texte_simple_create_html(bloc, txt)
   comp = bloc.texte_c;
   
   htm = "<div";
-  if (bloc.inter == 2) htm += " class=\"mv_src\"";
+  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <div class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {

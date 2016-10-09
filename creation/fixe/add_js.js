@@ -13,7 +13,7 @@ var total;
 var line_cur = null;
 var line_orig = null;
 var line_orig_id = "";
-
+var drake = null;
 
 function line_start(e)
 {
@@ -52,8 +52,84 @@ function line_move(event)
   line_cur.style.height = length + "px";
   line_cur.style.transform = 'rotate(' + angle + 'deg)';
 }
-
-function line_relie(e1, e2, line)
+function line_remove(event)
+{
+  line = event.target;
+  e1 = document.getElementById(line.getAttribute("l1"));
+  e2 = document.getElementById(line.getAttribute("l2"));
+  document.body.removeChild(line);
+  
+  //on enlève le truc de sauvegarde
+  if (e1.hasAttribute("linkedto"))
+  {
+    var ids = e1.getAttribute("linkedto").split("$");
+    nids = "";
+    for (let i=0; i<ids.length; i++)
+    {
+      if (ids[i] != e2.id)
+      {
+        if (nids != "") nids += "$";
+        nids += ids[i];
+      }
+    }
+    e1.setAttribute("linkedto", nids);
+  }
+  else if (e2.hasAttribute("linkedto"))
+  {
+    var ids = e2.getAttribute("linkedto").split("$");
+    nids = "";
+    for (let i=0; i<ids.length; i++)
+    {
+      if (ids[i] != e1.id)
+      {
+        if (nids != "") nids += "$";
+        nids += ids[i];
+      }
+    }
+    e2.setAttribute("linkedto", nids);
+  }
+  
+  //on enlève l'attribut pour le calcul
+  if (e1.hasAttribute("lineto"))
+  {
+    var ids = e1.getAttribute("lineto").split("|");
+    nids = "";
+    for (let i=0; i<ids.length; i++)
+    {
+      if (ids[i] != e2.id)
+      {
+        if (nids != "") nids += "|";
+        nids += ids[i];
+      }
+    }
+    e1.setAttribute("lineto", nids);
+  }
+  else if (e2.hasAttribute("lineto"))
+  {
+    var ids = e2.getAttribute("lineto").split("|");
+    nids = "";
+    for (let i=0; i<ids.length; i++)
+    {
+      if (ids[i] != e1.id)
+      {
+        if (nids != "") nids += "|";
+        nids += ids[i];
+      }
+    }
+    e2.setAttribute("lineto", nids);
+  }
+  change(e1);
+  change(e2);
+}
+function line_charge(e, v)
+{
+  var ids = v.split("$");
+  for (let i=0; i<ids.length; i++)
+  {
+    line_relie(e, document.getElementById(ids[i]), null, false);
+  }
+}
+function line_relie(e1, e2, line, corr)
 {
   if (!e1 || !e2) return;
   if (!line)
@@ -102,24 +178,39 @@ function line_relie(e1, e2, line)
   line.style.top = y1 + "px";
   line.style.height = length + "px";
   line.style.transform = 'rotate(' + angle + 'deg)';
-  // on enregistre la valeur
-  if (e2.hasAttribute("lineok"))
+  line.setAttribute("l1", e1.id);
+  line.setAttribute("l2", e2.id);
+  if (corr)
   {
-    if (!e2.hasAttribute("score") || e2.getAttribute("score") != "0")
-    {
-      if (e2.getAttribute("lineok") == e1.id) e2.setAttribute("score", "1");
-      else e2.setAttribute("score", "0");
-    }
+    line.style.backgroundColor = "red";
   }
-  else if (e1.hasAttribute("lineok"))
+  else
   {
-    if (!e1.hasAttribute("score") || e1.getAttribute("score") != "0")
+    // on enregistre la valeur
+    if (e2.hasAttribute("lineok"))
     {
-      if (e1.getAttribute("lineok") == e2.id) e1.setAttribute("score", "1");
-      else e1.setAttribute("score", "0");
+      ids = "";
+      if (e2.hasAttribute("lineto")) ids = e2.getAttribute("lineto");
+      if (ids != "") ids += "|";
+      ids += e1.id;
+      e2.setAttribute("lineto", ids);
     }
+    else if (e1.hasAttribute("lineok"))
+    {
+      ids = "";
+      if (e1.hasAttribute("lineto")) ids = e1.getAttribute("lineto");
+      if (ids != "") ids += "|";
+      ids += e2.id;
+      e1.setAttribute("lineto", ids);
+    }
+    ids = "";
+    if (e1.hasAttribute("linkedto")) ids = e1.getAttribute("linkedto");
+    if (ids != "") ids += "$";
+    ids += e2.id;
+    e1.setAttribute("linkedto", ids);
   }
-  e1.setAttribute("linkedto", e2.id);
+  line.addEventListener('click',line_remove,true);
+  return line;
 }
 
 function line_leave(event)
@@ -141,9 +232,42 @@ function line_leave(event)
   }
   id = "";
   if (e && e.hasAttribute('line') && e.hasAttribute('itemid')) id = e.getAttribute('itemid')
-  if (e && e.hasAttribute('line') && e.id != line_orig.id)
+  ok = false;
+  if (e && e.hasAttribute('line') && e.id != line_orig.id && (e.hasAttribute("lineok") != line_orig.hasAttribute("lineok")))
   {
-    line_relie(line_orig, e, line_cur);
+    // on regarde si il y a pas déjà une ligne comme ça
+    var el = null;
+    var src = null;
+    if (e.hasAttribute("lineok"))
+    {
+      el = e;
+      src = line_orig;
+    }
+    else if (line_orig.hasAttribute("lineok"))
+    {
+      el = line_orig;
+      src = e;
+    }
+    if (el && src)
+    {
+      ok = true;
+      if (el.hasAttribute("lineto"))
+      {
+        var ids = el.getAttribute("lineto").split("|");
+        for (let i=0; i<ids.length; i++)
+        {
+          if (ids[i] == src.id)
+          {
+            ok = false;
+            break;
+          }
+        }
+      }
+    }
+  }
+  if (ok)
+  {
+    line_relie(line_orig, e, line_cur, false);
     change(line_orig);
   }
   else
@@ -157,10 +281,25 @@ function line_leave(event)
   line_orig_id = "";
 }
 
+function cible_remove(event)
+{
+  el = event.target;
+  if (!el) return;
+  parent = document.getElementById("cible_" + el.id);
+  if (!parent) return;
+  el.parentNode.removeAttribute("contains");
+  change(el.parentNode);
+  el.parentNode.removeChild(el);
+  el.style.position = "absolute"; 
+  parent.appendChild(el);
+  el.removeEventListener('click', cible_remove, true);
+}
+
 function cible_ondrop(el, target, source)
 {
   target.setAttribute("contains", el.id);
   el.style.position = "static";
+  el.addEventListener('click', cible_remove, true);
   change(target);
 }
 function cible_deplace(e, id)
@@ -170,6 +309,7 @@ function cible_deplace(e, id)
   el.parentNode.removeChild(el);
   e.setAttribute("contains", el.id);
   el.style.position = "static";
+  el.addEventListener('click', cible_remove, true);
   e.appendChild(el);  
 }
 
@@ -356,6 +496,14 @@ function cible_score(e, tt)
   {
     el = e.firstElementChild;
     if ( el && el.id == e.getAttribute("juste")) return tt;
+    else if (tt>0)
+    {
+      //on affiche la correction
+      e.style.border = "2px solid red";
+      e.style.borderRadius = "2vh";
+      el2 = document.getElementById(e.getAttribute("juste"));
+      if (el2) line_relie(e, el2, null, true);
+    }
   }
   return 0;
 }
@@ -363,8 +511,40 @@ function cible_score(e, tt)
 function line_score(e, tt)
 {
   s = 0;
-  e.disabled = true;
-  if (e.hasAttribute("score")) s = e.getAttribute("score");
+  if (e.hasAttribute("lineto") && e.hasAttribute("lineok"))
+  {
+    //on cherche l'erreur
+    s = 1;
+    id1 = e.getAttribute("lineto").split("|");
+    id2 = e.getAttribute("lineok").split("|");
+    //on regarde d'abord si il manque des lignes
+    for (let i=0; i<id2.length; i++)
+    {
+      if (id1.indexOf(id2[i]) == -1)
+      {
+        s = 0;
+        // il faut tracer la ligne qui manque
+        line_relie(e, document.getElementById(id2[i]), null, true);
+      }
+    }
+    // on regarde si il ya des lignes en trop
+    for (let i=0; i<id1.length; i++)
+    {
+      if (id2.indexOf(id1[i]) == -1)
+      {
+        s = 0;
+        // il faut barrer la ligne en trop
+        var rect1 = e.getBoundingClientRect();
+        var rect2 = document.getElementById(id1[i]).getBoundingClientRect();
+        barre = document.createElement('span');
+        barre.className = "line_barre";
+        barre.innerHTML = "X";
+        document.body.appendChild(barre);
+        barre.style.top = ((rect1.top + rect1.height/2 + rect2.top + rect2.height/2)/2 - barre.offsetHeight/2) + "px";
+        barre.style.left = ((rect1.left + rect1.width/2 + rect2.left + rect2.width/2)/2 - barre.offsetWidth/2) + "px";
+      }
+    }
+  }
   return s*tt;
 }
 
@@ -478,7 +658,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   read_details(txt_exo);
   
   //on initialise les drag-drop
-  var drake = dragula({
+  drake = dragula({
     // un seul élément par conteneur
     accepts: function (el, target, source, sibling) { return (target.childNodes.length < 2); }
   });
@@ -601,6 +781,20 @@ function affiche_score(sauve)
     }
   }
   
+  //on désactive toutes les lignes
+  elems = document.getElementsByClassName('line');
+  for (let i=0; i<elems.length; i++)
+  {
+    elems[i].removeEventListener('click',line_remove,true);
+  }
+  elems = document.querySelectorAll("[line]");
+  for (let i=0;i<elems.length;i++)
+  {
+    elems[i].removeEventListener('mousedown',line_start,true);
+  }
+  //et les éléments à déplacer
+  drake.containers = [];
+  
   //on ajuste le score par rapport au total
   vals = total.split("|");
   ns = s;
@@ -691,7 +885,7 @@ function setvalue(e, v)
       break;
     case "texte_simple":
     case "image":
-      if (v != "") line_relie(e, document.getElementById(v), null);
+      if (v != "") line_charge(e, v);
       break;
     case "cible":
       if (v != "") cible_deplace(e, v);

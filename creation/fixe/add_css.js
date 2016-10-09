@@ -101,5 +101,12 @@ img.multi_cim {
   width: 17px; /*2.5vh*/
   vertical-align: bottom;
 }
+.line_barre {
+  color: red;
+  font-weight: bold;
+  font-size: 4vh;
+  position: absolute;
+  font-family: "sans-serif";
+}
 `;
 }
