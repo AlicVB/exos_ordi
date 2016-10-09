@@ -1,0 +1,48 @@
+@font-face {
+  font-family: StayPuft
+  src: url(StayPuft.ttf)
+}
+@font-face {
+  font-family: handfont
+  src: url(handfont.ttf)
+}
+body {
+  background-color: #C3C4AC;
+}
+p.titre {
+  font-family: StayPuft;
+  font-weight: bold;
+  font-size: 4vh;
+  text-align: center;
+  margin-bottom: 5vh;
+}
+p.ligne {
+  text-align: left;
+  margin-left: 10vh;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+a.nom {
+  font-family: handfont;
+  font-size: 4vh;
+  border: 2px solid grey;
+  border-radius: 5px;
+  text-decoration: none;
+  color: black;
+}
+#col1 {
+  float: left;
+  width: 45vw;
+}
+#col2 {
+  margin-left: 46vw;
+}
+#bysa {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  font-size: 12px;
+}
+#bysa img {
+  height: 12px;
+}

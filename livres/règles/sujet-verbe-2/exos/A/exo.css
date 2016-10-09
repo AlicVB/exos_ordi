@@ -1,0 +1,15 @@
+span.exo {
+  cursor: pointer;
+}
+span.exo:hover {
+  border: 1px solid grey;
+}
+span.exocorr {
+  background-color: #BFBFBF;
+  font-style: italic;
+  visibility: hidden;
+}
+img.exocim {
+  height: 2.5vh;
+  vertical-align: bottom;
+}

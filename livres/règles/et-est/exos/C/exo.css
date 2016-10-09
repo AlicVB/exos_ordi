@@ -1,0 +1,33 @@
+div.ligne {
+  display: flex;
+  align-items: center;
+  margin-top: 2vh;
+}
+.ligne input {
+  vertical-align: middle;
+  margin: 0px;
+}
+.ligne form {
+  font-weight: bold;
+}
+div.choix {
+  margin-left: 1vh;
+  margin-right: 1vh;
+}
+
+.choix input[type="radio"] {
+    display:none; 
+}
+
+.choix label {
+    display:inline-block;
+    background-color:#DDDDDD;
+    box-sizing: border-box;
+    width: 100%;
+    padding-left: 1vh;
+    padding-right: 1vh;
+}
+
+.choix input[type="radio"]:checked + label { 
+    background-color:#B3B3FF;
+}

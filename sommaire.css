@@ -1,0 +1,52 @@
+@font-face {
+  font-family: StayPuft
+  src: url(StayPuft.ttf)
+}
+@font-face {
+  font-family: handfont
+  src: url(handfont.ttf)
+}
+body {
+  background-color: #BDACC4;
+}
+#titre {
+  font-family: StayPuft;
+  font-size: 10vh;
+  text-align: center;
+  width: 100%;
+}
+#listelivre {
+  font-family: handfont;
+  font-size: 6vh;
+}
+#table {
+
+}
+tr.tligne {
+
+}
+th.tico {
+  vertical-align: center;
+}
+img.ico {
+  height: 6vh;
+}
+th.tnom {
+  font-size: 3vh;
+  vertical-align : center;
+  font-weight: bold;
+  text-align: left;
+}
+a.lien {
+  text-decoration : none;
+  color: black;
+}
+#bysa {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  font-size: 12px;
+}
+#bysa img {
+  height: 12px;
+}

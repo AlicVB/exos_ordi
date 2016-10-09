@@ -1,0 +1,35 @@
+body {
+  background-color: #ADD8E6;
+  text-align: center;
+}
+#bandeau {
+  text-align: right;
+  width: 95%;
+}
+#logs {
+  width: 100%;
+  text-align: left;
+}
+img.bimg {
+  height: 8vh;
+}
+.cat {
+  width: 97%;
+  padding-left: 3%;
+  font-size: 4vh;
+  font-weight: bold;
+  background-color: #878787;
+}
+.cat_ligne {
+  background-color: #AFAFAF;
+  width: 95%;
+  margin-left: 5%;
+  border-style: none none solid none;
+  border-width: 2px;
+  border-color: grey;
+}
+.acat {
+  text-decoration: none;
+  font-size: 3vh;
+  padding: 5px;
+}

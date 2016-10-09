@@ -1,0 +1,18 @@
+body {
+  background-color: #ADD8E6;
+  text-align: center;
+}
+#bandeau {
+  text-align: right;
+  width: 95%;
+}
+img.bimg {
+  height: 8vh;
+}
+#aide {
+  float: left;
+  width: 30%;
+}
+#forme {
+  margin-left: 32%;
+}

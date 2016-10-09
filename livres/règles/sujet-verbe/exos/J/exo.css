@@ -1,0 +1,14 @@
+span.corr {
+  display: none;
+}
+#extra {
+  font-size: 6vh;
+  color: red;
+  text-align: center;
+  font-weight: bold;
+}
+#det2 {
+  font-family: Arial;
+  color: red;
+  font-size: 3vh;
+}

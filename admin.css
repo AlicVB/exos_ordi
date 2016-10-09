@@ -1,0 +1,75 @@
+body {
+  background-color: #ADD8E6;
+  text-align: center;
+}
+#bandeau {
+  text-align: right;
+  width: 95%;
+}
+img.bimg {
+  height: 8vh;
+}
+#logs {
+  width: 100%;
+  text-align: left;
+}
+div.ligne {
+  width: 100%;
+}
+div.user {
+  width: 97%;
+  padding-left: 3%;
+  font-size: 4vh;
+  font-weight: bold;
+  background-color: #878787;
+}
+div.livre {
+  background-color: #AFAFAF;
+  width: 95%;
+  margin-left: 5%;
+  border-style: none none solid none;
+  border-width: 2px;
+  border-color: grey;
+}
+table.ltable {
+  width : 100%;
+}
+th.lnom {
+  font-size: 3vh;
+  font-weight: bold;
+  color: blue;
+  vertical-align: center;
+  width: 20vh;
+}
+th.lscore {
+  font-size: 3vh;
+  font-weight: bold;
+  vertical-align: center;
+  text-align: center;
+  width: 10vh;
+}
+th.lexos {
+  vertical-align: center;
+}
+span.exo {
+  border: 1px solid black;
+  font-size: 2vh;
+  padding: 1px;
+  white-space: nowrap;
+}
+img.erimg {
+  height: 2vh;
+  vertical-align: middle;
+}
+.exo a {
+  text-decoration: none;
+}
+#bysa {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  font-size: 12px;
+}
+#bysa img {
+  height: 12px;
+}
