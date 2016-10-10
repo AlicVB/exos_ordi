@@ -1,33 +1,105 @@
+textarea {
+  resize: none;
+}
 div.ligne {
   display: flex;
   align-items: center;
-  margin-top: 2vh;
+  justify-content: center;
+  margin-top: 2vh;/*2vh*/
+  font-size: 2vh;/*2vh*/
+  width: 100%;
 }
-.ligne input {
+div.ligne2 {
+  text-align: center;
+  margin-top: 2vh;/*2vh*/
+  font-size: 2vh;/*2vh*/
+  width: 100%;
+}
+.radio form {
+  text-align: left;
+  font-weight: bold;
+  margin-left: 1vh; /*1vh*/
+  margin-right: 1vh;
+}
+.radio input {
   vertical-align: middle;
   margin: 0px;
 }
-.ligne form {
-  font-weight: bold;
-}
-div.choix {
-  margin-left: 1vh;
+.radiobtn form {
+  margin-left: 1vh;/*1vh*/
   margin-right: 1vh;
 }
-
-.choix input[type="radio"] {
+.radiobtn input[type="radio"] {
     display:none; 
 }
-
-.choix label {
+.radiobtn label {
     display:inline-block;
-    background-color:#DDD66F;
     box-sizing: border-box;
     width: 100%;
-    padding-left: 1vh;
+    padding-left: 1vh;/*1vh*/
     padding-right: 1vh;
 }
+.combo select {
+  margin-left: 1vh;/*1vh*/
+  margin-right: 1vh;
+}
+.combo_corr {
+  width: 100%;
+  text-align: center;
+  display: none;
+  color: red;
+  font-weight: bold;
+}
+.texte_corr {
+  width: 100%;
+  text-align: center;
+  display: none;
+  color: red;
+  font-weight: bold;
+}
+.multi span {
+  cursor: pointer;
+}
+.multi span:hover {
+  border: 1px solid grey;
+}
+.multi_corr {
+  background-color: #BFBFBF;
+  font-style: italic;
+  visibility: hidden;
+  margin-right: 2.5vh;
+}
+.multi_cim {
+  width: 2.5vh; /*2.5vh*/
+  vertical-align: bottom;
+}
 
-.choix input[type="radio"]:checked + label { 
-    background-color:#A791E3;
+.zone div {
+  display: inline-block;
+}
+.mv_src div{
+  margin: 2px;
+  padding: 2px;
+  background-color: #59AD55;
+  cursor: move;
+}
+div.mv_space {
+  margin: 2px;
+  padding: 2px;
+}
+.mv_dest {
+  margin: 2px;
+  background-color: #D49343;
+  min-width: 2vh;
+  min-height: 2vh;
+  vertical-align: middle;
+  padding: 2px;
+  cursor: move;
+}
+
+div.line {
+  position: absolute;
+  width: 2px;
+  background-color: blue;
+  transform-origin: top left;
 }

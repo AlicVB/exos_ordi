@@ -22,26 +22,14 @@ function corrige(elem, sauv)
 {
   var item = elem.getAttribute('itemid');
   var elems = document.getElementsByClassName('exo');
-  var sc = 1; // score
   var txt = ""; // liste des valeurs des éléments (cochés ou non)
   for (var i=0; i<elems.length; i++)
   {
     e = elems[i];
-    if (e.checked) txt += "1|";
-    else txt += "0|";
-    
-    // on ne s'occupe des éléments du même item
-    if (e.getAttribute('itemid') == item)
-    {
-      // si erreur, alors on met le score à 0
-      if ((e.value == "0" && e.checked) || (e.value == "1" && e.checked == false))
-      {
-        sc = 0;
-      }
-    }
+    txt += e.selectedIndex + "|";
   }
 
-  score[parseInt(item)] = sc;
+  score[parseInt(item)] = parseInt(elem.value);
 
   //on sauvegarde si besoin
   if (sauv) sauve(txt.slice(0,-1));
@@ -124,7 +112,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
       for (var i=0; i<elems.length; i++)
       {
         e = elems[i];
-        e.checked = (vals[i] == "1");
+        e.selectedIndex = vals[i];
         corrige(e,false);
       }
     }
@@ -203,15 +191,10 @@ function affiche_score(sauve)
   {
     // on "disable" l'élément
     elems[i].disabled = true;
-    if (elems[i].value == "1")
+    if (elems[i].value == "0")
     {
-      item = elems[i].getAttribute('itemid');
-      if (score[item] == 0)
-      {
-        e = elems[i].nextElementSibling;
-        e.style.border = "2px solid red";
-        e.style.borderRadius = "1vh";
-      }
+      e = elems[i].nextElementSibling;
+      e.style.display = "block";
     }
   }  
   

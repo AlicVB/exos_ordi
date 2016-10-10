@@ -18,3 +18,22 @@ body {
   align-items: center;
   margin-left: 5px;
 }
+.eligne {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+.eimg {
+  width: 30px;
+}
+#idetails {
+  width: 300px;
+}
+.td1 {
+  text-align: right;
+  padding: 5px;
+}
+.td2 {
+  text-align: left;
+  padding: 5px;
+}

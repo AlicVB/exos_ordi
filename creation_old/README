@@ -26,6 +26,21 @@ Options spécifiques de l'exercice
 Idem
 ...
 
+*********************** Syntaxe du fichier livre.txt : *******************************
+Titre du livre
+couleur du livre
+auteur du livre
+image principale
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)  => 7 lignes
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+détails du livre (peut être sur plusieurs lignes)
+
+
 *********************** Syntaxe du fichier de sauvegarde : *******************************
 chaque élément est séparé par un saut de ligne
 la valeur de l'élément dépend du type d'item

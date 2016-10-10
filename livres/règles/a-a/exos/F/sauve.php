@@ -1,8 +1,8 @@
 <?php
   header("Content-Type: text/plain"); // Utilisation d'un header pour spécifier le type de contenu de la page. Ici, il s'agit juste de texte brut (text/plain). 
-  $user = (isset($_GET["user"])) ? $_GET["user"] : NULL;
-  $exoid = (isset($_GET["exoid"])) ? $_GET["exoid"] : NULL;
-  $v = (isset($_GET["v"])) ? $_GET["v"] : NULL;
+  $user = (isset($_POST["user"])) ? $_POST["user"] : NULL;
+  $exoid = (isset($_POST["exoid"])) ? $_POST["exoid"] : NULL;
+  $v = (isset($_POST["v"])) ? $_POST["v"] : NULL;
   
   if ($user && $exoid) 
   {
