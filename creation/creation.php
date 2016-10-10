@@ -18,7 +18,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>exotice -- livres</title>
+  <title>exotice -- categories</title>
   <link rel="stylesheet" href="creation.css">
   <script>
     function add_new()
@@ -43,8 +43,11 @@
       $cats = glob("../livres/*" , GLOB_ONLYDIR);
       for ($i=0; $i<count($cats); $i++)
       {
-        $cat = basename($cats[$i]);
-        echo "<div class=\"cat_ligne\"><a class=\"acat\" href=\"view_cat.php?cat=$cat\">$cat</a></div>\n";
+        if (!file_exists("$cats[$i]/livre.txt"))
+        {
+          $cat = basename($cats[$i]);
+          echo "<div class=\"cat_ligne\"><a class=\"acat\" href=\"view_cat.php?cat=$cat\">$cat</a></div>\n";
+        }
       }
     ?>
     <div class="cat_ligne"><a class="acat" href="#" style="color:orange;" onclick="add_new()">+ nouvelle catégorie...</a></div>
