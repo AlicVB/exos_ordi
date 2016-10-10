@@ -1,0 +1,20 @@
+body {
+  background-color: #ADD8E6;
+  text-align: center;
+}
+.col {
+  display: inline-block;
+  width: 45%;
+  margin: 1%;
+  border: 2px solid orange;
+  border-radius: 5px;
+}
+.titre {
+  font-weight: bold;
+  font-size: 2em;
+}
+.iligne {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
