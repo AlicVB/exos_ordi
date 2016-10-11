@@ -207,7 +207,7 @@ function free_path($fic)
         if (count($infos)>10) $ecoul = $infos[10];
         // on écrit le bloc qui correspond
         echo "<tr style=\"background-color:$ecoul;\">\n";
-        echo "<td class=\"td2\"><a class=\"ea\" href=\"create_exo.php?cat=$cat&livre=$livre&exo=$exo\">";
+        echo "<td class=\"td2\"><a class=\"ea\" href=\"crea_exo/exo.php?cat=$cat&livre=$livre&exo=$exo\">";
         echo "$et ($exos[$i])</a></td>\n";
         echo "<td><a href=\"livre.php?cat=$cat&livre=$livre&action=remove&exo=$exo\"><img class=\"eimg\" src=\"../icons/window-close.svg\" title=\"supprimer l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=copie&exo=$exo\"><img class=\"eimg\" src=\"../icons/tab-new.svg\" title=\"copier l'exo\"/></a>\n";
@@ -216,7 +216,7 @@ function free_path($fic)
         echo "</td></tr>\n";
       }
     }
-    echo "<tr><td class=\"enew\"><a class=\"enewa\" href=\"exo.php?cat=$cat&livre=$livre&exo=\">+ nouvel exercice...</a></td></tr>";
+    echo "<tr><td class=\"enew\"><a class=\"enewa\" href=\"crea_exo/exo.php?cat=$cat&livre=$livre&exo=\">+ nouvel exercice...</a></td></tr>";
     echo "</table>";
     echo "</div>\n";
   }
