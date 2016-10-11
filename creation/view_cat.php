@@ -44,7 +44,8 @@
             echo "<div class=\"cat_ligne\"><a class=\"acat\" href=\"livre.php?livre=$livre&cat=$cat\">$livre</a></div>\n";
           }
         }
-        echo "<div class=\"cat_ligne\"><a class=\"acat\" href=\"#\" style=\"color:orange;\" onclick=\"add_new($cat)\">+ nouveau livre...</a></div>";
+        $ncat = urlencode($cat);
+        echo "<div class=\"cat_ligne\"><a class=\"acat\" href=\"#\" style=\"color:orange;\" onclick=\"add_new('{$cat}')\">+ nouveau livre...</a></div>";
       }
     ?>
     

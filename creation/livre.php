@@ -25,13 +25,27 @@ function recurse_copy($src,$dst) {
         }
     }
     closedir($dir);
-} 
+}
+function free_path($fic)
+{
+  if (!file_exists($fic)) return $fic;
+  $p1 = substr($fic, 0, -4);
+  $p2 = substr($fic, -4);
+  $i = 1;
+  while (file_exists("$p1_$i_$p2"))
+  {
+    $i++;
+  }
+  return "$p1_$i_$p2";
+}
+
   //on traite d'abord des actions à faire
   if (isset($_GET['action']) && isset($_GET['exo']) && isset($_GET['cat']) && isset($_GET['livre']))
   {
     $dos = "../livres";
     $cat = $_GET['cat'];
     if ($cat != "") $dos .= "/$cat";
+    $dos1 = "$dos/{$_GET['livre']}";
     $dos .= "/{$_GET['livre']}/exos";
     $dos2 = "$dos/{$_GET['exo']}";
     
@@ -41,10 +55,17 @@ function recurse_copy($src,$dst) {
         if (file_exists($dos2)) recursiveRemoveDirectory($dos2);
         break;
       case "rmimg":
-        if (file_exists($dos2)) unlink($dos2);
-        $infos = explode("\n", file_get_contents("$dos/livre.txt"));
+        if (file_exists("$dos1/{$_GET['exo']}")) unlink("$dos1/{$_GET['exo']}");
+        $infos = explode("\n", file_get_contents("$dos1/livre.txt"));
         if (count($infos)>3) $infos[3] = "";
-        file_put_contents("$dos/livre.txt", implode("\n", $infos));
+        file_put_contents("$dos1/livre.txt", implode("\n", $infos));
+        break;
+      case "saveimg":
+        $dest = free_path("$dos1/img/{$_FILES['iimg']['name']}");
+        copy($_FILES['iimg']['tmp_name'], $dest);
+        $infos = explode("\n", file_get_contents("$dos1/livre.txt"));
+        if (count($infos)>3) $infos[3] = "img/".basename($dest);
+        file_put_contents("$dos1/livre.txt", implode("\n", $infos));
         break;
       case "copie":
         $exos = glob("$dos/*" , GLOB_ONLYDIR);
@@ -92,6 +113,22 @@ function recurse_copy($src,$dst) {
 
 <body>
 <?php
+  function livre_creation($dos)
+  {
+    //on crée tout ce qu'il manque
+    if (!file_exists("$dos")) mkdir("$dos", 0777, true);
+    if (!file_exists("$dos/exos")) mkdir("$dos/exos", 0777, true);
+    if (!file_exists("$dos/img")) mkdir("$dos/img", 0777, true);
+    if (!file_exists("$dos/sons")) mkdir("$dos/sons", 0777, true);
+    if (!file_exists("$dos/livre.php")) copy("livre_type/livre.php", "$dos/livre.php");
+    if (!file_exists("$dos/livre.css")) copy("livre_type/livre.css", "$dos/livre.css");
+    if (!file_exists("$dos/livre.js")) copy("livre_type/livre.js", "$dos/livre.js");
+    if (!file_exists("$dos/bilan.php")) copy("livre_type/bilan.php", "$dos/bilan.php");
+    if (!file_exists("$dos/compteur.php")) copy("livre_type/compteur.php", "$dos/compteur.php");
+    if (!file_exists("$dos/intro.php")) copy("livre_type/intro.php", "$dos/intro.php");
+    if (!file_exists("$dos/intro.css")) copy("livre_type/intro.css", "$dos/intro.css");
+  }
+  
   if (isset($_GET['cat']) && isset($_GET['livre']))
   {
     $cat = $_GET['cat'];
@@ -99,9 +136,7 @@ function recurse_copy($src,$dst) {
     $dos = "../livres";
     if ($cat != "") $dos .= "/$cat";
     $dos .= "/$livre";
-    //si le dossier n'existe pas, on le crée
-    if (!file_exists("$dos")) mkdir("$dos", 0777, true);
-    if (!file_exists("$dos/exos")) mkdir("$dos/exos", 0777, true);
+    livre_creation($dos);
     $titre = $livre;
     $aut = "";
     $coul = "#ffffff";
@@ -130,25 +165,25 @@ function recurse_copy($src,$dst) {
     echo "<table>";
     echo "<tr>";
     echo "<td class=\"td1\">Titre du livre</td>";
-    echo "<td class=\"td2\"><input type=\"text\" id=\"ititre\" size=\"30\" value=\"$titre\" onchange=\"infos_change(this)\"/></td>";
+    echo "<td class=\"td2\"><input type=\"text\" id=\"ititre\" size=\"30\" value=\"$titre\" onchange=\"infos_change('$dos/livre.txt')\"/></td>";
     echo "</tr>";
     echo "<tr>";
     echo "<td class=\"td1\">Auteur</td>";
-    echo "<td class=\"td2\"><input type=\"text\" id=\"iaut\" size=\"30\" value=\"$aut\" onchange=\"infos_change(this)\"/></td>";
+    echo "<td class=\"td2\"><input type=\"text\" id=\"iaut\" size=\"30\" value=\"$aut\" onchange=\"infos_change('$dos/livre.txt')\"/></td>";
     echo "</tr>";
     echo "<tr>";
     echo "<td class=\"td1\">Couleur de fond</td>";
-    echo "<td class=\"td2\"><input class=\"jscolor {hash:true}\" type=\"text\" id=\"icoul\" value=\"$coul\" onchange=\"infos_change(this)\" /></td>";
+    echo "<td class=\"td2\"><input class=\"jscolor {hash:true}\" type=\"text\" id=\"icoul\" value=\"$coul\" onchange=\"infos_change('$dos/livre.txt')\" /></td>";
     echo "</tr>";
     echo "<tr>";
     echo "<td class=\"td1\">Détails</td>";
-    echo "<td class=\"td2\"><textarea id=\"idetails\" onchange=\"infos_change(this)\">$details</textarea></td>";
+    echo "<td class=\"td2\"><textarea id=\"idetails\" onchange=\"infos_change('$dos/livre.txt')\">$details</textarea></td>";
     echo "</tr>";
     echo "<tr>";
     echo "<td class=\"td1\">Image principale</td>";
     echo "<td class=\"td2\">";
-    if (file_exists("$dos/$img")) echo "<img src=\"$dos/$img\" title=\"$dos/$img\" onload=\"iimg_load(this)\"/><a href=\"livre.php?cat=$cat&livre=$livre&action=rmimg&exo=$img\"><img class=\"eimg\" src=\"../icons/window-close.svg\" title=\"supprimer l'image\"/></a>";
-    else echo "<input type=\"file\" id=\"iimg\" onchange=\"infos_img_change(this)\"/>";
+    if ($img != "" && file_exists("$dos/$img")) echo "<img id=\"iimg\" src=\"$dos/$img\" title=\"$dos/$img\" onload=\"iimg_load(this)\"/><a href=\"livre.php?cat=$cat&livre=$livre&action=rmimg&exo=$img\"><img class=\"eimg\" src=\"../icons/window-close.svg\" title=\"supprimer l'image\"/></a>";
+    else echo "<form id=\"iimg_form\" action=\"livre.php?cat=$cat&livre=$livre&action=saveimg&exo=\" method=\"POST\" enctype=\"multipart/form-data\"><input type=\"file\" id=\"iimg\" name=\"iimg\" onchange=\"infos_img_change(this)\"/></form>";
     echo "</td>";
     echo "</tr>";
     echo "</table>";
@@ -181,6 +216,7 @@ function recurse_copy($src,$dst) {
         echo "</td></tr>\n";
       }
     }
+    echo "<tr><td class=\"enew\"><a class=\"enewa\" href=\"exo.php?cat=$cat&livre=$livre&exo=\">+ nouvel exercice...</a></td></tr>";
     echo "</table>";
     echo "</div>\n";
   }

@@ -1,0 +1,12 @@
+div.ligne {
+  display: flex;
+  align-items: center;
+  margin-top: 2vh;
+}
+div.corr {
+  width: 100%;
+  text-align: center;
+  display: none;
+  color: red;
+  font-weight: bold;
+}
