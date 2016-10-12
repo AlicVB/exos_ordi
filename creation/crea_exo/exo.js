@@ -109,75 +109,40 @@ function file_create_infos()
   
   return txt;
 }
-function g_verifie()
+function file_sauve(fic, txt)
 {
-  txt = "";
-  
-  return txt;
+  let xhr = new XMLHttpRequest();
+  ligne = "io=sauve&fic=" + fic + "&v=" + txt;
+  xhr.open("POST", "io.php" , true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.send(ligne);
 }
 function g_exporter()
 {
-  //on vérifie que les infos nécessaires sont là
-  txt = g_verifie();
-  if (txt != "")
-  {
-    alert("IL MANQUE DES INFOS :\n\n" + txt);
-    return;
-  }
   // on commence le décodage
   txt = "<style>\n" + file_create_css() + "</style>\n\n";
   for (let i=0; i<blocs.length; i++)
   {
     txt += blocs[i].html + "\n";
   }
-  
-  var zip = new JSZip();
-  zip.file("exo.php", txt);
-  for (let i=0; i<blocs.length; i++)
-  {
-    if (blocs[i].tpe == "image")
-    {
-      if (blocs[i].img) zip.file("img_" + blocs[i].id + "." + blocs[i].img_ext, blocs[i].img);
-    }
-    
-  }
-  zip.file("exo.css", file_css());
-  zip.file("exo.js", file_js());
-  zip.file("charge.php", file_charge());
-  zip.file("sauve.php", file_sauve());
-  zip.file("exo.txt", file_create_infos());
-  zip.file("exo_sav.txt", JSON.stringify(blocs) + "ǂ" + JSON.stringify(infos));
-  
-  zip.generateAsync({type:"blob"})
-  .then(function(content) {
-      // see FileSaver.js
-      saveAs(content, "exo.zip");
-  });
+  file_sauve(exo_dos + "/exo.php", txt);
 }
 
 function g_sauver()
 {
-  var xhr = new XMLHttpRequest();
-  ligne = "io=sauve&fic=" + exo_dos + "/exo_sav.txt&v=" + JSON.stringify(blocs);
-  xhr.open("POST", exoid + "io.php" , true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.send(ligne);
+  file_sauve(exo_dos + "/exo_sav.txt", JSON.stringify(blocs));
 }
 function g_sauver_info()
 {
-  var xhr = new XMLHttpRequest();
-  ligne = "io=sauve&fic=" + exo_dos + "/exo.txt&v=" + file_create_infos();
-  xhr.open("POST", exoid + "io.php" , true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.send(ligne);
+  file_sauve(exo_dos + "/exo.txt", file_create_infos());
 }
 function g_restaurer(init)
 {
   //on nettoie
   if (init) g_reinit();
-  
+
   //on récupère les infos dans le fichier ad'hoc
-  xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
@@ -189,7 +154,6 @@ function g_restaurer(init)
       {
         // et au rendu
         rendu_add_bloc(blocs[i]);
-        
         if (blocs[i].id > last_id) last_id = blocs[i].id;
       }
     }
@@ -204,7 +168,7 @@ function g_restaurer_info(init)
   if (init) g_reinit();
   
   //on récupère les infos dans le fichier ad'hoc
-  xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
@@ -311,6 +275,7 @@ function bloc_new(tpe, txt)
   blocs.push(bloc);
   // on ajoute le bloc pour le rendu
   rendu_add_bloc(bloc);
+  return bloc;
 }
 // on initialise les valeurs d'options comme il faut
 function bloc_ini(bloc)
@@ -491,6 +456,12 @@ function rendu_add_bloc(bloc)
   //on l'ajoute
   document.getElementById("cr_rendu").innerHTML += htm;
   
+  //si c'est une image, on règle les chemins
+  if (bloc.tpe == "image")
+  {
+    document.getElementById(bloc.id).src = bloc.img_vpath;
+  }
+  
   //on modifie les styles
   b = document.getElementById("cr_rendu_" + bloc.id);
   e = document.getElementById(bloc.id);
@@ -596,7 +567,7 @@ function selection_update()
     elems[i].style.display = 'none';
   }
   document.getElementById("cr_txt_ini_div").style.display = "none";
-  document.getElementById("cr_img_get").style.display = "none";
+  document.getElementById("cr_img_get_div").style.display = "none";
   document.getElementById("cr_aligne").disabled = true;
   document.getElementById("cr_repart").disabled = true;
   document.getElementById("cr_plan").disabled = true;
@@ -743,10 +714,10 @@ function check_new()
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc_new("check", txt);
+  bloc = bloc_new("check", txt);
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function check_ini(bloc)
@@ -770,10 +741,10 @@ function radiobtn_new()
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc_new("radiobtn", txt);
+  bloc = bloc_new("radiobtn", txt);
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function radiobtn_ini(bloc)
@@ -809,10 +780,10 @@ function radio_new()
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc_new("radio", txt);
+  bloc = bloc_new("radio", txt);
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function radio_ini(bloc)
@@ -892,10 +863,10 @@ function combo_new()
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc_new("combo", txt);
+  bloc = bloc_new("combo", txt);
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function combo_create_html(bloc, txt)
@@ -955,10 +926,10 @@ function texte_new()
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc_new("texte", txt);
+  bloc = bloc_new("texte", txt);
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function texte_create_html(bloc, txt)
@@ -1030,10 +1001,10 @@ function multi_new()
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc_new("multi", txt);
+  bloc = bloc_new("multi", txt);
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function multi_create_html(bloc, txt)
@@ -1111,10 +1082,10 @@ function cible_new()
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc_new("cible", txt);
+  bloc = bloc_new("cible", txt);
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function cible_create_html(bloc, txt)
@@ -1151,10 +1122,10 @@ function cible_sel_update()
 function image_new()
 {
   //on crée le nouveau bloc
-  bloc_new("image", "");
+  bloc = bloc_new("image", "");
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function image_create_html(bloc, txt)
@@ -1168,7 +1139,7 @@ function image_create_html(bloc, txt)
     htm += "line=\"1\" ";
     if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
-  htm += "src=\"<?php echo $exos[$exo]; ?>/img_" + bloc.id + "." + bloc.img_ext;
+  htm += "src=\"" + bloc.img_rpath;
   htm += "\" id=\"" + bloc.id + "\" />\n</div>";
   bloc.html = htm;
 }
@@ -1189,7 +1160,7 @@ function image_sel_update()
     bloc = selection[0];
     
     document.getElementById("cr_expl").innerHTML = "<b>image</b><br/>Sélectionner l'image choisie.<br/>Attention, les images sont \"perdues\" lors de la fermeture de la page (elles devront être rechargées) !";
-    document.getElementById("cr_img_get").style.display = "inline";
+    document.getElementById("cr_img_get_div").style.display = "inline";
   }
   if (selection.length > 0) document.getElementById("cr_tp_w").disabled = false;
   if (selection.length > 0 && selection_is_homogene("image")) selection_update_interactions();
@@ -1202,10 +1173,10 @@ function texte_simple_new()
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc_new("texte_simple", txt);
+  bloc = bloc_new("texte_simple", txt);
   
   //on le sélectionne
-  selection = [blocs.length-1];
+  selection = [bloc];
   selection_change();
 }
 function texte_simple_create_html(bloc, txt)

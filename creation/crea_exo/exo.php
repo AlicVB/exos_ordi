@@ -9,20 +9,19 @@
   $cat = $_GET['cat'];
   $dos_l = "../../livres/";
   if ($cat != "") $dos_l .= "$cat/";
-  $dos_l .= "$livre"
+  $dos_l .= "$livre";
   
   //si besoin, on crée un nouvel exercice
-  if ($cat == "")
+  if ($exo == "")
   {
     $exos = glob("$dos_l/exos/*" , GLOB_ONLYDIR);
-    $id = ord(basename($exos[count($exos)-1]));
-    $id += 1;
-    $exo = chr($id);
+    if (count($exos)>0) $exo = chr(ord(basename($exos[count($exos)-1])) + 1);
+    else $exo = "A";
   }
   $dos_e = "$dos_l/exos/$exo";
   
   //on crée les fichier qu'il faut si besoin
-  if (!file_exists($dos_e)) mkdir("$dos", 0777, true);
+  if (!file_exists($dos_e)) mkdir("$dos_e", 0777, true);
   if (!file_exists("$dos_e/charge.php")) copy("../exo_type/charge.php", "$dos_e/charge.php");
   if (!file_exists("$dos_e/sauve.php")) copy("../exo_type/sauve.php", "$dos_e/sauve.php");
   if (!file_exists("$dos_e/exo.css")) copy("../exo_type/exo.css", "$dos_e/exo.css");
@@ -194,9 +193,14 @@
         </div>
         <div id="cr_txt_ini_div">
           <input class="cr_long" type="text" id="cr_txt_ini" />
-          <img id="cr_new_txt" src="go-next.svg" onclick="cr_new_txt_click(this)" />
+          <img id="cr_new_txt" src="../../icons/go-next.svg" onclick="cr_new_txt_click(this)" />
         </div>
-        <input type="file" id="cr_img_get" accept="image/*" onchange="cr_img_get_change(event)"/>
+        <div id="cr_img_get_div">
+          <select id="cr_img_select"></select>
+          <form enctype="multipart/form-data">
+            <input name = "cr_img_get" type="file" id="cr_img_get" accept="image/*" onchange="cr_img_get_change(event)"/>
+          </form>
+        </div>
         
       </div>
       <div>
@@ -351,7 +355,7 @@
       <option value="2">supprimer</option>
     </select>
     <br/><br/>
-    <button id="cr_sauve" onClick="g_exporter();">Sauvegarder l'exercice</button>
+    <button id="cr_sauve" onClick="g_exporter();">Créer l'exercice</button>
   </div>
 </body>
 </html>

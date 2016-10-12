@@ -46,29 +46,40 @@ function cr_coul_nb_change(e, modif)
 
 function cr_img_get_change(event)
 {
-  ext = event.target.files[0].name.split(".").pop();
+  //on sauvegarde l'image sélectionnée
+  var xhr = new XMLHttpRequest();
+  var fd  = new FormData(event.target.form);
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
+    {
+      // on récupère le bloc sélectionné
+      if (selection.length < 1) return;
+      bloc = selection[0];
+      if (bloc.tpe != "image") return;
   
-  // on récupère le bloc sélectionné
-  if (selection.length < 1) return;
-  bloc = selection[0];
-  if (bloc.tpe != "image") return;
-  
-  // on met à jour les valeurs
-  bloc.img_ext = ext;
-  bloc.img = event.target.files[0];
-  
-  // on modifie le code html en conséquence
-  image_create_html(bloc, "");
-  document.getElementById("cr_html").value = bloc.html;
-  
-  // quand l'image aura été chargée, on mettra à jour la taille du cadre autour
-  document.getElementById(bloc.id).onload = function () {
+      let img_name = xhr.responseText;
+      //on récupère les chemins
+      rpath = "../../img/" + img_name;
+      vpath = exo_dos + "/" + rpath;
+      
+      bloc.img_rpath = rpath;
+      bloc.img_vpath = vpath;
+      
+      image_create_html(bloc, "");
+      document.getElementById("cr_html").value = bloc.html;
+      document.getElementById(bloc.id).onload = function () {
         rendu_get_superbloc(bloc).style.height = document.getElementById(bloc.id).getBoundingClientRect().height + "px";        
-    };
-  // on met à jour le rendu
-  document.getElementById(bloc.id).src = URL.createObjectURL(bloc.img);
-  //on sauvegarde
-  g_sauver();
+        };
+      // on met à jour le rendu
+      document.getElementById(bloc.id).src = vpath;
+      //on sauvegarde
+      g_sauver();
+    }
+  };
+  // We setup our request
+  xhr.open("POST", "io.php?io=sauveimg&fic=" + exo_dos);
+  xhr.send(fd);
 }
 
 function cr_new_txt_click(e)
