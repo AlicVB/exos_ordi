@@ -1146,8 +1146,9 @@ function image_create_html(bloc, txt)
 function image_ini(bloc)
 {
   // rien à faire
-  bloc.img = null;
-  bloc.img_ext = "";
+  bloc.img_rpath = "";
+  bloc.img_vpath = "";
+  bloc.img_name = "";
   bloc.width = "50";
   bloc.size = "manuel";
   bloc.points = "0";
@@ -1159,7 +1160,9 @@ function image_sel_update()
   {
     bloc = selection[0];
     
-    document.getElementById("cr_expl").innerHTML = "<b>image</b><br/>Sélectionner l'image choisie.<br/>Attention, les images sont \"perdues\" lors de la fermeture de la page (elles devront être rechargées) !";
+    document.getElementById("cr_img_select").value = bloc.img_name;
+    
+    document.getElementById("cr_expl").innerHTML = "<b>image</b><br/>Sélectionner l'image choisie.";
     document.getElementById("cr_img_get_div").style.display = "inline";
   }
   if (selection.length > 0) document.getElementById("cr_tp_w").disabled = false;

@@ -196,9 +196,19 @@
           <img id="cr_new_txt" src="../../icons/go-next.svg" onclick="cr_new_txt_click(this)" />
         </div>
         <div id="cr_img_get_div">
-          <select id="cr_img_select"></select>
+          <select id="cr_img_select" onchange="cr_img_select_change(this)">
+            <option value="" selected></option>
+            <option value="****">Parcourir...</options>
+          <?php
+            $imgs = glob("$dos_l/img/*");
+            for ($i=0; $i<count($imgs); $i++)
+            {
+              echo "<option value=\"".basename($imgs[$i])."\">".basename($imgs[$i])."</option>";
+            }
+          ?>
+          </select>
           <form enctype="multipart/form-data">
-            <input name = "cr_img_get" type="file" id="cr_img_get" accept="image/*" onchange="cr_img_get_change(event)"/>
+            <input name="cr_img_get" type="file" id="cr_img_get" accept="image/*" onchange="cr_img_get_change(this)"/>
           </form>
         </div>
         

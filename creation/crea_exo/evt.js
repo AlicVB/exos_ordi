@@ -44,11 +44,11 @@ function cr_coul_nb_change(e, modif)
   }
 }
 
-function cr_img_get_change(event)
+function cr_img_get_change(e)
 {
   //on sauvegarde l'image sélectionnée
   var xhr = new XMLHttpRequest();
-  var fd  = new FormData(event.target.form);
+  var fd  = new FormData(e.form);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
@@ -59,12 +59,19 @@ function cr_img_get_change(event)
       if (bloc.tpe != "image") return;
   
       let img_name = xhr.responseText;
+      if (img_name.startsWith("*"))
+      {
+        alert(img_name.substr(1));
+        document.getElementById("cr_img_select").value = "";
+        return;
+      }
       //on récupère les chemins
       rpath = "../../img/" + img_name;
       vpath = exo_dos + "/" + rpath;
       
       bloc.img_rpath = rpath;
       bloc.img_vpath = vpath;
+      bloc.img_name = img_name;
       
       image_create_html(bloc, "");
       document.getElementById("cr_html").value = bloc.html;
@@ -73,6 +80,12 @@ function cr_img_get_change(event)
         };
       // on met à jour le rendu
       document.getElementById(bloc.id).src = vpath;
+      // et la liste des images
+      var option = document.createElement("option");
+      option.text = img_name;
+      option.value = img_name;
+      document.getElementById("cr_img_select").add(option);
+      document.getElementById("cr_img_select").value = img_name;
       //on sauvegarde
       g_sauver();
     }
@@ -80,6 +93,37 @@ function cr_img_get_change(event)
   // We setup our request
   xhr.open("POST", "io.php?io=sauveimg&fic=" + exo_dos);
   xhr.send(fd);
+}
+function cr_img_select_change(e)
+{
+  var v = document.getElementById("cr_img_select").value;
+  if (!v) return;
+  if (v == "****")
+  {
+    document.getElementById("cr_img_get").click();
+  }
+  else
+  {
+    if (selection.length < 1) return;
+    bloc = selection[0];
+    if (bloc.tpe != "image") return;
+    //on récupère les chemins
+    rpath = "../../img/" + v;
+    vpath = exo_dos + "/" + rpath;
+    
+    bloc.img_rpath = rpath;
+    bloc.img_vpath = vpath;
+    bloc.img_name = v;
+    
+    image_create_html(bloc, "");
+    document.getElementById("cr_html").value = bloc.html;
+    document.getElementById(bloc.id).onload = function () {
+      rendu_get_superbloc(bloc).style.height = document.getElementById(bloc.id).getBoundingClientRect().height + "px";        
+      };
+    // on met à jour le rendu
+    document.getElementById(bloc.id).src = vpath;
+    g_sauver();
+  }
 }
 
 function cr_new_txt_click(e)

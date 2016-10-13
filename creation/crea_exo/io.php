@@ -22,9 +22,14 @@ function free_path($fic)
     $fic = dirname(dirname($fic));
     if ($io == "sauveimg")
     {
-      $dest = free_path("$fic/img/{$_FILES['cr_img_get']['name']}");
-      copy($_FILES['cr_img_get']['tmp_name'], $dest);
-      $ret = basename($dest);
+      if ("{$_FILES['cr_img_get']['error']}" == "1") $ret = "*Erreur : fichier trop gros !";
+      else
+      {
+        $dest = free_path("$fic/img/{$_FILES['cr_img_get']['name']}");
+        copy($_FILES['cr_img_get']['tmp_name'], $dest);
+        if (file_exists($dest)) $ret = basename($dest);
+        else $rest = "*Erreur: la copie de l'image a échoué !";
+      }
     }
   }
   else if (isset($_POST["fic"]) && isset($_POST["io"])) 
