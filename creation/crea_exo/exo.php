@@ -366,6 +366,7 @@
     </select>
     <br/><br/>
     <button id="cr_sauve" onClick="g_exporter();">Créer l'exercice</button>
+    <br><a href="../livre.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>">Retour au livre</a>
   </div>
 </body>
 </html>

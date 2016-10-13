@@ -20,6 +20,8 @@
     
     // et les détails
     $coul = $infos[1];
+    $aut = $infos[2];
+    $img = $infos[3];
     
     //et les détails
     $details = "";
@@ -32,31 +34,29 @@
       }    
     }
   }
+?> 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title><?php echo $titre_livre ?></title>
+    <link rel="stylesheet" href="intro.css">
+    <script type="text/javascript" src="livre.js"></script>
+  </head>
   
-  //on affiche les en-têtes
-  echo "<!DOCTYPE html>\n";
-  echo "<html><head>\n";
-  echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
-  echo "<title>$titre_livre</title>\n";
+  <body style="background-color: <?php echo $coul ?>;">
+    <div id="c1">
+      <div id="titrelivre"><?php echo $titre_livre ?></div>
+      <br/><div id="details"><?php echo $details ?></div>
+      <br/><img id="aideimg" src="<?php echo $img ?>" onload="intro_img_load(this)"/>
+      <br/>
+      <div id="godiv">
+        <div id="gotxt">On y va !</div>
+        <a href="livre.php?user=<?php echo $user ?>&exo=0"><img id="goimg" src="<?php echo $root ?>/icons/go-next.svg" /></a>
+      </div>
+      <div id="bysa"><img src="<?php echo $root ?>/icons/by-sa.png" />© <?php echo $aut ?></div>
+    </div>
+  </body>
+</html>
 
-  // les fichiers à inclure
-  echo "<link rel=\"stylesheet\" href=\"intro.css\">\n";
-  echo "</head>\n";
-  
-  // on affiche le corps
-  echo "<body style=\"background-color: $coul;\">\n";
-  
-  // cadre exercice
-  echo "<div id=\"c1\">\n";
-  echo "<div id=\"titrelivre\">$titre_livre</div>\n";
-  echo "<br/><div id=\"details\">$details</div>\n";
-  echo "<br/><img id=\"aideimg\" src=\"aide.jpg\" />\n";
-  echo "<br/><div id=\"godiv\">\n";
-  echo "<div id=\"gotxt\">On y va !</div>\n";
-  echo "<a href=\"livre.php?user=$user&exo=0\"><img id=\"goimg\" src=\"$root/icons/go-next.svg\" /></a>\n";
-  echo "</div>\n";
-  echo "</div>\n";
-  
-  
-  echo "</body></html>";
-?>

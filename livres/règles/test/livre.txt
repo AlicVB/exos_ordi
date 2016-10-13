@@ -1,7 +1,7 @@
 test
 #FFFFFF
 A. RENAUDIN
-
+img/Capture d’écran_2016-02-11_21-24-11_3.jpg
 
 
 
@@ -10,5 +10,5 @@ A. RENAUDIN
 
 
 et hop,
-une petite description à la volé...
+une petite description à la volée...
 Cool c'est l'été !

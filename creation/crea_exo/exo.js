@@ -126,6 +126,7 @@ function g_exporter()
     txt += blocs[i].html + "\n";
   }
   file_sauve(exo_dos + "/exo.php", txt);
+  alert("Exercice créé !");
 }
 
 function g_sauver()
@@ -475,7 +476,7 @@ function rendu_add_bloc(bloc)
   if (bloc.font_s == true) e.style.textDecoration = "underline";
   if (bloc.font_b == true) e.style.textDecoration = "line-through";
   //taille-position
-  if (bloc.width>0)
+  if (bloc.width>0 && bloc.size == "manuel")
   {
     b.style.width = bloc.width + "px";
     e.style.width = "100%";

@@ -10,7 +10,7 @@ body {
   text-align: center;
 }
 #c1 {
-margin-left: auto;
+  margin-left: auto;
   margin-right: auto;
   width: 68vh;
   height: 94vh;
@@ -19,6 +19,7 @@ margin-left: auto;
   background-color: #EEEFE4;
   font-size: 1.8vh;
   padding: 2px;
+  position: relative;
 }
 #titrelivre {
   font-family: StayPuft;
@@ -34,7 +35,7 @@ margin-left: auto;
   margin-top: 1vh;
 }
 #aideimg {
-  height: 55vh;
+  width: 3vh;
   margin-top: 1vh;
 }
 #godiv {
@@ -52,4 +53,14 @@ margin-left: auto;
   height: 12vh;
   padding-left: 1vh;
   vertical-align: middle;
+}
+#bysa {
+  transform:rotate(-90deg);
+  transform-origin: bottom left;
+  position: absolute;
+  bottom: 2px;
+  left: -5px;
+}
+#bysa img {
+  height: 10px;
 }

@@ -66,8 +66,8 @@ function cr_img_get_change(e)
         return;
       }
       //on récupère les chemins
-      rpath = "../../img/" + img_name;
-      vpath = exo_dos + "/" + rpath;
+      rpath = "img/" + img_name;
+      vpath = exo_dos + "/../../" + rpath;
       
       bloc.img_rpath = rpath;
       bloc.img_vpath = vpath;
@@ -108,8 +108,8 @@ function cr_img_select_change(e)
     bloc = selection[0];
     if (bloc.tpe != "image") return;
     //on récupère les chemins
-    rpath = "../../img/" + v;
-    vpath = exo_dos + "/" + rpath;
+    rpath = "img/" + v;
+    vpath = exo_dos + "/../../" + rpath;
     
     bloc.img_rpath = rpath;
     bloc.img_vpath = vpath;

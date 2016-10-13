@@ -32,11 +32,11 @@ function free_path($fic)
   $p1 = substr($fic, 0, -4);
   $p2 = substr($fic, -4);
   $i = 1;
-  while (file_exists("$p1_$i_$p2"))
+  while (file_exists($p1."_".$i.$p2))
   {
     $i++;
   }
-  return "$p1_$i_$p2";
+  return $p1."_".$i.$p2;
 }
 
   //on traite d'abord des actions à faire

@@ -16,6 +16,9 @@
     // on récupère le titre du livre
     $infos = explode("\n", file_get_contents("livre.txt"));
     $titre_livre = $infos[0];
+    $coul_livre = $infos[1];
+    $aut_livre = $infos[2];
+    $img_livre = $infos[3];
   }
   
   // et sur les exos
@@ -126,7 +129,7 @@
   if ($lien_next != "") echo "<a href=\"$lien_next\"><img style=\"height: 3vh; vertical-align: bottom;\" src=\"$root/icons/go-next.svg\" /></a>\n";
   echo "</div>\n";
   
-  echo "<img id=\"aide\" src=\"aide.jpg\" />\n";
+  echo "<img id=\"aide\" src=\"$img_livre\"  onload=\"intro_img_load(this)\"/>\n";
   
   echo "</div>\n";
   
@@ -144,7 +147,7 @@
     echo "</div>\n";
   }
   //license
-  echo "<div id=\"bysa\"><img src=\"$root/icons/by-sa.png\" />© A. RENAUDIN 2016</div>\n";
+  echo "<div id=\"bysa\"><img src=\"$root/icons/by-sa.png\" />© $aut_livre</div>\n";
   /*if ($exo_pre >= 0)
   {
     echo "<div class=\"coin_g\">\n";

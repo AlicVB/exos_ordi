@@ -113,9 +113,9 @@ a.pagebilan {
 }
 #aide {
   position: absolute;
-  left: 16vh;
+  left: 14vh;
   top: 40vh;
-  height: 55vh;
+  width: 55vh;
   visibility: hidden;
 }
 #corr {
