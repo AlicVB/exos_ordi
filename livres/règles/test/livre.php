@@ -72,6 +72,7 @@
   $vals = explode("\n", $txt_exo);
   $titre_exo = $vals[0];
   $consigne = $vals[1];
+  $exo_coul = $vals[10];
   $txt = htmlentities(str_replace("\n", "§", addslashes($txt_exo)));
 ?>
 
@@ -86,19 +87,15 @@
     <link rel="stylesheet" href="<?php echo $root ?>/libs/dragula.min.css">
     <link rel="stylesheet" href="<?php echo $exos[$exo] ?>/exo.css">
   </head>
-  <body onload="charge('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '<?php echo $root ?>/');">
+  <body onload="charge('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '<?php echo $root ?>/');" style="background-color: <?php echo $coul_livre ?>;">
     <script type="text/javascript" src="<?php echo $root ?>/libs/dragula.min.js"></script>
-    <div id="c1">
-      <span id="user">Prénom : <?php echo $user ?></span>
-      <?php include "$exos[$exo]/exo.php" ?>
-    </div>
-    <div id="c2">
+    <div id="c2" style="background-color: <?php echo $exo_coul ?>;">
       <span id="titrelivre"><?php echo $titre_livre ?></span>
       <br/><span id="titreexo"><?php echo $titre_exo ?></span>
       <br/><div id="consigne"><?php echo $consigne ?></div>
       <br/>
       <div id="aideimg">
-        <img style="height: 12vh;" src="<?php echo $root ?>/icons/help-hint.svg" onmouseover="affiche_aide(true);" onmouseout="affiche_aide(false);" />
+        <img src="<?php echo $root ?>/icons/help-hint.svg" onmouseover="affiche_aide(true);" onmouseout="affiche_aide(false);" />
       </div>
       <div id="corr">
         <table id="ctable">
@@ -126,20 +123,22 @@
         ?>
       </div>
       <img id="aide" src="<?php echo $img_livre ?>"  onload="intro_img_load(this)"/>
+      <div id="exitdiv">
+        <a href="<?php echo $root ?>/sommaire.php?user=<?php echo $user ?>"><img id="exitimg" src="<?php echo $root ?>/icons/system-shutdown.svg" /></a>
+        <a id="erasea" href="livre.php?user=<?php echo $user ?>&exo=<?php echo $exo ?>&erase=1"><img id="eraseimg" src="<?php echo $root ?>/icons/draw-eraser.svg" /></a>
+      </div>
     </div>
-    <div id="exitdiv">
-      <a href="<?php echo $root ?>/sommaire.php?user=<?php echo $user ?>"><img id="exitimg" src="<?php echo $root ?>/icons/system-shutdown.svg" /></a>
-      <a id="erasea" href="livre.php?user=<?php echo $user ?>&exo=<?php echo $exo ?>&erase=1"><img id="eraseimg" src="<?php echo $root ?>/icons/draw-eraser.svg" /></a>
+    <div id="c1" style="background-color: <?php echo $exo_coul ?>;">
+      <span id="user">Prénom : <?php echo $user ?></span>
+      <?php include "$exos[$exo]/exo.php" ?>
+      <?php
+        // coins page
+        if ($lien_next != "")
+        {
+          echo "<a href=\"$lien_next\"><img class=\"coin_d\" id=\"coinimg\" src=\"$root/icons/go-next_coin.svg\" /></a>\n";
+        }
+      ?>
     </div>
-    <?php
-      // coins page
-      if ($lien_next != "")
-      {
-        echo "<div class=\"coin_d\">\n";
-        echo "<a href=\"$lien_next\"><img id=\"coinimg\" src=\"$root/icons/go-next_coin.svg\" /></a>\n";
-        echo "</div>\n";
-      }
-    ?>
-    <div id="bysa"><img src="<?php echo $root ?>/icons/by-sa.png" />© <?php echo $aut_livre ?></div>;
+    <div id="bysa"><img src="<?php echo $root ?>/icons/by-sa.png" /><span style="color: <?php echo $coul_livre ?>">© <?php echo $aut_livre ?></span></div>
   </body>
 </html>

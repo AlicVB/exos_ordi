@@ -19,11 +19,9 @@ div.lignef {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;/*2vh*/
 }
 div.ligne2f {
   text-align: center;
-  font-size: 13px;/*2vh*/
 }
 .image {
   box-sizing: border-box;

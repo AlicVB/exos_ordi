@@ -641,9 +641,39 @@ function read_details(txt_exo)
   }
   total = vals[2];
   essai_max = vals[9];
-  document.body.style.backgroundColor = vals[10];
 }
-
+function resize(e)
+{
+  var vw = document.documentElement.clientWidth;
+  var vh = document.documentElement.clientHeight;
+  if (vh > vw*685/995)
+  {
+    //il faut faire quelque chose ! la hauteur est trop grande par rapport à la largeur !
+    nvh = vw*685/995;
+    nvw = nvh*693/980;
+    marginw = vw*10/995/2;
+    marginh = (vh-nvh)/2 - 1;
+    document.getElementById("c1").style.width = nvw + "px";
+    document.getElementById("c1").style.height = nvh + "px";
+    document.getElementById("c1").style.marginLeft = marginw + "px";
+    document.getElementById("c1").style.marginTop = marginh + "px";
+    document.getElementById("c2").style.width = nvw + "px";
+    document.getElementById("c2").style.height = nvh + "px";
+    document.getElementById("c2").style.marginRight = marginw + "px";
+    document.getElementById("c2").style.marginTop = marginh + "px";
+  }
+  else
+  {
+    document.getElementById("c1").style.width = "69.3vh";
+    document.getElementById("c1").style.height = "98vh";
+    document.getElementById("c1").style.marginLeft = "0.5vw";
+    document.getElementById("c1").style.marginTop = "1vh";
+    document.getElementById("c2").style.width = "69.3vh";
+    document.getElementById("c2").style.height = "98vh";
+    document.getElementById("c2").style.marginRight = "0.5vw";
+    document.getElementById("c2").style.marginTop = "1vh";
+  }
+}
 function charge(_user, _livreid, _exoid, txt_exo, _root)
 {
   //on initialise les variables
@@ -651,6 +681,10 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   exoid = _exoid;
   livreid = _livreid;
   user = _user;
+  
+  //on règle les tailles si besoin, histoire que tout passe bien
+  window.addEventListener("resize", resize);
+  resize(null);
   
   // on initialise les messages
   read_details(txt_exo);

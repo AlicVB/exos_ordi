@@ -9,6 +9,8 @@
 body {
   background-color: #8AC3BB;
   -moz-user-select: none;
+  text-align: center;
+  margin: 0;
 }
 #exitdiv {
   position: absolute;
@@ -58,7 +60,6 @@ a.pagebilan {
   padding: 2px;
 }
 #c1 {
-  float: right;
   width: 69.3vh;
   height: 98vh;
   border: 5px solid grey;
@@ -67,20 +68,29 @@ a.pagebilan {
   font-size: 2vh;
   padding: 2px;
   padding-bottom: 4vh;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   position: relative;
+  vertical-align: middle;
+  margin-left: 0.5vw;
+  margin-top: 1vh;
 }
 #c2 {
-  margin-right: 72vh;
-  height: 96vh;
+  height: 98vh;
   font-size: 1.8vh;
   text-align: center;
   position: relative;
   box-sizing: border-box;
+  display: inline-block;
+  border: 5px solid grey;
+  border-radius: 10px;
+  width: 69.3vh;
+  vertical-align: middle;
+  margin-right: 0.5vw;
+  margin-top: 1vh;
 }
 #titrelivre {
   font-family: StayPuft;
@@ -101,19 +111,21 @@ a.pagebilan {
 }
 #bas {
   position: absolute;
-  bottom: 0px;
+  bottom: 5px;
   font-size: 2.4vh;
   text-align: center;
   width: 100%;
 }
 #aideimg {
   text-align: left;
-  margin-left: 4vh;
-  margin-top: 4vh;
+  margin-top: 2vh;
+}
+#aideimg img {
+  width: 20%;
 }
 #aide {
   position: absolute;
-  left: 14vh;
+  left: 18%;
   top: 40vh;
   width: 55vh;
   visibility: hidden;
@@ -128,12 +140,12 @@ a.pagebilan {
 }
 #cbtn {
   width: 10vh;
-  vertical-align: center;
 }
 #cbtnimg {
   height: 10vh;
   border-radius: 10px;
   background-color: grey;
+  margin-right: 5px;
 }
 #cflag {
   width: 10vh;
@@ -163,13 +175,13 @@ a.pagebilan {
   text-decoration: none;
   color: initial;
 }
-div.coin_d {
+.coin_d {
   position: absolute;
   right: 0px;
   bottom: 0px;
   opacity: 0.2;
 }
-div.coin_d:hover {
+.coin_d:hover {
   opacity: 1;
 }
 div.coin_g {
@@ -186,10 +198,15 @@ div.coin_g:hover {
 }
 #bysa {
   position: absolute;
+  transform:rotate(-90deg);
+  transform-origin: top left;
   left: 0px;
   bottom: 0px;
   font-size: 10px;
 }
 #bysa img {
   height: 10px;
+}
+#bysa span {
+  filter: invert(100%);
 }
