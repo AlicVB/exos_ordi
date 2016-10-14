@@ -182,6 +182,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;
         <button onclick="image_new()">image</button>
         <button onclick="texte_simple_new()">texte</button>
+        <button onclick="audio_new()">audio</button>
       </div>
       <div id="cr_nom">
         élément sélectionné :&nbsp;
@@ -199,16 +200,32 @@
           <select id="cr_img_select" onchange="cr_img_select_change(this)">
             <option value="" selected></option>
             <option value="****">Parcourir...</options>
-          <?php
-            $imgs = glob("$dos_l/img/*");
-            for ($i=0; $i<count($imgs); $i++)
-            {
-              echo "<option value=\"".basename($imgs[$i])."\">".basename($imgs[$i])."</option>";
-            }
-          ?>
+            <?php
+              $imgs = glob("$dos_l/img/*");
+              for ($i=0; $i<count($imgs); $i++)
+              {
+                echo "<option value=\"".basename($imgs[$i])."\">".basename($imgs[$i])."</option>";
+              }
+            ?>
           </select>
           <form enctype="multipart/form-data">
             <input name="cr_img_get" type="file" id="cr_img_get" accept="image/*" onchange="cr_img_get_change(this)"/>
+          </form>
+        </div>
+        <div id="cr_audio_get_div">
+          <select id="cr_audio_select" onchange="cr_audio_select_change(this)">
+            <option value="" selected></option>
+            <option value="****">Parcourir...</options>
+            <?php
+              $imgs = glob("$dos_l/sons/*");
+              for ($i=0; $i<count($imgs); $i++)
+              {
+                echo "<option value=\"".basename($imgs[$i])."\">".basename($imgs[$i])."</option>";
+              }
+            ?>
+          </select>
+          <form enctype="multipart/form-data">
+            <input name="cr_audio_get" type="file" id="cr_audio_get" accept="audio/*" onchange="cr_audio_get_change(this)"/>
           </form>
         </div>
         

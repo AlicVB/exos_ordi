@@ -31,6 +31,17 @@ function free_path($fic)
         else $rest = "*Erreur: la copie de l'image a échoué !";
       }
     }
+    else if ($io == "sauveaudio")
+    {
+      if ("{$_FILES['cr_img_get']['error']}" == "1") $ret = "*Erreur : fichier trop gros !";
+      else
+      {
+        $dest = free_path("$fic/sons/{$_FILES['cr_img_get']['name']}");
+        copy($_FILES['cr_img_get']['tmp_name'], $dest);
+        if (file_exists($dest)) $ret = basename($dest);
+        else $rest = "*Erreur: la copie de l'audio a échoué !";
+      }
+    }
   }
   else if (isset($_POST["fic"]) && isset($_POST["io"])) 
   {

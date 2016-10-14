@@ -104,3 +104,9 @@ img.multi_cim {
   position: absolute;
   font-family: "sans-serif";
 }
+.audio {
+  box-sizing: border-box;
+}
+.audio_src {
+  display: none;
+}

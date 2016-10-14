@@ -126,6 +126,68 @@ function cr_img_select_change(e)
   }
 }
 
+function cr_audio_get_change(e)
+{
+  //on sauvegarde l'image sélectionnée
+  var xhr = new XMLHttpRequest();
+  var fd  = new FormData(e.form);
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
+    {
+      // on récupère le bloc sélectionné
+      if (selection.length < 1) return;
+      bloc = selection[0];
+      if (bloc.tpe != "audio") return;
+  
+      let audio_name = xhr.responseText;
+      if (audio_name.startsWith("*"))
+      {
+        alert(audio_name.substr(1));
+        document.getElementById("cr_audio_select").value = "";
+        return;
+      }
+      //on récupère les chemins
+      bloc.audio_name = "sons/" + audio_name;
+      
+      audio_create_html(bloc, "");
+      document.getElementById("cr_html").value = bloc.html;
+      // et la liste des images
+      var option = document.createElement("option");
+      option.text = audio_name;
+      option.value = audio_name;
+      document.getElementById("cr_audio_select").add(option);
+      document.getElementById("cr_audio_select").value = audio_name;
+      //on sauvegarde
+      g_sauver();
+    }
+  };
+  // We setup our request
+  xhr.open("POST", "io.php?io=sauveaudio&fic=" + exo_dos);
+  xhr.send(fd);
+}
+function cr_audio_select_change(e)
+{
+  var v = document.getElementById("cr_audio_select").value;
+  if (!v) return;
+  if (v == "****")
+  {
+    document.getElementById("cr_audio_get").click();
+  }
+  else
+  {
+    if (selection.length < 1) return;
+    bloc = selection[0];
+    if (bloc.tpe != "audio") return;
+    //on récupère les chemins
+    bloc.audio_name = "sons/" + v;
+    
+    audio_create_html(bloc, "");
+    document.getElementById("cr_html").value = bloc.html;
+    g_sauver();
+  }
+}
+
 function cr_new_txt_click(e)
 {
   // on récupère le bloc sélectionné

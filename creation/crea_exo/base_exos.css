@@ -92,3 +92,9 @@ img.multi_cim {
   width: 17px; /*2.5vh*/
   vertical-align: bottom;
 }
+.audio {
+  box-sizing: border-box;
+}
+.audio_src {
+  display: none;
+}

@@ -272,6 +272,9 @@ function bloc_new(tpe, txt)
     case "texte_simple":
       texte_simple_ini(bloc);
       break;
+    case "audio":
+      audio_ini(bloc);
+      break;
   }
   bloc_create_html(bloc);
   blocs.push(bloc);
@@ -397,6 +400,9 @@ function bloc_create_html(bloc)
     case "texte_simple":
       texte_simple_create_html(bloc, bloc.txt);
       break;
+    case "audio":
+      audio_create_html(bloc, bloc.txt);
+      break;
   }
 }
 
@@ -448,7 +454,7 @@ function rendu_add_bloc(bloc)
 {
   // on crée le bloc
   htm = "<div class=\"cr_rendu_bloc ";
-  if (bloc.tpe == "image") htm += "mv_rs\" ";
+  if (bloc.tpe == "image" || bloc.tpe == "audio") htm += "mv_rs\" ";
   else if (bloc.tpe == "cible") htm += "mv_rsl\" ";
   else htm += "mv\" ";
   htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
@@ -570,6 +576,7 @@ function selection_update()
   }
   document.getElementById("cr_txt_ini_div").style.display = "none";
   document.getElementById("cr_img_get_div").style.display = "none";
+  document.getElementById("cr_audio_get_div").style.display = "none";
   document.getElementById("cr_aligne").disabled = true;
   document.getElementById("cr_repart").disabled = true;
   document.getElementById("cr_plan").disabled = true;
@@ -659,6 +666,9 @@ function selection_update()
         break;
       case "texte_simple":
         texte_simple_sel_update();
+        break;
+      case "audio":
+        audio_sel_update();
         break;
     }
   }
@@ -1222,6 +1232,55 @@ function texte_simple_sel_update()
   }
   
   if (selection.length > 0 && selection_is_homogene("texte_simple")) selection_update_interactions();
+}
+
+function audio_new()
+{
+  //on crée le nouveau bloc
+  bloc = bloc_new("audio", "");
+  
+  //on le sélectionne
+  selection = [bloc];
+  selection_change();
+}
+function audio_create_html(bloc, txt)
+{
+  htm = "";
+  htm += "<div";
+  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
+  htm += ">\n  <img class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 1)
+  {
+    htm += "line=\"1\" ";
+    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+  }
+  htm += "src=\"../../icons/audacity.svg\" onclick=\"audio_play(this)\"";
+  htm += " id=\"" + bloc.id + "\" />\n";
+  htm += "<audio class=\"audio_src\" id=\"audio_" + bloc.id + "\" src=\"" + bloc.audio_name + "\"></audio>";
+  htm += "</div>";
+  bloc.html = htm;
+}
+function audio_ini(bloc)
+{
+  bloc.audio_name = "";
+  bloc.width = "50";
+  bloc.size = "manuel";
+  bloc.points = "0";
+}
+function audio_sel_update()
+{
+  // on récupère le bloc sélectionné
+  if (selection.length == 1)
+  {
+    bloc = selection[0];
+    
+    document.getElementById("cr_audio_select").value = bloc.img_name;
+    
+    document.getElementById("cr_expl").innerHTML = "<b>audio</b><br/>Sélectionner un fichier sonore.";
+    document.getElementById("cr_audio_get_div").style.display = "inline";
+  }
+  if (selection.length > 0) document.getElementById("cr_tp_w").disabled = false;
+  if (selection.length > 0 && selection_is_homogene("audio")) selection_update_interactions();
 }
 
 function _mv_ini()
