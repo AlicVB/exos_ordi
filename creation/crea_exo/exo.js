@@ -211,6 +211,7 @@ function infos_change()
 {
   document.getElementById("cri_titre").value = infos.titre;
   document.getElementById("cri_coul").value = infos.coul;
+  document.getElementById("cr_rendu").style.backgroundColor = infos.coul;
   document.getElementById("cri_consigne").value = infos.consigne;
   document.getElementById("cri_total").value = infos.total;
   document.getElementById("cri_arrondi").value = infos.arrondi;
