@@ -31,6 +31,7 @@ div.ligne2f {
 }
 .texte_simple {
   cursor: pointer;
+  overflow: hidden;
 }
 .line {
   position: absolute;

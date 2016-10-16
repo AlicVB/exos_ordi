@@ -56,7 +56,7 @@ function file_create_css()
     txt += "position: absolute; ";
     txt += "left: " + b.left*100/443 + "%; ";
     txt += "top: " + b.top*100/641 + "%; ";
-    if (b.size == "manuel")
+    if (b.size == "manuel" || b.size == "ratio")
     {
       if (b.tpe == "cible")
       {
@@ -197,7 +197,7 @@ function g_restaurer_info(init)
           {
             infos.a[i].min = vv[0];
             infos.a[i].coul = vv[1];
-            infos.a[i].txt = vv[2];
+            infos.a[i].txt = vv[2].replace(/<br \/>/g, "\n");
             infos.a[i].re = vv[3];
           }
         }
@@ -299,10 +299,10 @@ function bloc_ini(bloc)
   bloc.font_s = "false";
   bloc.font_b = "false";
   //taille-position
-  bloc.left = "5";
-  bloc.top = "300";
-  bloc.width = "0";
-  bloc.height = "0";
+  bloc.left = 5;
+  bloc.top = 300;
+  bloc.width = 0;
+  bloc.height = 0;
   bloc.size = "auto";
   //bordures
   bloc.bord = "hidden";
@@ -459,8 +459,8 @@ function rendu_add_bloc(bloc)
 {
   // on crée le bloc
   htm = "<div class=\"cr_rendu_bloc ";
-  if (bloc.tpe == "image" || bloc.tpe == "audio") htm += "mv_rs\" ";
-  else if (bloc.tpe == "cible") htm += "mv_rsl\" ";
+  if (bloc.size == "ratio") htm += "mv_rs\" ";
+  else if (bloc.size == "manuel") htm += "mv_rsl\" ";
   else htm += "mv\" ";
   htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
   htm += bloc.html;
@@ -493,20 +493,31 @@ function rendu_add_bloc(bloc)
   if (bloc.font_s == true) e.style.textDecoration = "underline";
   if (bloc.font_b == true) e.style.textDecoration = "line-through";
   //taille-position
-  if (bloc.width>0 && bloc.size == "manuel")
+  //pour les texte simples, on commence par initialiser les valeurs de tailles au texte
+  if (bloc.tpe == "texte_simple")
+  {
+    if (bloc.width == 0) bloc.width = e.offsetWidth + 4;
+    if (bloc.height == 0) bloc.height = e.offsetHeight;
+    b.style.width = bloc.width + "px";
+    e.parentNode.style.width = "100%";
+    b.style.height = bloc.height + "px";
+    e.parentNode.style.height = "100%";
+    e.style.width = "100%";
+    e.style.height = "100%";
+  }
+  else if (bloc.size == "ratio")
   {
     b.style.width = bloc.width + "px";
     e.style.width = "100%";
-    if (bloc.height>0)
-    {
-      b.style.height = bloc.height + "px";
-      e.style.height = "100%";
-    }
-    else
-    {
-      // on triche un peu pour éviter les trucs bizarres (on initialise à un carré)
-      b.style.height = bloc.width + "px";
-    }
+    // on triche un peu pour éviter les trucs bizarres (on initialise à un carré)
+    b.style.height = bloc.width + "px";
+  }
+  else if (bloc.size == "manuel")
+  {
+    b.style.width = bloc.width + "px";
+    e.style.width = "100%";
+    b.style.height = bloc.height + "px";
+    e.style.height = "100%";
   }
   else
   {
@@ -1172,7 +1183,7 @@ function image_ini(bloc)
   bloc.img_vpath = "";
   bloc.img_name = "";
   bloc.width = "50";
-  bloc.size = "manuel";
+  bloc.size = "ratio";
   bloc.points = "0";
 }
 function image_sel_update()
@@ -1230,6 +1241,7 @@ function texte_simple_ini(bloc)
 {
   // rien à faire
   bloc.points = "0";
+  bloc.size = "manuel";
 }
 function texte_simple_sel_update()
 {
@@ -1273,9 +1285,9 @@ function audio_create_html(bloc, txt)
 function audio_ini(bloc)
 {
   bloc.audio_name = "";
-  bloc.width = "50";
-  bloc.height = "50";
-  bloc.size = "manuel";
+  bloc.width = "32";
+  bloc.height = "32";
+  bloc.size = "ratio";
   bloc.points = "0";
 }
 function audio_sel_update()
@@ -1353,6 +1365,7 @@ function _dragMoveListener (event)
   for (let i=0; i<selection.length; i++)
   {
     bloc = selection[i];
+    
     bloc.top = parseFloat(bloc.top) + event.dy;
     bloc.left = parseFloat(bloc.left) + event.dx;
     var sb = rendu_get_superbloc(bloc);
@@ -1375,16 +1388,16 @@ function _drag_rsl_resize(event)
   bloc = bloc_get_from_id(target.id.substr(9));
 
   // update the element's style
-  target.style.width  = event.rect.width + 'px';
-  target.style.height = event.rect.height + 'px';
-  document.getElementById("cr_tp_w").value = event.rect.width;
-  document.getElementById("cr_tp_h").value = event.rect.height;
-  bloc.width = event.rect.width;
-  bloc.height = event.rect.height;
-
+  if (event.rect.width > 15) bloc.width = event.rect.width;
+  if (event.rect.height > 15) bloc.height = event.rect.height;
+  target.style.width  = bloc.width + 'px';
+  target.style.height = bloc.height + 'px';
+  document.getElementById("cr_tp_w").value = bloc.width;
+  document.getElementById("cr_tp_h").value = bloc.height;
+  
   // translate when resizing from top or left edges
-  bloc.left += event.deltaRect.left;
-  bloc.top += event.deltaRect.top;
+  bloc.left += parseFloat(event.deltaRect.left);
+  bloc.top += parseFloat(event.deltaRect.top);
   target.style.left = bloc.left + "px";
   target.style.top = bloc.top + "px";
 }

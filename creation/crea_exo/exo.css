@@ -24,6 +24,7 @@ button.jscolor {
   align-items: center;
   box-sizing: border-box;
   position: relative;
+  text-align: center;
 }
 .cr_rendu_bloc {
   position: absolute;

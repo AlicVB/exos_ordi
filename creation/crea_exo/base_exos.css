@@ -33,6 +33,7 @@ div.ligne2f {
 }
 .texte_simple {
   box-sizing: border-box;
+  overflow: hidden;
 }
 .radio form {
   text-align: left;
