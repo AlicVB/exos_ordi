@@ -496,8 +496,8 @@ function rendu_add_bloc(bloc)
   //pour les texte simples, on commence par initialiser les valeurs de tailles au texte
   if (bloc.tpe == "texte_simple")
   {
-    if (bloc.width == 0) bloc.width = e.offsetWidth + 4;
-    if (bloc.height == 0) bloc.height = e.offsetHeight;
+    if (bloc.width == 0) bloc.width = Math.max(15, e.offsetWidth + 4);
+    if (bloc.height == 0) bloc.height = Math.max(10, e.offsetHeight);
     b.style.width = bloc.width + "px";
     e.parentNode.style.width = "100%";
     b.style.height = bloc.height + "px";
@@ -1206,7 +1206,11 @@ function texte_simple_new()
 {
   //on demande le texte initial
   txt = prompt("texte\n\nTexte à insérer", "");
-  if (!txt) return;
+  if (!txt || txt.trim() == "")
+  {
+    //forcer charactère espace pour éviter cadre vide
+    txt = "&nbsp;";
+  }
   
   //on crée le nouveau bloc
   bloc = bloc_new("texte_simple", txt);
