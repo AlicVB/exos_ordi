@@ -19,12 +19,15 @@ div.lignef {
   display: flex;
   align-items: center;
   justify-content: center;
+  -moz-user-select: none;
 }
 div.ligne2f {
   text-align: center;
+  -moz-user-select: none;
 }
 .image {
   box-sizing: border-box;
+  -moz-user-select: none;
 }
 .cible {
   box-sizing: border-box;
@@ -32,6 +35,7 @@ div.ligne2f {
 .texte_simple {
   cursor: pointer;
   overflow: hidden;
+  -moz-user-select: none;
 }
 .line {
   position: absolute;
@@ -63,6 +67,7 @@ div.ligne2f {
     width: 100%;
     padding-left: 6.5px;/*1vh*/
     padding-right: 6.5px;
+    -moz-user-select: none;
 }
 .combo select {
   margin-left: 6.5px;/*1vh*/
@@ -84,6 +89,7 @@ div.texte_corr {
 }
 .multi span {
   cursor: pointer;
+  -moz-user-select: none;
 }
 .multi span:hover {
   border: 1px solid grey;
@@ -107,6 +113,7 @@ img.multi_cim {
 }
 .audio {
   box-sizing: border-box;
+  -moz-user-select: none;
 }
 .audio_src {
   display: none;
