@@ -76,7 +76,11 @@ function cr_img_get_change(e)
       image_create_html(bloc, "");
       document.getElementById("cr_html").value = bloc.html;
       document.getElementById(bloc.id).onload = function () {
-        rendu_get_superbloc(bloc).style.height = document.getElementById(bloc.id).getBoundingClientRect().height + "px";        
+        //on met à jour les infos de hauteur
+        var h = document.getElementById(bloc.id).getBoundingClientRect().height;
+        rendu_get_superbloc(bloc).style.height = h + "px";
+        bloc.height = h;
+        document.getElementById("cr_tp_h").value = h;
         };
       // on met à jour le rendu
       document.getElementById(bloc.id).src = vpath;

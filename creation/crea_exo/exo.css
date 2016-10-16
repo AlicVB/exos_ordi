@@ -48,6 +48,9 @@ button.jscolor {
 #cr_img_get_div {
   display: none;
 }
+#cr_audio_get_div {
+  display: none;
+}
 #cr_txt_ini_div {
   display: none;
 }
@@ -166,5 +169,8 @@ input[type="number"] {
   vertical-align: middle;
 }
 #cr_img_get {
+  display: none;
+}
+#cr_audio_get {
   display: none;
 }

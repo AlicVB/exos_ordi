@@ -148,7 +148,9 @@ function g_restaurer(init)
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
       // on met les bonnes valeurs aux bons endroits
-      b = JSON.parse(xhr.responseText);
+      var rep = xhr.responseText;
+      var b = null;
+      if (rep != "") b = JSON.parse(rep);
       if (b) blocs = b;
       last_id = 0;
       for (let i=0; i<blocs.length; i++)
@@ -174,7 +176,10 @@ function g_restaurer_info(init)
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
       // on met les bonnes valeurs aux bons endroits
-      var vals = xhr.responseText.split("\n");
+      var vals = [];
+      var rep = xhr.responseText;
+      if (rep != "") vals = rep.split("\n");
+      else g_sauver_info();
       if (vals.length>10)
       {
         infos.titre = vals[0];
@@ -468,6 +473,11 @@ function rendu_add_bloc(bloc)
   if (bloc.tpe == "image")
   {
     document.getElementById(bloc.id).src = bloc.img_vpath;
+  }
+  //si c'est un son, on règle les chemins
+  if (bloc.tpe == "audio")
+  {
+    document.getElementById(bloc.id).src = "../../icons/audacity.svg";
   }
   
   //on modifie les styles
@@ -1254,7 +1264,7 @@ function audio_create_html(bloc, txt)
     htm += "line=\"1\" ";
     if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
-  htm += "src=\"../../icons/audacity.svg\" onclick=\"audio_play(this)\"";
+  htm += "src=\"audacity.svg\" onclick=\"audio_play(this)\"";
   htm += " id=\"" + bloc.id + "\" />\n";
   htm += "<audio class=\"audio_src\" id=\"audio_" + bloc.id + "\" src=\"" + bloc.audio_name + "\"></audio>";
   htm += "</div>";
@@ -1264,6 +1274,7 @@ function audio_ini(bloc)
 {
   bloc.audio_name = "";
   bloc.width = "50";
+  bloc.height = "50";
   bloc.size = "manuel";
   bloc.points = "0";
 }

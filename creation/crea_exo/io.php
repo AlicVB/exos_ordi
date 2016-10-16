@@ -33,11 +33,11 @@ function free_path($fic)
     }
     else if ($io == "sauveaudio")
     {
-      if ("{$_FILES['cr_img_get']['error']}" == "1") $ret = "*Erreur : fichier trop gros !";
+      if ("{$_FILES['cr_audio_get']['error']}" == "1") $ret = "*Erreur : fichier trop gros !";
       else
       {
-        $dest = free_path("$fic/sons/{$_FILES['cr_img_get']['name']}");
-        copy($_FILES['cr_img_get']['tmp_name'], $dest);
+        $dest = free_path("$fic/sons/{$_FILES['cr_audio_get']['name']}");
+        copy($_FILES['cr_audio_get']['tmp_name'], $dest);
         if (file_exists($dest)) $ret = basename($dest);
         else $rest = "*Erreur: la copie de l'audio a échoué !";
       }

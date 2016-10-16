@@ -13,6 +13,13 @@ var line_orig = null;
 var line_orig_id = "";
 var drake = null;
 
+function audio_play(e)
+{
+  var id = e.id;
+  var audio = document.getElementById("audio_" + id);
+  audio.play();
+}
+
 function line_start(e)
 {
   //on récupère le point de départ
@@ -704,13 +711,20 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   {
     drake.containers.push(elems[i]);
   }
+  drake.on('drop', cible_ondrop);
   //on initialise les lignes à relier
   elems = document.querySelectorAll("[line]");
   for (let i=0;i<elems.length;i++)
   {
     elems[i].addEventListener('mousedown',line_start,true);
   }
-  drake.on('drop', cible_ondrop);
+  //on initialise les icones de sons
+  elems = document.querySelectorAll("img.audio");
+  for (let i=0;i<elems.length;i++)
+  {
+    elems[i].src = root + "icons/" + elems[i].getAttribute("src");
+  }
+  
   // on initialise les items
   xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
