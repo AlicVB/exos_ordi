@@ -13,6 +13,11 @@ function change(e)
 
 function start(dos)
 {
+  //si pas de nom d'exo dans l'url, il faut le rajouter ! (pour refresh...)
+  if (window.location.href.substr(-1,1) == "=")
+  {
+    history.replaceState('ajout exo', document.title, window.location.href + dos.split("/").pop());
+  }
   exo_dos = dos;
   _mv_ini();
   g_restaurer(true);
@@ -280,6 +285,9 @@ function bloc_new(tpe, txt)
     case "audio":
       audio_ini(bloc);
       break;
+    case "cercle":
+      cercle_ini(bloc);
+      break;
   }
   bloc_create_html(bloc);
   blocs.push(bloc);
@@ -408,6 +416,9 @@ function bloc_create_html(bloc)
     case "audio":
       audio_create_html(bloc, bloc.txt);
       break;
+    case "cercle":
+      cercle_create_html(bloc, bloc.txt);
+      break;
   }
 }
 
@@ -465,7 +476,7 @@ function rendu_add_bloc(bloc)
   htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
   htm += bloc.html;
   htm += "\n</div>\n";
-  
+  console.log("htm : " + htm);
   //on l'ajoute
   document.getElementById("cr_rendu").innerHTML += htm;
   
@@ -505,6 +516,13 @@ function rendu_add_bloc(bloc)
     e.style.width = "100%";
     e.style.height = "100%";
   }
+  else if (bloc.tpe == "cercle")
+  {
+    e.style.width = bloc.width + "px";
+    //e.style.width = "100%";
+    e.style.height = bloc.height + "px";
+    //e.style.height = "100%";
+  }
   else if (bloc.size == "ratio")
   {
     b.style.width = bloc.width + "px";
@@ -527,13 +545,21 @@ function rendu_add_bloc(bloc)
   }
   b.style.left = bloc.left + "px";
   b.style.top = bloc.top + "px";
-  //bordures
-  e.style.borderStyle = bloc.bord;
-  e.style.borderWidth = bloc.bord_size + "px";
-  e.style.borderColor = bloc.bord_coul;
-  e.style.borderRadius = bloc.bord_rond + "px";
-  //fond
-  e.style.backgroundColor = hex2rgba(bloc.fond_coul, bloc.fond_alpha);
+  if (bloc.tpe == "cercle")
+  {
+    var svg = document.getElementById("svg_" + bloc.id);
+    svg.style.fill = hex2rgba(bloc.fond_coul, bloc.fond_alpha);
+  }
+  else
+  {
+    //bordures
+    e.style.borderStyle = bloc.bord;
+    e.style.borderWidth = bloc.bord_size + "px";
+    e.style.borderColor = bloc.bord_coul;
+    e.style.borderRadius = bloc.bord_rond + "px";
+    //fond
+    e.style.backgroundColor = hex2rgba(bloc.fond_coul, bloc.fond_alpha);
+  }
   //marges
   e.style.padding = bloc.marges + "px";
 }
@@ -690,6 +716,9 @@ function selection_update()
         break;
       case "audio":
         audio_sel_update();
+        break;
+      case "cercle":
+        cercle_sel_update();
         break;
     }
   }
@@ -1221,12 +1250,6 @@ function texte_simple_new()
 }
 function texte_simple_create_html(bloc, txt)
 {
-  // on récupère les infos de la zone de texte
-  l = bloc.texte_l;
-  h = bloc.texte_h;
-  enter = bloc.texte_e;
-  comp = bloc.texte_c;
-  
   htm = "<div";
   if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <div class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
@@ -1308,6 +1331,49 @@ function audio_sel_update()
   }
   if (selection.length > 0) document.getElementById("cr_tp_w").disabled = false;
   if (selection.length > 0 && selection_is_homogene("audio")) selection_update_interactions();
+}
+
+function cercle_new()
+{
+  //on crée le nouveau bloc
+  bloc = bloc_new("cercle", "");
+  
+  //on le sélectionne
+  selection = [bloc];
+  selection_change();
+}
+function cercle_create_html(bloc, txt)
+{
+  //on calcule tous les paramètres
+  
+  htm = "<div";
+  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
+  htm += ">\n  <svg class=\"item lignef svg exo\" tpe=\"cercle\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 1)
+  {
+    htm += "line=\"1\" ";
+    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+  }
+  htm += ">\n";
+  htm += "<ellipse cx=\"50%\" cy=\"50%\" rx=\"50%\" ry=\"50%\" id=\"svg_" + bloc.id + "\" />";
+  htm += "</svg>\n</div>\n";
+  
+  bloc.html = htm;
+  console.log("htm0 : " + htm);
+}
+function cercle_ini(bloc)
+{
+  // rien à faire
+  bloc.points = "0";
+  bloc.size = "manuel";
+  bloc.height = 40;
+  bloc.width = 40;
+  bloc.fond_coul = "#4AC1D8";
+  bloc.fond_alpha = "100";
+}
+function cercle_sel_update()
+{
+  if (selection.length > 0 && selection_is_homogene("cercle")) selection_update_interactions();
 }
 
 function _mv_ini()
@@ -1394,8 +1460,16 @@ function _drag_rsl_resize(event)
   // update the element's style
   if (event.rect.width > 15) bloc.width = event.rect.width;
   if (event.rect.height > 15) bloc.height = event.rect.height;
-  target.style.width  = bloc.width + 'px';
-  target.style.height = bloc.height + 'px';
+  if (bloc.tpe == "cercle")
+  {
+    document.getElementById(bloc.id).style.width  = bloc.width + 'px';
+    document.getElementById(bloc.id).style.height = bloc.height + 'px';
+  }
+  else
+  {
+    target.style.width  = bloc.width + 'px';
+    target.style.height = bloc.height + 'px';
+  }
   document.getElementById("cr_tp_w").value = bloc.width;
   document.getElementById("cr_tp_h").value = bloc.height;
   

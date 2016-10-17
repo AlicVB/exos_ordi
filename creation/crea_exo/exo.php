@@ -183,6 +183,10 @@
         <button onclick="image_new()">image</button>
         <button onclick="texte_simple_new()">texte</button>
         <button onclick="audio_new()">audio</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="rect_new()">rectangle</button>
+        <button onclick="cercle_new()">cercle</button>
+        <button onclick="ligne_new()">ligne</button>
       </div>
       <div id="cr_nom">
         élément sélectionné :&nbsp;

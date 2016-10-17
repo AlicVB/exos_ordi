@@ -440,7 +440,11 @@ function cr_fond_coul_change(jscolor)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].fond_coul = v;
-    document.getElementById(selection[i].id).style.backgroundColor = hex2rgba(v, selection[i].fond_alpha);
+    if (selection[i].tpe == "cercle")
+    {
+      document.getElementById("svg_" + selection[i].id).style.fill = hex2rgba(v, selection[i].fond_alpha);
+    }
+    else document.getElementById(selection[i].id).style.backgroundColor = hex2rgba(v, selection[i].fond_alpha);
   }
   //on sauvegarde
   g_sauver();
