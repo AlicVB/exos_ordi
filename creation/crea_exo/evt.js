@@ -395,7 +395,24 @@ function cr_bord_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord = v;
-    document.getElementById(selection[i].id).style.borderStyle = v;
+    if (selection[i].tpe == "cercle")
+    {
+      svg = document.getElementById(selection[i].id);
+      switch (v)
+      {
+        case "dashed":
+          svg.style.strokeDasharray = "10 8";
+          break;
+        case "dotted":
+          svg.style.strokeDasharray = "4 8";
+          break;
+        case "hidden":
+          if (svg.style.hasAttribute("stroke")) svg.style.removeAttribute("stroke");
+        default:
+          if (svg.style.hasAttribute("strokeDasharray")) svg.style.removeAttribute("strokeDasharray");
+      }
+    }
+    else document.getElementById(selection[i].id).style.borderStyle = v;
   }
   //on sauvegarde
   g_sauver();
@@ -406,7 +423,12 @@ function cr_bord_coul_change(jscolor)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_coul = v;
-    document.getElementById(selection[i].id).style.borderColor = v;
+    if (selection[i].tpe == "cercle")
+    {
+      svg = document.getElementById(selection[i].id);
+      if (selection[i].bord != "hidden") svg.style.stroke = v;
+    }
+    else document.getElementById(selection[i].id).style.borderColor = v;
   }
   //on sauvegarde
   g_sauver();
@@ -417,7 +439,12 @@ function cr_bord_size_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_size = v;
-    document.getElementById(selection[i].id).style.borderWidth = v + "px";
+    if (selection[i].tpe == "cercle")
+    {
+      svg = document.getElementById(selection[i].id);
+      svg.style.strokeWidth = v + "px";
+    }
+    else document.getElementById(selection[i].id).style.borderWidth = v + "px";
   }
   //on sauvegarde
   g_sauver();

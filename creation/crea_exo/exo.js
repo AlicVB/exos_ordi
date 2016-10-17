@@ -549,6 +549,20 @@ function rendu_add_bloc(bloc)
   {
     var svg = document.getElementById("svg_" + bloc.id);
     svg.style.fill = hex2rgba(bloc.fond_coul, bloc.fond_alpha);
+    switch (bloc.bord)
+    {
+      case "dashed":
+        svg.style.strokeDasharray = "10 8";
+        break;
+      case "dotted":
+        svg.style.strokeDasharray = "4 8";
+        break;
+    }
+    if (bloc.bord != "hidden")
+    {
+      svg.style.strokeWidth = bloc.bord_size + "px";
+      svg.style.stroke = bloc.bord_coul;
+    }
   }
   else
   {
