@@ -35,6 +35,9 @@ div.ligne2f {
   box-sizing: border-box;
   overflow: hidden;
 }
+ellipse {
+  stroke-linecap: round;
+}
 .radio form {
   text-align: left;
   font-weight: bold;

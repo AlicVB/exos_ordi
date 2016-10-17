@@ -397,23 +397,30 @@ function cr_bord_change(e)
     selection[i].bord = v;
     if (selection[i].tpe == "cercle")
     {
-      svg = document.getElementById(selection[i].id);
+      svg = document.getElementById("svg_" + selection[i].id);
+      svg.style.stroke = selection[i].bord_coul;
+      svg.style.removeProperty("stroke-dasharray");
       switch (v)
       {
         case "dashed":
-          svg.style.strokeDasharray = "10 8";
+          svg.style.strokeDasharray = (2 + parseFloat(selection[i].bord_size)*2) + " " + (parseFloat(selection[i].bord_size)*2);
           break;
         case "dotted":
-          svg.style.strokeDasharray = "4 8";
+          svg.style.strokeDasharray = "0 " + (parseFloat(selection[i].bord_size)*1.5);
           break;
         case "hidden":
-          if (svg.style.hasAttribute("stroke")) svg.style.removeAttribute("stroke");
-        default:
-          if (svg.style.hasAttribute("strokeDasharray")) svg.style.removeAttribute("strokeDasharray");
+          svg.style.removeProperty("stroke");
+          break;
       }
+      var w = 0;
+      if (selection[i].bord != "hidden") w = selection[i].bord_size;
+      svg.setAttribute("rx", 50 - parseFloat(w)/2);
+      svg.setAttribute("ry", 50 - parseFloat(w)/2);
+      cercle_create_html(selection[i], "");
     }
     else document.getElementById(selection[i].id).style.borderStyle = v;
   }
+  selection_update();
   //on sauvegarde
   g_sauver();
 }
@@ -425,7 +432,7 @@ function cr_bord_coul_change(jscolor)
     selection[i].bord_coul = v;
     if (selection[i].tpe == "cercle")
     {
-      svg = document.getElementById(selection[i].id);
+      svg = document.getElementById("svg_" + selection[i].id);
       if (selection[i].bord != "hidden") svg.style.stroke = v;
     }
     else document.getElementById(selection[i].id).style.borderColor = v;
@@ -441,11 +448,26 @@ function cr_bord_size_change(e)
     selection[i].bord_size = v;
     if (selection[i].tpe == "cercle")
     {
-      svg = document.getElementById(selection[i].id);
-      svg.style.strokeWidth = v + "px";
+      svg = document.getElementById("svg_" + selection[i].id);
+      svg.style.strokeWidth = v;
+      var w = 0;
+      if (selection[i].bord != "hidden") w = selection[i].bord_size;
+      svg.setAttribute("rx", 50 - parseFloat(w)/2);
+      svg.setAttribute("ry", 50 - parseFloat(w)/2);
+      switch (selection[i].bord)
+      {
+        case "dashed":
+          svg.style.strokeDasharray = (2 + parseFloat(selection[i].bord_size)*2) + " " + (parseFloat(selection[i].bord_size)*2);
+          break;
+        case "dotted":
+          svg.style.strokeDasharray = "0 " + (parseFloat(selection[i].bord_size)*1.5);
+          break;
+      }
+      cercle_create_html(selection[i], "");
     }
     else document.getElementById(selection[i].id).style.borderWidth = v + "px";
   }
+  selection_update();
   //on sauvegarde
   g_sauver();
 }

@@ -44,6 +44,9 @@ div.ligne2f {
   transform-origin: top left;
   cursor: pointer;
 }
+ellipse {
+  stroke-linecap: round;
+}
 .radio form {
   text-align: left;
   font-weight: bold;

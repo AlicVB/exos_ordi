@@ -77,13 +77,34 @@ function file_create_css()
     //bords
     if (b.bord != "hidden")
     {
-      txt += "border-style: " + b.bord + "; ";
-      txt += "border-color: " + b.bord_coul + "; ";
-      txt += "border-width: " + b.bord_size + "px; ";
-      txt += "border-radius: " + b.bord_rond + "px; ";
+      if (b.tpe == "cercle")
+      {
+        switch (b.bord)
+        {
+          case "dashed":
+            txt += "stroke-dasharray: " + (2 + parseFloat(b.bord_size)*2) + " " + (parseFloat(b.bord_size)*2) + "; ";
+            break;
+          case "dotted":
+            txt += "stroke-dasharray: 0 " + (parseFloat(b.bord_size)*1.5) + "; ";
+            break;
+        }
+        txt += "stroke-width: " + b.bord_size + "px; ";
+        txt += "stroke: " + b.bord_coul + "; ";
+      }
+      else
+      {
+        txt += "border-style: " + b.bord + "; ";
+        txt += "border-color: " + b.bord_coul + "; ";
+        txt += "border-width: " + b.bord_size + "px; ";
+        txt += "border-radius: " + b.bord_rond + "px; ";
+      }
     }
     //fond
-    if (b.fond_alpha != 0)
+    if (b.tpe == "cercle")
+    {
+      txt += "fill: " + hex2rgba(b.fond_coul, b.fond_alpha) + "; ";
+    }
+    else if (b.fond_alpha != 0)
     {
       txt += "background-color: " + hex2rgba(b.fond_coul, b.fond_alpha) + "; ";
     }
@@ -476,7 +497,7 @@ function rendu_add_bloc(bloc)
   htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
   htm += bloc.html;
   htm += "\n</div>\n";
-  console.log("htm : " + htm);
+  
   //on l'ajoute
   document.getElementById("cr_rendu").innerHTML += htm;
   
@@ -552,10 +573,10 @@ function rendu_add_bloc(bloc)
     switch (bloc.bord)
     {
       case "dashed":
-        svg.style.strokeDasharray = "10 8";
+        svg.style.strokeDasharray = (2 + parseFloat(bloc.bord_size)*2) + " " + (parseFloat(bloc.bord_size)*2);
         break;
       case "dotted":
-        svg.style.strokeDasharray = "4 8";
+        svg.style.strokeDasharray = "0 " + (parseFloat(bloc.bord_size)*1.5);
         break;
     }
     if (bloc.bord != "hidden")
@@ -651,7 +672,6 @@ function selection_update()
     bloc.tpe = "";
     bloc.txt = "";
     bloc_ini(bloc);
-    
   }
   else bloc = selection[0];
   
@@ -669,8 +689,7 @@ function selection_update()
   document.getElementById("cr_tp_t").value = bloc.top;
   document.getElementById("cr_tp_w").value = bloc.width;
   document.getElementById("cr_tp_h").value = bloc.height;
-  document.getElementById("cr_tp_w").disabled = true;
-  document.getElementById("cr_tp_h").disabled = true;
+  
   //bordures
   document.getElementById("cr_bord").value = bloc.bord;
   document.getElementById("cr_bord_size").value = bloc.bord_size;
@@ -696,6 +715,22 @@ function selection_update()
   document.getElementById("cr_points").disabled = false;
   document.getElementById("cr_points").value = bloc.points;
 
+  //on enabled tous les éléments classiques. Charge aux code specifiques de les désactiver
+  var elems = document.getElementsByClassName('cr_');
+  for (let i=0; i<elems.length; i++)
+  {
+    elems[i].disabled = false;
+  }
+  if (!selection_is_homogene(bloc.tpe) || bloc.size == "auto")
+  {
+    document.getElementById("cr_tp_w").disabled = true;
+    document.getElementById("cr_tp_h").disabled = true;
+  }
+  else if (bloc.size == "ratio")
+  {
+    document.getElementById("cr_tp_h").disabled = true;
+  }
+  
   // on fait les réglages spécifiques
   for (let i=0; i<selection.length; i++)
   {
@@ -1184,6 +1219,7 @@ function cible_ini(bloc)
   bloc.size = "manuel";
   bloc.fond_coul = "#6B6B6B";
   bloc.fond_alpha = "20";
+  bloc.marges = 0;
 }
 function cible_sel_update()
 {
@@ -1193,6 +1229,14 @@ function cible_sel_update()
   
   document.getElementById("cr_expl").innerHTML = "<b>zone cible</b><br/>Identifiant des objet qui peuvent être posés<br/>séparer les identifiant par '|'";
   document.getElementById("cr_txt_ini_div").style.display = "inline";
+  //pas de texte...
+  document.getElementById("cr_font_fam").disabled = true;
+  document.getElementById("cr_font_size").disabled = true;
+  document.getElementById("cr_font_g").disabled = true;
+  document.getElementById("cr_font_i").disabled = true;
+  document.getElementById("cr_font_s").disabled = true;
+  document.getElementById("cr_font_b").disabled = true;
+  document.getElementById("cr_font_coul").disabled = true;
 }
 
 function image_new()
@@ -1228,6 +1272,7 @@ function image_ini(bloc)
   bloc.width = "50";
   bloc.size = "ratio";
   bloc.points = "0";
+  bloc.marges = 0;
 }
 function image_sel_update()
 {
@@ -1241,8 +1286,15 @@ function image_sel_update()
     document.getElementById("cr_expl").innerHTML = "<b>image</b><br/>Sélectionner l'image choisie.";
     document.getElementById("cr_img_get_div").style.display = "inline";
   }
-  if (selection.length > 0) document.getElementById("cr_tp_w").disabled = false;
   if (selection.length > 0 && selection_is_homogene("image")) selection_update_interactions();
+  //pas de texte...
+  document.getElementById("cr_font_fam").disabled = true;
+  document.getElementById("cr_font_size").disabled = true;
+  document.getElementById("cr_font_g").disabled = true;
+  document.getElementById("cr_font_i").disabled = true;
+  document.getElementById("cr_font_s").disabled = true;
+  document.getElementById("cr_font_b").disabled = true;
+  document.getElementById("cr_font_coul").disabled = true;
 }
 
 function texte_simple_new()
@@ -1330,6 +1382,7 @@ function audio_ini(bloc)
   bloc.height = "32";
   bloc.size = "ratio";
   bloc.points = "0";
+  bloc.marges = 0;
 }
 function audio_sel_update()
 {
@@ -1343,8 +1396,15 @@ function audio_sel_update()
     document.getElementById("cr_expl").innerHTML = "<b>audio</b><br/>Sélectionner un fichier sonore.";
     document.getElementById("cr_audio_get_div").style.display = "inline";
   }
-  if (selection.length > 0) document.getElementById("cr_tp_w").disabled = false;
   if (selection.length > 0 && selection_is_homogene("audio")) selection_update_interactions();
+  //pas de texte...
+  document.getElementById("cr_font_fam").disabled = true;
+  document.getElementById("cr_font_size").disabled = true;
+  document.getElementById("cr_font_g").disabled = true;
+  document.getElementById("cr_font_i").disabled = true;
+  document.getElementById("cr_font_s").disabled = true;
+  document.getElementById("cr_font_b").disabled = true;
+  document.getElementById("cr_font_coul").disabled = true;
 }
 
 function cercle_new()
@@ -1362,18 +1422,19 @@ function cercle_create_html(bloc, txt)
   
   htm = "<div";
   if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
-  htm += ">\n  <svg class=\"item lignef svg exo\" tpe=\"cercle\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += ">\n  <svg preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\" class=\"item lignef svg exo\" tpe=\"cercle\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
     if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
-  htm += "<ellipse cx=\"50%\" cy=\"50%\" rx=\"50%\" ry=\"50%\" id=\"svg_" + bloc.id + "\" />";
+  var rr = 50
+  if (bloc.bord != "hidden") rr -= parseFloat(bloc.bord_size)/2;
+  htm += "<ellipse cx=\"50\" cy=\"50\" rx=\"" + rr + "\" ry=\"" + rr + "\" id=\"svg_" + bloc.id + "\" />";
   htm += "</svg>\n</div>\n";
   
   bloc.html = htm;
-  console.log("htm0 : " + htm);
 }
 function cercle_ini(bloc)
 {
@@ -1384,10 +1445,21 @@ function cercle_ini(bloc)
   bloc.width = 40;
   bloc.fond_coul = "#4AC1D8";
   bloc.fond_alpha = "100";
+  bloc.marges = 0;
 }
 function cercle_sel_update()
 {
   if (selection.length > 0 && selection_is_homogene("cercle")) selection_update_interactions();
+  //pas de texte...
+  document.getElementById("cr_font_fam").disabled = true;
+  document.getElementById("cr_font_size").disabled = true;
+  document.getElementById("cr_font_g").disabled = true;
+  document.getElementById("cr_font_i").disabled = true;
+  document.getElementById("cr_font_s").disabled = true;
+  document.getElementById("cr_font_b").disabled = true;
+  document.getElementById("cr_font_coul").disabled = true;
+  //coins arrondis
+  document.getElementById("cr_bord_rond").disabled = true;
 }
 
 function _mv_ini()

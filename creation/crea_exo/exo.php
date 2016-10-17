@@ -272,7 +272,7 @@
         <div>
           <div class="cr_opt_ligne cr_font">
             Police :
-            <select id="cr_font_fam" onchange="cr_font_fam_change(this)" title="nom de la police">
+            <select class="cr_" id="cr_font_fam" onchange="cr_font_fam_change(this)" title="nom de la police">
               <option value="serif">Serif</option>
               <option value="sans-serif">Sans Serif</option>
               <option value="monospace">Mono</option>
@@ -280,46 +280,46 @@
               <option value="staypuft">Staypuf</option>
               <option value="ABC cursive">ABCcursive</option>
             </select>
-            <input id="cr_font_size" type="number" value="20" min="1" max="800" onchange="cr_font_size_change(this)" title="taille de la police (initial=20)"/>
-            <button id="cr_font_coul" class="jscolor {valueElement:null,value:'000000', onFineChange: 'cr_font_coul_change(this)'}" title="couleur de la police"></button>
-            <input type="checkbox" id="cr_font_g" onchange="cr_font_g_change(this)"/>
+            <input class="cr_" id="cr_font_size" type="number" value="20" min="1" max="800" onchange="cr_font_size_change(this)" title="taille de la police (initial=20)"/>
+            <button id="cr_font_coul" class="cr_ jscolor {valueElement:null,value:'000000', onFineChange: 'cr_font_coul_change(this)'}" title="couleur de la police"></button>
+            <input class="cr_" type="checkbox" id="cr_font_g" onchange="cr_font_g_change(this)"/>
             <label for="cr_font_g" style="font-weight: bold;" title="gras">G</label>
-            <input type="checkbox" id="cr_font_i" onchange="cr_font_i_change(this)"/>
+            <input class="cr_" type="checkbox" id="cr_font_i" onchange="cr_font_i_change(this)"/>
             <label for="cr_font_i" style="font-style: italic;" title="italique">I</label>
-            <input type="checkbox" id="cr_font_s" onchange="cr_font_s_change(this)"/>
+            <input class="cr_" type="checkbox" id="cr_font_s" onchange="cr_font_s_change(this)"/>
             <label for="cr_font_s" style="text-decoration: underline;" title="souligné (exclu barré)">S</label>
-            <input type="checkbox" id="cr_font_b" onchange="cr_font_b_change(this)"/>
+            <input class="cr_" type="checkbox" id="cr_font_b" onchange="cr_font_b_change(this)"/>
             <label for="cr_font_b" style="text-decoration: line-through;" title="barré (exclu souligné)">B</label>
           </div>
           <div class="cr_opt_ligne">
             Taille :
-            <input id="cr_tp_w" type="number" value="20" min="0" max="500" onchange="cr_tp_w_change(this)" title="largeur"/>
+            <input class="cr_" id="cr_tp_w" type="number" value="20" min="0" max="500" onchange="cr_tp_w_change(this)" title="largeur"/>
             x
-            <input id="cr_tp_h" type="number" value="20" min="0" max="700" onchange="cr_tp_h_change(this)" title="hauteur"/>
+            <input class="cr_" id="cr_tp_h" type="number" value="20" min="0" max="700" onchange="cr_tp_h_change(this)" title="hauteur"/>
             &nbsp;&nbsp;Position : <input id="cr_tp_l" type="number" value="20" min="0" max="500" onchange="cr_tp_l_change(this)" title="position horizontale"/>
             x
-            <input id="cr_tp_t" type="number" value="20" min="0" max="700" onchange="cr_tp_t_change(this)" title="position verticale"/>
+            <input class="cr_" id="cr_tp_t" type="number" value="20" min="0" max="700" onchange="cr_tp_t_change(this)" title="position verticale"/>
           </div>
           <div class="cr_opt_ligne">
             Bordure :
-            <select id="cr_bord" onchange="cr_bord_change(this)" title="type de bordure">
+            <select class="cr_" id="cr_bord" onchange="cr_bord_change(this)" title="type de bordure">
               <option value="hidden">Aucune</option>
               <option value="solid">Normale</option>
               <option value="dashed">Tirets</option>
               <option value="dotted">Points</option>
               <option value="double">Double</option>
             </select>
-            <input id="cr_bord_size" type="number" value="1" min="1" max="800" onchange="cr_bord_size_change(this)" title="épaisseur de la bordure"/>
-            <button id="cr_bord_coul" class="jscolor {valueElement:null,value:'000000', onFineChange: 'cr_bord_coul_change(this)'}" title="couleur de la bordure"></button>
+            <input class="cr_" id="cr_bord_size" type="number" value="1" min="1" max="800" onchange="cr_bord_size_change(this)" title="épaisseur de la bordure"/>
+            <button id="cr_bord_coul" class="cr_ jscolor {valueElement:null,value:'000000', onFineChange: 'cr_bord_coul_change(this)'}" title="couleur de la bordure"></button>
             &nbsp;&#42789;
-            <input id="cr_bord_rond" type="number" value="0" min="0" max="500" onchange="cr_bord_rond_change(this)" title="arrondi de la bordure"/>
+            <input class="cr_" id="cr_bord_rond" type="number" value="0" min="0" max="500" onchange="cr_bord_rond_change(this)" title="arrondi de la bordure"/>
           </div>
           <div class="cr_opt_ligne">
             Fond :
-            <button id="cr_fond_coul" class="jscolor {valueElement:null,value:'ffffff', onFineChange: 'cr_fond_coul_change(this)'}"  title="couleur de fond"></button>
-            <input id="cr_fond_alpha" type="number" value="0" min="0" max="100" onchange="cr_fond_alpha_change(this)" title="opacité (100 = opaque)"/>%
+            <button id="cr_fond_coul" class="cr_ jscolor {valueElement:null,value:'ffffff', onFineChange: 'cr_fond_coul_change(this)'}"  title="couleur de fond"></button>
+            <input class="cr_" id="cr_fond_alpha" type="number" value="0" min="0" max="100" onchange="cr_fond_alpha_change(this)" title="opacité (100 = opaque)"/>%
             &nbsp;&nbsp;Marges :
-            <input id="cr_marges" type="number" value="0" min="0" max="500" onchange="cr_marges_change(this)" title="marges intérieures"/>
+            <input class="cr_" id="cr_marges" type="number" value="0" min="0" max="500" onchange="cr_marges_change(this)" title="marges intérieures"/>
           </div>
           <div class="cr_opt_ligne">
             Autre :
