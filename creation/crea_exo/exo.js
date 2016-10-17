@@ -301,6 +301,7 @@ function bloc_new(tpe, txt)
       image_ini(bloc);
       break;
     case "texte_simple":
+    case "rect":
       texte_simple_ini(bloc);
       break;
     case "audio":
@@ -432,6 +433,7 @@ function bloc_create_html(bloc)
       image_create_html(bloc, bloc.txt);
       break;
     case "texte_simple":
+    case "rect":
       texte_simple_create_html(bloc, bloc.txt);
       break;
     case "audio":
@@ -526,7 +528,7 @@ function rendu_add_bloc(bloc)
   if (bloc.font_b == true) e.style.textDecoration = "line-through";
   //taille-position
   //pour les texte simples, on commence par initialiser les valeurs de tailles au texte
-  if (bloc.tpe == "texte_simple")
+  if (bloc.tpe == "texte_simple" || bloc.tpe == "rect")
   {
     if (bloc.width == 0) bloc.width = Math.max(15, e.offsetWidth + 4);
     if (bloc.height == 0) bloc.height = Math.max(10, e.offsetHeight);
@@ -761,6 +763,7 @@ function selection_update()
         image_sel_update();
         break;
       case "texte_simple":
+      case "rect":
         texte_simple_sel_update();
         break;
       case "audio":
@@ -1297,19 +1300,20 @@ function image_sel_update()
   document.getElementById("cr_font_coul").disabled = true;
 }
 
-function texte_simple_new()
+function texte_simple_new(vide)
 {
   //on demande le texte initial
-  txt = prompt("texte\n\nTexte à insérer", "");
-  if (!txt || txt.trim() == "")
+  var txt = "";
+  if (!vide) txt = prompt("texte\n\nTexte à insérer", "");
+  if (!txt )
   {
     //forcer charactère espace pour éviter cadre vide
-    txt = "&nbsp;";
+    txt = "";
   }
   
   //on crée le nouveau bloc
-  bloc = bloc_new("texte_simple", txt);
-  
+  if (vide) bloc = bloc_new("rect", txt);
+  else bloc = bloc_new("texte_simple", txt);
   //on le sélectionne
   selection = [bloc];
   selection_change();
@@ -1335,6 +1339,14 @@ function texte_simple_ini(bloc)
   // rien à faire
   bloc.points = "0";
   bloc.size = "manuel";
+  if (bloc.tpe == "rect")
+  {
+    bloc.width = 40;
+    bloc.height = 40;
+    bloc.fond_coul = "#4AC1D8";
+    bloc.fond_alpha = "100";
+    bloc.marges = 0;
+  }
 }
 function texte_simple_sel_update()
 {
