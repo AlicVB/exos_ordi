@@ -172,10 +172,10 @@
     </div>
     <div class="cr_pa1" id="cr_pa_create">
       <div id="cr_btn_div">
-        <button onclick="radio_new()">radio</button>
-        <button onclick="radiobtn_new()">radio boutons</button>
-        <button onclick="check_new()">cases à cocher</button>
-        <button onclick="combo_new()">liste déroulante</button>
+        <img class="cr_btn" src="icons/radio.svg" onclick="radio_new()" title="un seul choix possible (ronds)"/>
+        <img class="cr_btn" src="icons/radiobtn.svg" onclick="radiobtn_new()" title="un seul choix possible (boutons)"/>
+        <img class="cr_btn" src="icons/check.svg" onclick="check_new()" title="cases à cocher"/>
+        <img class="cr_btn" src="icons/combo.svg" onclick="combo_new()" title="liste déroulante"/>
         <button onclick="texte_new()">zone de texte</button>
         <button onclick="multi_new()">boutons multi-positions</button>
         <button onclick="cible_new()">zone cible</button>

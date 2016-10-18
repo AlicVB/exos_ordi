@@ -764,7 +764,10 @@ function check_sel_update()
   document.getElementById("cr_expl").innerHTML = "<b>cases à cocher</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |*des mamifères$des oiseaux*des félins|)";
   document.getElementById("cr_txt_ini_div").style.display = "inline";
 }
-
+function check_create_html(bloc, txt)
+{
+  radio_create_html(bloc, txt);
+}
 function radiobtn_new()
 {
   //on demande le texte initial
@@ -803,7 +806,10 @@ function radiobtn_sel_update()
     document.getElementById("cr_coul2").jscolor.fromString(selection[0].radiobtn_coul2);
   }
 }
-
+function radiobtn_create_html(bloc, txt)
+{
+  radio_create_html(bloc, txt);
+}
 function radio_new()
 {
   //on demande le texte initial

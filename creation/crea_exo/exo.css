@@ -183,3 +183,12 @@ input[type="number"] {
 #cr_audio_get {
   display: none;
 }
+.cr_btn {
+  padding: 2px;
+  background-color: #C8C8C8;
+  border-radius: 2px;
+  height: 20px;
+}
+.cr_btn:hover {
+  background-color: #DCDCDC;
+}
