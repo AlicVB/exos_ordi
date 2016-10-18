@@ -47,6 +47,9 @@ div.ligne2f {
 ellipse {
   stroke-linecap: round;
 }
+line {
+  stroke-linecap: round;
+}
 .radio form {
   text-align: left;
   font-weight: bold;

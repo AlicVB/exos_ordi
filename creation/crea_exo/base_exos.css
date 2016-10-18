@@ -38,6 +38,15 @@ div.ligne2f {
 ellipse {
   stroke-linecap: round;
 }
+line {
+  stroke-linecap: round;
+}
+div.extrema {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+}
 .radio form {
   text-align: left;
   font-weight: bold;

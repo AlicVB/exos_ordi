@@ -61,7 +61,7 @@ function file_create_css()
     txt += "position: absolute; ";
     txt += "left: " + b.left*100/443 + "%; ";
     txt += "top: " + b.top*100/641 + "%; ";
-    if (b.size == "manuel" || b.size == "ratio")
+    if (b.size == "manuel" || b.size == "ratio" || b.tpe == "ligne")
     {
       if (b.tpe == "cible")
       {
@@ -77,7 +77,7 @@ function file_create_css()
     //bords
     if (b.bord != "hidden")
     {
-      if (b.tpe == "cercle")
+      if (b.tpe == "cercle" || b.tpe == "ligne")
       {
         switch (b.bord)
         {
@@ -276,41 +276,9 @@ function bloc_new(tpe, txt)
   bloc.tpe = tpe;
   bloc.txt = txt;
   bloc_ini(bloc);
-  switch (tpe)
-  {
-    case "radio":
-      radio_ini(bloc);
-    case "radiobtn":
-      radiobtn_ini(bloc);
-    case "check":
-      check_ini(bloc);
-      break;
-    case "texte":
-      texte_ini(bloc);
-      break;
-    case "combo":
-      combo_ini(bloc);
-      break;
-    case "multi":
-      multi_ini(bloc);
-      break;
-    case "cible":
-      cible_ini(bloc);
-      break;
-    case "image":
-      image_ini(bloc);
-      break;
-    case "texte_simple":
-    case "rect":
-      texte_simple_ini(bloc);
-      break;
-    case "audio":
-      audio_ini(bloc);
-      break;
-    case "cercle":
-      cercle_ini(bloc);
-      break;
-  }
+  
+  window[tpe + "_ini"](bloc);
+
   bloc_create_html(bloc);
   blocs.push(bloc);
   // on ajoute le bloc pour le rendu
@@ -408,41 +376,7 @@ function bloc_get_from_id(id)
 
 function bloc_create_html(bloc)
 {
-  switch (bloc.tpe)
-  {
-    case "radio":
-      radio_create_html(bloc, bloc.txt);
-    case "radiobtn":
-      radio_create_html(bloc, bloc.txt);
-    case "check":
-      radio_create_html(bloc, bloc.txt);
-      break;
-    case "texte":
-      texte_create_html(bloc, bloc.txt);
-      break;
-    case "combo":
-      combo_create_html(bloc, bloc.txt);
-      break;
-    case "multi":
-      multi_create_html(bloc, bloc.txt);
-      break;
-    case "cible":
-      cible_create_html(bloc, bloc.txt);
-      break;
-    case "image":
-      image_create_html(bloc, bloc.txt);
-      break;
-    case "texte_simple":
-    case "rect":
-      texte_simple_create_html(bloc, bloc.txt);
-      break;
-    case "audio":
-      audio_create_html(bloc, bloc.txt);
-      break;
-    case "cercle":
-      cercle_create_html(bloc, bloc.txt);
-      break;
-  }
+  window[bloc.tpe + "_create_html"](bloc, bloc.txt);
 }
 
 function infos_ini()
@@ -539,12 +473,10 @@ function rendu_add_bloc(bloc)
     e.style.width = "100%";
     e.style.height = "100%";
   }
-  else if (bloc.tpe == "cercle")
+  else if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
   {
     e.style.width = bloc.width + "px";
-    //e.style.width = "100%";
     e.style.height = bloc.height + "px";
-    //e.style.height = "100%";
   }
   else if (bloc.size == "ratio")
   {
@@ -568,7 +500,7 @@ function rendu_add_bloc(bloc)
   }
   b.style.left = bloc.left + "px";
   b.style.top = bloc.top + "px";
-  if (bloc.tpe == "cercle")
+  if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
   {
     var svg = document.getElementById("svg_" + bloc.id);
     svg.style.fill = hex2rgba(bloc.fond_coul, bloc.fond_alpha);
@@ -613,6 +545,22 @@ function rendu_select_blocs()
   for (let i=0; i<selection.length; i++)
   {
     rendu_get_superbloc(selection[i]).style.border = "1px dashed red";
+  }
+  //et les carrés pour la ligne
+  if (selection.length == 1 && selection[0].tpe == "ligne")
+  {
+    var b = selection[0];
+    var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left+b.x1-4) + "px;top: " + (b.top+b.y1-4) + "px;\"></div>";
+    var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left+b.x2-4) + "px;top: " + (b.top+b.y2-4) + "px;\"></div>";
+    document.getElementById("cr_rendu").innerHTML += c1 + c2;
+  }
+  else
+  {
+    //on enlève les carrés existants
+    var c1 = document.getElementById("extrema_1");
+    var c2 = document.getElementById("extrema_2");
+    if (c1) c1.parentNode.removeChild(c1);
+    if (c2) c2.parentNode.removeChild(c2);
   }
 }
 
@@ -736,43 +684,7 @@ function selection_update()
   // on fait les réglages spécifiques
   for (let i=0; i<selection.length; i++)
   {
-    switch (selection[i].tpe)
-    {
-      case "radio":
-        radio_sel_update();
-        break;
-      case "radiobtn":
-        radiobtn_sel_update();
-        break;
-      case "check":
-        check_sel_update();
-        break;
-      case "texte":
-        texte_sel_update();
-        break;
-      case "combo":
-        combo_sel_update();
-        break;
-      case "multi":
-        multi_sel_update();
-        break;
-      case "cible":
-        cible_sel_update();
-        break;
-      case "image":
-        image_sel_update();
-        break;
-      case "texte_simple":
-      case "rect":
-        texte_simple_sel_update();
-        break;
-      case "audio":
-        audio_sel_update();
-        break;
-      case "cercle":
-        cercle_sel_update();
-        break;
-    }
+    window[selection[i].tpe + "_sel_update"]();
   }
   
   // on s'occupe aussi des controles sous le rendu
@@ -1361,6 +1273,19 @@ function texte_simple_sel_update()
   if (selection.length > 0 && selection_is_homogene("texte_simple")) selection_update_interactions();
 }
 
+function rect_create_html(bloc, txt)
+{
+  texte_simple_create_html(blo, txt);
+}
+function rect_ini(bloc)
+{
+  texte_simple_ini(bloc);
+}
+function rect_sel_update()
+{
+  texte_simple_sel_update();
+}
+
 function audio_new()
 {
   //on crée le nouveau bloc
@@ -1474,6 +1399,109 @@ function cercle_sel_update()
   document.getElementById("cr_bord_rond").disabled = true;
 }
 
+function ligne_new()
+{
+  //on crée le nouveau bloc
+  bloc = bloc_new("ligne", "");
+  
+  //on le sélectionne
+  selection = [bloc];
+  selection_change();
+}
+function ligne_adapt_vals(bloc, x1, y1, x2, y2)
+{
+  //on cherche les extrems en x et y
+  var ep = Math.ceil(parseFloat(bloc.bord_size)/2);
+  var nx1, nx2, nxy1, ny2;
+  var rep = false;
+  if (x1<x2)
+  {
+    bloc.left += x1 - ep;
+    nx1 = x1;
+    ny1 = y1;
+    nx2 = x2;
+    ny2 = y2;
+  }
+  else
+  {
+    rep = true;
+    bloc.left += x2 - ep;
+    nx1 = x2;
+    ny1 = y2;
+    nx2 = x1;
+    ny2 = y1;
+  }
+  bloc.width = nx2-nx1 + parseFloat(bloc.bord_size);
+  bloc.x1 = ep;
+  bloc.x2 = nx2-nx1 + ep;
+  if (ny1<ny2)
+  {
+    bloc.top += ny1 - ep;
+    bloc.height = ny2-ny1 + parseFloat(bloc.bord_size);
+    bloc.y1 = ep;
+    bloc.y2 = ny2-ny1 + ep;
+  }
+  else
+  {
+    bloc.top += ny2 - ep;
+    bloc.height = ny1-ny2 + parseFloat(bloc.bord_size);
+    bloc.y2 = ep;
+    bloc.y1 = ny1-ny2 + ep;
+  }
+  return rep;
+}
+function ligne_create_html(bloc, txt)
+{
+  //on calcule tous les paramètres
+  
+  htm = "<div";
+  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
+  htm += ">\n  <svg class=\"item lignef svg exo\" tpe=\"ligne\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 1)
+  {
+    htm += "line=\"1\" ";
+    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+  }
+  htm += ">\n";
+  htm += "<line x1=\"" + bloc.x1 + "\" y1=\"" + bloc.y1 +"\" x2=\"" + bloc.x2 + "\" y2=\"" + bloc.y2 + "\" id=\"svg_" + bloc.id + "\" />";
+  htm += "</svg>\n</div>\n";
+  
+  bloc.html = htm;
+}
+function ligne_ini(bloc)
+{
+  // rien à faire
+  bloc.points = "0";
+  bloc.size = "auto";
+  bloc.x1 = 2;
+  bloc.y1 = 2;
+  bloc.x2 = 82;
+  bloc.y2 = 12;
+  bloc.width = 84;
+  bloc.height = 14;
+  bloc.bord_coul = "#4AC1D8";
+  bloc.bord = "solid";
+  bloc.bord_size = 4;
+  bloc.marges = 0;
+}
+function ligne_sel_update()
+{
+  if (selection.length > 0 && selection_is_homogene("ligne")) selection_update_interactions();
+  //pas de texte...
+  document.getElementById("cr_font_fam").disabled = true;
+  document.getElementById("cr_font_size").disabled = true;
+  document.getElementById("cr_font_g").disabled = true;
+  document.getElementById("cr_font_i").disabled = true;
+  document.getElementById("cr_font_s").disabled = true;
+  document.getElementById("cr_font_b").disabled = true;
+  document.getElementById("cr_font_coul").disabled = true;
+  //coins arrondis
+  document.getElementById("cr_bord_rond").disabled = true;
+  //fond
+  document.getElementById("cr_fond_coul").disabled = true;
+  document.getElementById("cr_fond_alpha").disabled = true;
+}
+
 function _mv_ini()
 {
   inter = interact('.mv_rs');
@@ -1530,24 +1558,85 @@ function _mv_ini()
 
 function _dragMoveListener (event)
 {
-  for (let i=0; i<selection.length; i++)
+  if ((event.target.id == "extrema_1" || event.target.id == "extrema_2") && selection.length > 0)
   {
-    bloc = selection[i];
-    
-    bloc.top = parseFloat(bloc.top) + event.dy;
-    bloc.left = parseFloat(bloc.left) + event.dx;
-    var sb = rendu_get_superbloc(bloc);
-    sb.style.top = bloc.top + "px";
-    sb.style.left = bloc.left + "px";
-    if (i==0) // on affiche juste les valeurs du premier élément
+    bloc = selection[0];
+    //on déplace l'extrema
+    event.target.style.top = parseFloat(event.target.style.top) + event.dy + "px";
+    event.target.style.left = parseFloat(event.target.style.left) + event.dx + "px";
+    //on modifie la ligne comme il faut
+    var inv = false;
+    if (event.target.getAttribute('extrema') == "1")
     {
-      document.getElementById("cr_tp_l").value = bloc.left;
-      document.getElementById("cr_tp_t").value = bloc.top;
+      inv = ligne_adapt_vals(bloc, bloc.x1 + event.dx, bloc.y1 + event.dy, bloc.x2, bloc.y2);
+    }
+    else
+    {
+      inv = ligne_adapt_vals(bloc, bloc.x1, bloc.y1, bloc.x2 + event.dx, bloc.y2 + event.dy);
+    }
+    if (inv)
+    {
+      //les extrema sont inversés, il faut donc le traduire sur les carrés
+      var elems = document.getElementsByClassName("extrema");
+      for (let i=0; i<elems.length; i++)
+      {
+        if (elems[i].getAttribute("extrema") == "1") elems[i].setAttribute("extrema", "2");
+        else elems[i].setAttribute("extrema", "1");
+      }
+    }
+    // on modifie le style de la ligne en conséquence
+    var svg = document.getElementById("svg_" + bloc.id);
+    var b = document.getElementById(bloc.id);
+    var sb = rendu_get_superbloc(bloc);
+    sb.style.left = bloc.left + "px";
+    sb.style.top = bloc.top + "px";
+    b.style.width = bloc.width + "px";
+    b.style.height = bloc.height + "px";
+    svg.setAttribute("x1", bloc.x1);
+    svg.setAttribute("y1", bloc.y1);
+    svg.setAttribute("x2", bloc.x2);
+    svg.setAttribute("y2", bloc.y2);
+    ligne_create_html(bloc, "");
+  }
+  else
+  {
+    for (let i=0; i<selection.length; i++)
+    {
+      bloc = selection[i];
+      
+      bloc.top = parseFloat(bloc.top) + event.dy;
+      bloc.left = parseFloat(bloc.left) + event.dx;
+      var sb = rendu_get_superbloc(bloc);
+      sb.style.top = bloc.top + "px";
+      sb.style.left = bloc.left + "px";
+      if (i==0) // on affiche juste les valeurs du premier élément
+      {
+        document.getElementById("cr_tp_l").value = bloc.left;
+        document.getElementById("cr_tp_t").value = bloc.top;
+      }
+      if (i==0 && bloc.tpe == "ligne")
+      {
+        var elems = document.getElementsByClassName("extrema");
+        for (let j=0; j<elems.length; j++)
+        {
+          if (elems[j].getAttribute("extrema") == "1")
+          {
+            elems[j].style.left = bloc.left + bloc.x1 - 4 + "px";
+            elems[j].style.top = bloc.top + bloc.y1 - 4 + "px";
+          }
+          else
+          {
+            elems[j].style.left = bloc.left + bloc.x2 - 4 + "px";
+            elems[j].style.top = bloc.top + bloc.y2 - 4 + "px";
+          }
+        }
+      }
     }
   }
 }
 function _drag_rs_end(event)
 {
+  selection_update();
   g_sauver();
 }
 function _drag_rsl_resize(event)

@@ -394,9 +394,14 @@ function cr_bord_change(e)
   v = e.value;
   for (let i=0; i<selection.length; i++)
   {
-    selection[i].bord = v;
-    if (selection[i].tpe == "cercle")
+    if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
     {
+      if (v == "double" || (v == "hidden" && bloc.tpe == "ligne"))
+      {
+        //non géré, retour à l'ancienne valeur
+        selection_update();
+        return;
+      }
       svg = document.getElementById("svg_" + selection[i].id);
       svg.style.stroke = selection[i].bord_coul;
       svg.style.removeProperty("stroke-dasharray");
@@ -412,13 +417,18 @@ function cr_bord_change(e)
           svg.style.removeProperty("stroke");
           break;
       }
-      var w = 0;
-      if (selection[i].bord != "hidden") w = selection[i].bord_size;
-      svg.setAttribute("rx", 50 - parseFloat(w)/2);
-      svg.setAttribute("ry", 50 - parseFloat(w)/2);
-      cercle_create_html(selection[i], "");
+      if (bloc.tpe == "cercle")
+      {
+        //on modifie le rayon pour prendre en compte la bordure
+        var w = 0;
+        if (selection[i].bord != "hidden") w = selection[i].bord_size;
+        svg.setAttribute("rx", 50 - parseFloat(w)/2);
+        svg.setAttribute("ry", 50 - parseFloat(w)/2);
+      }
+      bloc_create_html(selection[i]);
     }
     else document.getElementById(selection[i].id).style.borderStyle = v;
+    selection[i].bord = v;
   }
   selection_update();
   //on sauvegarde
@@ -430,7 +440,7 @@ function cr_bord_coul_change(jscolor)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_coul = v;
-    if (selection[i].tpe == "cercle")
+    if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
     {
       svg = document.getElementById("svg_" + selection[i].id);
       if (selection[i].bord != "hidden") svg.style.stroke = v;
@@ -446,14 +456,34 @@ function cr_bord_size_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_size = v;
-    if (selection[i].tpe == "cercle")
+    if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
     {
       svg = document.getElementById("svg_" + selection[i].id);
       svg.style.strokeWidth = v;
-      var w = 0;
-      if (selection[i].bord != "hidden") w = selection[i].bord_size;
-      svg.setAttribute("rx", 50 - parseFloat(w)/2);
-      svg.setAttribute("ry", 50 - parseFloat(w)/2);
+      if (bloc.tpe == "cercle")
+      {
+        //on modifie le rayon pour prendre en compte la bordure
+        var w = 0;
+        if (selection[i].bord != "hidden") w = selection[i].bord_size;
+        svg.setAttribute("rx", 50 - parseFloat(w)/2);
+        svg.setAttribute("ry", 50 - parseFloat(w)/2);
+      }
+      else if (bloc.tpe == "ligne")
+      {
+        bloc = selection[i];
+        //on recalcule tout pour ne pas clipper la ligne
+        ligne_adapt_vals(bloc, bloc.x1, bloc.y1, bloc.x2, bloc.y2);
+        var b = document.getElementById(bloc.id);
+        var sb = rendu_get_superbloc(bloc);
+        sb.style.left = bloc.left + "px";
+        sb.style.top = bloc.top + "px";
+        b.style.width = bloc.width + "px";
+        b.style.height = bloc.height + "px";
+        svg.setAttribute("x1", bloc.x1);
+        svg.setAttribute("y1", bloc.y1);
+        svg.setAttribute("x2", bloc.x2);
+        svg.setAttribute("y2", bloc.y2);
+      }
       switch (selection[i].bord)
       {
         case "dashed":
@@ -463,7 +493,7 @@ function cr_bord_size_change(e)
           svg.style.strokeDasharray = "0 " + (parseFloat(selection[i].bord_size)*1.5);
           break;
       }
-      cercle_create_html(selection[i], "");
+      bloc_create_html(selection[i]);
     }
     else document.getElementById(selection[i].id).style.borderWidth = v + "px";
   }
