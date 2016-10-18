@@ -388,6 +388,17 @@ function cr_tp_l_change(e)
   //on sauvegarde
   g_sauver();
 }
+function cr_tp_r_change(e)
+{
+  v = e.value;
+  for (let i=0; i<selection.length; i++)
+  {
+    selection[i].rotation = v;
+    document.getElementById(selection[i].id).style.transform = "rotate(" + v + "deg)";
+  }
+  //on sauvegarde
+  g_sauver();
+}
 
 function cr_bord_change(e)
 {

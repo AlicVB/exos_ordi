@@ -299,6 +299,7 @@
             &nbsp;&nbsp;Position : <input id="cr_tp_l" type="number" value="20" min="0" max="500" onchange="cr_tp_l_change(this)" title="position horizontale"/>
             x
             <input class="cr_" id="cr_tp_t" type="number" value="20" min="0" max="700" onchange="cr_tp_t_change(this)" title="position verticale"/>
+            &nbsp;&nbsp;Rotation : <input id="cr_tp_r" type="number" value="0" min="-180" max="180" onchange="cr_tp_r_change(this)" title="rotation de l'objet"/>
           </div>
           <div class="cr_opt_ligne">
             Bordure :
@@ -311,14 +312,14 @@
             </select>
             <input class="cr_" id="cr_bord_size" type="number" value="1" min="1" max="800" onchange="cr_bord_size_change(this)" title="épaisseur de la bordure"/>
             <button id="cr_bord_coul" class="cr_ jscolor {valueElement:null,value:'000000', onFineChange: 'cr_bord_coul_change(this)'}" title="couleur de la bordure"></button>
-            &nbsp;&#42789;
+            &nbsp;arrondi;
             <input class="cr_" id="cr_bord_rond" type="number" value="0" min="0" max="500" onchange="cr_bord_rond_change(this)" title="arrondi de la bordure"/>
           </div>
           <div class="cr_opt_ligne">
             Fond :
             <button id="cr_fond_coul" class="cr_ jscolor {valueElement:null,value:'ffffff', onFineChange: 'cr_fond_coul_change(this)'}"  title="couleur de fond"></button>
             <input class="cr_" id="cr_fond_alpha" type="number" value="0" min="0" max="100" onchange="cr_fond_alpha_change(this)" title="opacité (100 = opaque)"/>%
-            &nbsp;&nbsp;Marges :
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marges :
             <input class="cr_" id="cr_marges" type="number" value="0" min="0" max="500" onchange="cr_marges_change(this)" title="marges intérieures"/>
           </div>
           <div class="cr_opt_ligne">
@@ -340,7 +341,7 @@
               <label for="cr_inter_2" title="Autoriser l'élément à être déplacé sur une zone cible">Déplacer</label>
             </div>
             avec
-            <input type="text" value="" id="cr_relie_id" onchange="cr_relie_id_change(this)" size="2" title="identifiant de l'autre élément"/>
+            <input type="text" value="" id="cr_relie_id" onchange="cr_relie_id_change(this)" size="8" title="identifiant des autres éléments séparés par '|'"/>
           </div>
           <div class="cr_opt_ligne">
             nombre de points de l'item :

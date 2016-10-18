@@ -74,6 +74,7 @@ function file_create_css()
         txt += "height: " + b.height*100/641 + "%; ";
       }
     }
+    if (b.rotation != "0") txt += "transform: rotate(" + b.rotation + "deg); ";
     //bords
     if (b.bord != "hidden")
     {
@@ -290,7 +291,7 @@ function bloc_ini(bloc)
 {
   //polices
   bloc.font_fam = "sans-serif";
-  bloc.font_size = "20";
+  bloc.font_size = "25";
   bloc.font_coul = "#000000";
   bloc.font_g = "false";
   bloc.font_i = "false";
@@ -302,6 +303,7 @@ function bloc_ini(bloc)
   bloc.width = 0;
   bloc.height = 0;
   bloc.size = "auto";
+  bloc.rotation = 0;
   //bordures
   bloc.bord = "hidden";
   bloc.bord_size = "1";
@@ -432,7 +434,7 @@ function rendu_add_bloc(bloc)
   else htm += "mv\" ";
   htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
   htm += bloc.html;
-  htm += "\n</div>\n";
+  htm += "\n<div class=\"couverture\"></div></div>\n";
   
   //on l'ajoute
   document.getElementById("cr_rendu").innerHTML += htm;
@@ -454,7 +456,7 @@ function rendu_add_bloc(bloc)
   
   //police
   e.style.fontFamily = bloc.font_fam;
-  e.style.fontsize = (parseInt(bloc.font_size)*0.65) + "px";
+  e.style.fontSize = (parseInt(bloc.font_size)*0.65) + "px";
   e.style.color = bloc.font_coul;
   if (bloc.font_g == true) e.style.fontWeight = "bold";
   if (bloc.font_i == true) e.style.fontStyle = "italic";
@@ -483,7 +485,8 @@ function rendu_add_bloc(bloc)
     b.style.width = bloc.width + "px";
     e.style.width = "100%";
     // on triche un peu pour éviter les trucs bizarres (on initialise à un carré)
-    b.style.height = bloc.width + "px";
+    if (bloc.height == "0") b.style.height = bloc.width + "px";
+    else b.style.height = bloc.height + "px";
   }
   else if (bloc.size == "manuel")
   {
@@ -500,6 +503,7 @@ function rendu_add_bloc(bloc)
   }
   b.style.left = bloc.left + "px";
   b.style.top = bloc.top + "px";
+  if (bloc.rotation != "0") e.style.transform = "rotate(" + bloc.rotation + "deg)";
   if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
   {
     var svg = document.getElementById("svg_" + bloc.id);
@@ -639,6 +643,7 @@ function selection_update()
   document.getElementById("cr_tp_t").value = bloc.top;
   document.getElementById("cr_tp_w").value = bloc.width;
   document.getElementById("cr_tp_h").value = bloc.height;
+  document.getElementById("cr_tp_r").value = bloc.rotation;
   
   //bordures
   document.getElementById("cr_bord").value = bloc.bord;
