@@ -192,3 +192,11 @@ input[type="number"] {
 .cr_btn:hover {
   background-color: #E2E2E2;
 }
+.cr_record_div {
+  display: none;
+}
+.cr_record_div img {
+  height: 20px;
+  padding: 2px;
+  margin-left: 4px;
+}

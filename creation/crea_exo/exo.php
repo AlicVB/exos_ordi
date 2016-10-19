@@ -231,6 +231,12 @@
           <form enctype="multipart/form-data">
             <input name="cr_audio_get" type="file" id="cr_audio_get" accept="audio/*" onchange="cr_audio_get_change(this)"/>
           </form>
+          <div id="cr_record_div">
+            <img id="cr_record_start" etat="0" src="icons/media-record.svg" onclick="cr_record_start()"/>
+            <img id="cr_record_save" src="icons/document-save.svg" onclick="cr_record_save()"/>
+            <img id="cr_record_delete" src="icons/window-close.svg" onclick="cr_record_delete()"/>
+            <audio id="cr_record_audio"></audio>
+          </div>
         </div>
         
       </div>

@@ -447,7 +447,7 @@ function cr_tp_r_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].rotation = v;
-    document.getElementById(selection[i].id).style.transform = "rotate(" + v + "deg)";
+    rendu_get_superbloc(selection[i]).style.transform = "rotate(" + v + "deg)";
   }
   //on sauvegarde
   g_sauver();
@@ -915,6 +915,70 @@ function cr_action_change(e)
   }
   if (e.value >= 0) g_sauver();
   e.selectedIndex = 0;
+}
+
+function cr_record_start(e)
+{
+  switch (e.getAttribute("etat"))
+  {
+    case "0":
+      record_start();
+      break;
+    case "1":
+      record_stop();
+      break;
+    case "2":
+      document.getElementById("cr_record_audio").play();
+      break;
+  }
+}
+function cr_record_save()
+{
+  //on sauvegarde le son enregistré
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
+    {
+      // on récupère le bloc sélectionné
+      if (selection.length < 1) return;
+      bloc = selection[0];
+      if (bloc.tpe != "audio") return;
+  
+      let audio_name = xhr.responseText;
+      if (audio_name.startsWith("*"))
+      {
+        alert(audio_name.substr(1));
+        document.getElementById("cr_audio_select").value = "";
+        return;
+      }
+      //on récupère les chemins
+      bloc.audio_name = "sons/" + audio_name;
+      
+      audio_create_html(bloc, "");
+      document.getElementById("cr_html").value = bloc.html;
+      // et la liste des images
+      var option = document.createElement("option");
+      option.text = audio_name;
+      option.value = audio_name;
+      document.getElementById("cr_audio_select").add(option);
+      document.getElementById("cr_audio_select").value = audio_name;
+      //on sauvegarde
+      g_sauver();
+      //et on remet tout l'affichage à zéro
+      cr_record_delete();
+    }
+  };
+  // We setup our request
+  xhr.open("POST", "io.php?io=sauveaudioblob&fic=" + exo_dos);
+  xhr.send(record.blob);
+}
+function cr_record_delete()
+{
+  record.chunk = [];
+  record.blob = null;
+  record.recorder = null;
+  document.getElementById("cr_record_div").style.display = "none";
 }
 
 function cri_titre_change(e)

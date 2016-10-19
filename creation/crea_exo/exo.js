@@ -7,6 +7,9 @@ var last_id = 0;    // dernier id utilisé
 
 var exo_dos = ""  //chemin vers le dossier de l'exercice
 
+var record = {};  //objet contenant tout ce qu'il faut pour enregistrer
+
+
 function change(e)
 {
 }
@@ -24,6 +27,13 @@ function start(dos)
   g_restaurer_info(false);
   cr_tab_click(document.getElementById("cr_tab_info"));
   document.addEventListener("keydown", cr_keydown);
+  
+  //enregistrement
+  record.chunk = [];
+  record.stream = null;
+  record.recorder = null;
+  record.promise = null;
+  record.blob = null;
 }
 
 function hex2rgb(hex)
@@ -41,6 +51,53 @@ function hex2rgba(hex, alpha)
   var g = parseInt(result[2], 16);
   var b = parseInt(result[3], 16);
   return "rgba(" + r + ", " + g + ", " + b + ", " + (alpha/100) + ")";
+}
+
+function record_ini()
+{
+  //on gère l'affichage
+  document.getElementById("cr_record_start").style.display = "inline";
+  document.getElementById("cr_record_save").style.display = "none";
+  document.getElementById("cr_record_delete").style.display = "none";
+  document.getElementById("cr_record_start").setAttribute("etat", "0");
+  document.getElementById("cr_record_start").style.backgroundColor = "#D8D8D8";
+  document.getElementById("cr_record_start").src = "icons/media-record.svg";
+  document.getElementById("cr_record_div").style.display = "inline-block";
+
+  if (record.promise) return; //on a déjà initialiser !
+  
+  record.promise = navigator.mediaDevices.getUserMedia({audio: true, video: false});
+  record.promise.then(function(_str) {record.stream = _str; });
+  record.promise.catch(function(err) { console.log(err.name + ": " + err.message); });
+}
+function record_start()
+{
+  document.getElementById("cr_record_start").setAttribute("etat", "1");
+  document.getElementById("cr_record_start").style.backgroundColor = "red";
+  document.getElementById("cr_record_start").src = "icons/media-playback-stop.svg";
+  record.recorder = new MediaRecorder(stream);
+  record.recorder.ondataavailable = function(e) {record.chunks.push(e.data);};
+  record.recorder.onstop = record_fin;
+  
+  record.recorder.start();
+  console.log("recorder started : " + record.recorder.state);
+}
+function record_stop()
+{
+  record.recorder.stop();
+  console.log("recorder stopped " + record.recorder.state);
+  document.getElementById("cr_record_start").setAttribute("etat", "2");
+  document.getElementById("cr_record_start").style.backgroundColor = "#D8D8D8";
+  document.getElementById("cr_record_start").src = "icons/media-playback-start.svg";
+  document.getElementById("cr_record_save").style.display = "inline";
+  document.getElementById("cr_record_delete").style.display = "inline";
+}
+function record_fin(e)
+{
+  console.log("recorder saving");
+  record.blob = new Blob(record.chunks, { 'type' : 'audio/ogg; codecs=opus' });
+  var audioURL = window.URL.createObjectURL(record.blob);
+  document.getElementById("cr_record_audio").src = audioURL;
 }
 
 function file_create_css()
@@ -507,7 +564,7 @@ function rendu_add_bloc(bloc)
   }
   b.style.left = bloc.left + "px";
   b.style.top = bloc.top + "px";
-  if (bloc.rotation != "0") e.style.transform = "rotate(" + bloc.rotation + "deg)";
+  if (bloc.rotation != "0") b.style.transform = "rotate(" + bloc.rotation + "deg)";
   if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
   {
     var svg = document.getElementById("svg_" + bloc.id);
