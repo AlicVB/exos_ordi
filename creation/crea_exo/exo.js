@@ -23,6 +23,7 @@ function start(dos)
   g_restaurer(true);
   g_restaurer_info(false);
   cr_tab_click(document.getElementById("cr_tab_info"));
+  document.addEventListener("keydown", cr_keydown);
 }
 
 function hex2rgb(hex)
@@ -327,6 +328,9 @@ function bloc_ini(bloc)
 
 function bloc_mousedown(elem, event)
 {
+  //d'abord on enlève le focus ailleurs
+  if (document.activeElement) document.activeElement.blur();
+  
   if (event.target && event.target.id == "cr_rendu")
   {
     // on déselectionne tout

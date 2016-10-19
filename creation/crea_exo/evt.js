@@ -26,6 +26,59 @@ function cr_tab_click(e)
   }
 }
 
+function cr_keydown(event)
+{
+  if (event.target != document.body || selection.length < 1) return;
+  //console.log(event.keyCode);
+  var r = document.getElementById("cr_rendu")
+  var mv = 5;
+  if (event.ctrlKey || event.shiftKey) mv = 20;
+  switch (event.keyCode)
+  {
+    case 37: //flèche gauche
+      for (let i=0; i<selection.length; i++)
+      {
+        selection[i].left = Math.max(0, parseFloat(selection[i].left) - mv);
+        rendu_get_superbloc(selection[i]).style.left = selection[i].left + "px";
+      }
+      break;
+    case 38: //flèche haut
+      for (let i=0; i<selection.length; i++)
+      {
+        selection[i].top = Math.max(0, parseFloat(selection[i].top) - mv);
+        rendu_get_superbloc(selection[i]).style.top = selection[i].top + "px";
+      }
+      break;
+    case 39: //flèche droite
+      for (let i=0; i<selection.length; i++)
+      {
+        selection[i].left = Math.min(r.offsetWidth - 10 - selection[i].width, parseFloat(selection[i].left) + mv);
+        rendu_get_superbloc(selection[i]).style.left = selection[i].left + "px";
+      }
+      break;
+    case 40: //flèche bas
+      for (let i=0; i<selection.length; i++)
+      {
+        selection[i].top = Math.min(r.offsetHeight - 10 - selection[i].height, parseFloat(selection[i].top) + mv);
+        rendu_get_superbloc(selection[i]).style.top = selection[i].top + "px";
+      }
+      break;
+    case 46: //suppr
+    case 8:  //retour arrière
+      var e = {};
+      e.value = "2";
+      cr_action_change(e);
+      break;
+    case 67: //C
+      var e = {};
+      e.value = "1";
+      cr_action_change(e);
+      break;
+  }
+  selection_update();
+  g_sauver();
+}
+
 function cr_coul_nb_change(e, modif)
 {
   var elems = document.getElementsByClassName('cr_coul');
