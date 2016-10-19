@@ -176,17 +176,17 @@
         <img class="cr_btn" src="icons/radiobtn.svg" onclick="radiobtn_new()" title="un seul choix possible (boutons)"/>
         <img class="cr_btn" src="icons/check.svg" onclick="check_new()" title="cases à cocher"/>
         <img class="cr_btn" src="icons/combo.svg" onclick="combo_new()" title="liste déroulante"/>
-        <button onclick="texte_new()">zone de texte</button>
-        <button onclick="multi_new()">boutons multi-positions</button>
-        <button onclick="cible_new()">zone cible</button>
+        <img class="cr_btn" src="icons/texte.svg" onclick="texte_new()" title="zone de texte à remplir"/>
+        <img class="cr_btn" src="icons/multi.svg" onclick="multi_new()" title="boutons multipositions"/>
+        <img class="cr_btn" src="icons/cible.svg" onclick="cible_new()" title="zone cible pour déplacer des objets"/>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <button onclick="image_new()">image</button>
-        <button onclick="texte_simple_new(false)">texte</button>
-        <button onclick="audio_new()">audio</button>
+        <img class="cr_btn" src="icons/image.svg" onclick="image_new()" title="ajouter une image"/>
+        <img class="cr_btn" src="icons/texte_simple.svg" onclick="texte_simple_new(false)" title="ajouter du texte"/>
+        <img class="cr_btn" src="icons/audio.svg" onclick="audio_new()" title="ajouter un son"/>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <button onclick="texte_simple_new(true)">rectangle</button>
-        <button onclick="cercle_new()">cercle</button>
-        <button onclick="ligne_new()">ligne</button>
+        <img class="cr_btn" src="icons/rect.svg" onclick="texte_simple_new(true)" title="ajouter un rectangle"/>
+        <img class="cr_btn" src="icons/cercle.svg" onclick="cercle_new()" title="ajouter une éllipse"/>
+        <img class="cr_btn" src="icons/ligne.svg" onclick="ligne_new()" title="ajouter une ligne"/>
       </div>
       <div id="cr_nom">
         élément sélectionné :&nbsp;
