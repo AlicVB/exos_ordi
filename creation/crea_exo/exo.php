@@ -59,6 +59,34 @@
           <td>Consigne (html) :</th>
           <td><textarea id="cri_consigne" onKeyUp="cri_consigne_change(this)"></textarea></td>
         </tr>
+        <tr>
+          <td>Consigne audio :</th>
+          <td>
+            <div class="cr_opt_ligne" id="ci_audio_get_div">
+              <select id="ci_audio_select" onchange="cr_audio_select_change(this)">
+                <option value="" selected></option>
+                <option value="******">Enregistrer...</options>
+                <option value="****">Parcourir...</options>
+                <?php
+                  $imgs = glob("$dos_l/sons/*");
+                  for ($i=0; $i<count($imgs); $i++)
+                  {
+                    echo "<option value=\"".basename($imgs[$i])."\">".basename($imgs[$i])."</option>";
+                  }
+                ?>
+              </select>
+              <form enctype="multipart/form-data">
+                <input name="cr_audio_get" type="file" id="ci_audio_get" accept="audio/*" onchange="cr_audio_get_change(this)"/>
+              </form>
+              <div id="ci_record_div">
+                <img id="ci_record_start" etat="0" src="icons/media-record.svg" onclick="cr_record_start(this)"/>
+                <img id="ci_record_save" src="icons/document-save.svg" onclick="cr_record_save(this)"/>
+                <img id="ci_record_delete" src="icons/window-close.svg" onclick="cr_record_delete()"/>
+                <audio id="ci_record_audio"></audio>
+              </div>
+            </div>
+          </td>
+        </tr>
       </table>
       </p>
       <p>
@@ -216,9 +244,10 @@
             <input name="cr_img_get" type="file" id="cr_img_get" accept="image/*" onchange="cr_img_get_change(this)"/>
           </form>
         </div>
-        <div id="cr_audio_get_div">
+        <div class="cr_opt_ligne" id="cr_audio_get_div">
           <select id="cr_audio_select" onchange="cr_audio_select_change(this)">
             <option value="" selected></option>
+            <option value="******">Enregistrer...</options>
             <option value="****">Parcourir...</options>
             <?php
               $imgs = glob("$dos_l/sons/*");
@@ -232,7 +261,7 @@
             <input name="cr_audio_get" type="file" id="cr_audio_get" accept="audio/*" onchange="cr_audio_get_change(this)"/>
           </form>
           <div id="cr_record_div">
-            <img id="cr_record_start" etat="0" src="icons/media-record.svg" onclick="cr_record_start()"/>
+            <img id="cr_record_start" etat="0" src="icons/media-record.svg" onclick="cr_record_start(this)"/>
             <img id="cr_record_save" src="icons/document-save.svg" onclick="cr_record_save()"/>
             <img id="cr_record_delete" src="icons/window-close.svg" onclick="cr_record_delete()"/>
             <audio id="cr_record_audio"></audio>

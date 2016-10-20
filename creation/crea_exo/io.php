@@ -42,6 +42,17 @@ function free_path($fic)
         else $rest = "*Erreur: la copie de l'audio a échoué !";
       }
     }
+    else if ($io == "sauveaudioblob")
+    {
+      $dest = free_path("$fic/sons/rec_".date("ymd_His").".ogg");
+      $input = fopen('php://input', 'rb');
+      $file = fopen($dest, 'wb');
+      stream_copy_to_stream($input, $file);
+      fclose($input);
+      fclose($file);
+      if (file_exists($dest)) $ret = basename($dest);
+      else $rest = "*Erreur: l'enregistrement a échoué !";
+    }
   }
   else if (isset($_POST["fic"]) && isset($_POST["io"])) 
   {

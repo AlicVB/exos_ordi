@@ -29,7 +29,7 @@ function start(dos)
   document.addEventListener("keydown", cr_keydown);
   
   //enregistrement
-  record.chunk = [];
+  record.chunks = [];
   record.stream = null;
   record.recorder = null;
   record.promise = null;
@@ -53,16 +53,17 @@ function hex2rgba(hex, alpha)
   return "rgba(" + r + ", " + g + ", " + b + ", " + (alpha/100) + ")";
 }
 
-function record_ini()
+function record_ini(e)
 {
+  var pre = e.id.substr(0,2);
   //on gère l'affichage
-  document.getElementById("cr_record_start").style.display = "inline";
-  document.getElementById("cr_record_save").style.display = "none";
-  document.getElementById("cr_record_delete").style.display = "none";
-  document.getElementById("cr_record_start").setAttribute("etat", "0");
-  document.getElementById("cr_record_start").style.backgroundColor = "#D8D8D8";
-  document.getElementById("cr_record_start").src = "icons/media-record.svg";
-  document.getElementById("cr_record_div").style.display = "inline-block";
+  document.getElementById(pre + "_record_start").style.display = "inline";
+  document.getElementById(pre + "_record_save").style.display = "none";
+  document.getElementById(pre + "_record_delete").style.display = "none";
+  document.getElementById(pre + "_record_start").setAttribute("etat", "0");
+  document.getElementById(pre + "_record_start").style.backgroundColor = "#D8D8D8";
+  document.getElementById(pre + "_record_start").src = "icons/media-record.svg";
+  document.getElementById(pre + "_record_div").style.display = "inline-block";
 
   if (record.promise) return; //on a déjà initialiser !
   
@@ -70,34 +71,32 @@ function record_ini()
   record.promise.then(function(_str) {record.stream = _str; });
   record.promise.catch(function(err) { console.log(err.name + ": " + err.message); });
 }
-function record_start()
+function record_start(e)
 {
-  document.getElementById("cr_record_start").setAttribute("etat", "1");
-  document.getElementById("cr_record_start").style.backgroundColor = "red";
-  document.getElementById("cr_record_start").src = "icons/media-playback-stop.svg";
-  record.recorder = new MediaRecorder(stream);
+  var pre = e.id.substr(0,2);
+  document.getElementById(pre + "_record_start").setAttribute("etat", "1");
+  document.getElementById(pre + "_record_start").style.backgroundColor = "red";
+  document.getElementById(pre + "_record_start").src = "icons/media-playback-stop.svg";
+  record.recorder = new MediaRecorder(record.stream);
   record.recorder.ondataavailable = function(e) {record.chunks.push(e.data);};
-  record.recorder.onstop = record_fin;
   
   record.recorder.start();
   console.log("recorder started : " + record.recorder.state);
 }
-function record_stop()
+function record_stop(e)
 {
+  var pre = e.id.substr(0,2);
   record.recorder.stop();
   console.log("recorder stopped " + record.recorder.state);
-  document.getElementById("cr_record_start").setAttribute("etat", "2");
-  document.getElementById("cr_record_start").style.backgroundColor = "#D8D8D8";
-  document.getElementById("cr_record_start").src = "icons/media-playback-start.svg";
-  document.getElementById("cr_record_save").style.display = "inline";
-  document.getElementById("cr_record_delete").style.display = "inline";
-}
-function record_fin(e)
-{
-  console.log("recorder saving");
+  document.getElementById(pre + "_record_start").setAttribute("etat", "2");
+  document.getElementById(pre + "_record_start").style.backgroundColor = "#D8D8D8";
+  document.getElementById(pre + "_record_start").src = "icons/media-playback-start.svg";
+  document.getElementById(pre + "_record_save").style.display = "inline";
+  document.getElementById(pre + "_record_delete").style.display = "inline";
+  
   record.blob = new Blob(record.chunks, { 'type' : 'audio/ogg; codecs=opus' });
   var audioURL = window.URL.createObjectURL(record.blob);
-  document.getElementById("cr_record_audio").src = audioURL;
+  document.getElementById(pre + "_record_audio").src = audioURL;
 }
 
 function file_create_css()
@@ -1400,10 +1399,10 @@ function audio_sel_update()
   {
     bloc = selection[0];
     
-    document.getElementById("cr_audio_select").value = bloc.img_name;
+    document.getElementById("cr_audio_select").value = bloc.audio_name.substr(5);
     
     document.getElementById("cr_expl").innerHTML = "<b>audio</b><br/>Sélectionner un fichier sonore.";
-    document.getElementById("cr_audio_get_div").style.display = "inline";
+    document.getElementById("cr_audio_get_div").style.display = "flex";
   }
   if (selection.length > 0 && selection_is_homogene("audio")) selection_update_interactions();
   //pas de texte...
