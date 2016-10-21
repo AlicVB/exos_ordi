@@ -81,7 +81,7 @@
               <div id="ci_record_div">
                 <img id="ci_record_start" etat="0" src="icons/media-record.svg" onclick="cr_record_start(this)"/>
                 <img id="ci_record_save" src="icons/document-save.svg" onclick="cr_record_save(this)"/>
-                <img id="ci_record_delete" src="icons/window-close.svg" onclick="cr_record_delete()"/>
+                <img id="ci_record_delete" src="icons/window-close.svg" onclick="cr_record_delete(this)"/>
                 <audio id="ci_record_audio"></audio>
               </div>
             </div>
@@ -262,8 +262,8 @@
           </form>
           <div id="cr_record_div">
             <img id="cr_record_start" etat="0" src="icons/media-record.svg" onclick="cr_record_start(this)"/>
-            <img id="cr_record_save" src="icons/document-save.svg" onclick="cr_record_save()"/>
-            <img id="cr_record_delete" src="icons/window-close.svg" onclick="cr_record_delete()"/>
+            <img id="cr_record_save" src="icons/document-save.svg" onclick="cr_record_save(this)"/>
+            <img id="cr_record_delete" src="icons/window-close.svg" onclick="cr_record_delete(this)"/>
             <audio id="cr_record_audio"></audio>
           </div>
         </div>

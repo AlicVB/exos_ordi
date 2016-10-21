@@ -71,14 +71,15 @@ function record_ini(e)
   record.promise.then(function(_str) {record.stream = _str; });
   record.promise.catch(function(err) { console.log(err.name + ": " + err.message); });
 }
-function record_start(e)
+function record_start(el)
 {
-  var pre = e.id.substr(0,2);
+  var pre = el.id.substr(0,2);
   document.getElementById(pre + "_record_start").setAttribute("etat", "1");
   document.getElementById(pre + "_record_start").style.backgroundColor = "red";
   document.getElementById(pre + "_record_start").src = "icons/media-playback-stop.svg";
   record.recorder = new MediaRecorder(record.stream);
   record.recorder.ondataavailable = function(e) {record.chunks.push(e.data);};
+  record.recorder.onstop = function(e) {record_fin(e, el);};
   
   record.recorder.start();
   console.log("recorder started : " + record.recorder.state);
@@ -93,7 +94,10 @@ function record_stop(e)
   document.getElementById(pre + "_record_start").src = "icons/media-playback-start.svg";
   document.getElementById(pre + "_record_save").style.display = "inline";
   document.getElementById(pre + "_record_delete").style.display = "inline";
-  
+}
+function record_fin(e, el)
+{
+  var pre = el.id.substr(0,2);
   record.blob = new Blob(record.chunks, { 'type' : 'audio/ogg; codecs=opus' });
   var audioURL = window.URL.createObjectURL(record.blob);
   document.getElementById(pre + "_record_audio").src = audioURL;
@@ -189,7 +193,8 @@ function file_create_infos()
     txt += "\n";
   }
   txt += infos.essais + "\n";
-  txt += infos.coul;
+  txt += infos.coul + "\n";
+  txt += infos.audio_name + "\n";
   
   return txt;
 }
@@ -287,6 +292,7 @@ function g_restaurer_info(init)
         }
         infos.essais = vals[9];
         infos.coul = vals[10];
+        if (vals.length>11) infos.audio_name = vals[11];
       }
       infos_change();
     }
@@ -475,6 +481,7 @@ function infos_ini()
   infos.a[3].txt = "Tu commences à comprendre,\nmais il reste encore des erreurs !\Passe à la suite...";
   infos.a[4].txt = "BIEN !\nTu n'as presque plus d'erreurs.\Sauras-tu faire encore mieux\nau prochain exercice ?";
   infos.a[5].txt = "BRAVO !\nSeras-tu capable de faire aussi bien\nau prochain exercice ?";
+  infos.audio_name = "";
 }
 
 //on initialise la zone de rendu (uniquement le prénom)

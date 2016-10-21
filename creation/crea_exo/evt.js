@@ -942,10 +942,10 @@ function cr_record_start(e)
   switch (e.getAttribute("etat"))
   {
     case "0":
-      record_start();
+      record_start(e);
       break;
     case "1":
-      record_stop();
+      record_stop(e);
       break;
     case "2":
       document.getElementById(pre + "_record_audio").play();
@@ -961,11 +961,6 @@ function cr_record_save(e)
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
-      // on récupère le bloc sélectionné
-      if (selection.length < 1) return;
-      bloc = selection[0];
-      if (bloc.tpe != "audio") return;
-  
       let audio_name = xhr.responseText;
       if (audio_name.startsWith("*"))
       {
@@ -981,6 +976,10 @@ function cr_record_save(e)
       document.getElementById(pre + "_audio_select").value = audio_name;
       if (pre == "cr")
       {
+        // on récupère le bloc sélectionné
+        if (selection.length < 1) return;
+        bloc = selection[0];
+        if (bloc.tpe != "audio") return;
         //on récupère les chemins
         bloc.audio_name = "sons/" + audio_name;
         
@@ -996,7 +995,10 @@ function cr_record_save(e)
       }     
       
       //et on remet tout l'affichage à zéro
-      cr_record_delete(e);
+      record.chunks = [];
+      record.blob = null;
+      record.recorder = null;
+      document.getElementById(pre + "_record_div").style.display = "none";
     }
   };
   // We setup our request
@@ -1005,11 +1007,10 @@ function cr_record_save(e)
 }
 function cr_record_delete(e)
 {
-  var pre = e.id.substr(0,2);
   record.chunks = [];
   record.blob = null;
   record.recorder = null;
-  document.getElementById(pre + "_record_div").style.display = "none";
+  record_ini(e);
 }
 
 function cri_titre_change(e)
