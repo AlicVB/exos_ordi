@@ -279,18 +279,33 @@
             </div>
             <div class="cr_coul" id="cr_div_coul1">Couleur1
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul1" value="#00ff00" />
+              <input type="checkbox" name="cr_coul1_maj" id="cr_coul1_maj" onchange="cr_coul_change(this)"/><label for="cr_coul1_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul1_suff" id="cr_coul1_suff" onchange="cr_coul_change(this)"/><label for="cr_coul1_suff">suffixe</label>
+              <input type="text" size="3" id="cr_coul1_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
             <div class="cr_coul" id="cr_div_coul2">Couleur2
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul2" value="#ff0000" />
+              <input type="checkbox" name="cr_coul2_maj" id="cr_coul2_maj" onchange="cr_coul_change(this)"/><label for="cr_coul2_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul2_suff" id="cr_coul2_suff" onchange="cr_coul_change(this)"/><label for="cr_coul2_suff">suffixe</label>
+              <input type="text" size="3" id="cr_coul2_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
             <div class="cr_coul" id="cr_div_coul3">Couleur3
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul3" value="#0000ff" />
+              <input type="checkbox" name="cr_coul3_maj" id="cr_coul3_maj" onchange="cr_coul_change(this)"/><label for="cr_coul3_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul3_suff" id="cr_coul3_suff" onchange="cr_coul_change(this)"/><label for="cr_coul3_suff">suffixe</label>
+              <input type="text" size="3" id="cr_coul3_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
             <div class="cr_coul" id="cr_div_coul4">Couleur4
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul4" value="#ffff00" />
+              <input type="checkbox" name="cr_coul4_maj" id="cr_coul4_maj" onchange="cr_coul_change(this)"/><label for="cr_coul4_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul4_suff" id="cr_coul4_suff" onchange="cr_coul_change(this)"/><label for="cr_coul4_suff">suffixe</label>
+              <input type="text" size="3" id="cr_coul4_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
             <div class="cr_coul" id="cr_div_coul5">Couleur5
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul5" value="#00ffff" />
+              <input type="checkbox" name="cr_coul5_maj" id="cr_coul5_maj" onchange="cr_coul_change(this)"/><label for="cr_coul5_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul5_suff" id="cr_coul5_suff" onchange="cr_coul_change(this)"/><label for="cr_coul4_suff">suffixe</label>
+              <input type="text" size="3" id="cr_coul5_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
             <div id="cr_texte_div">
               Largeur (0=infini) :
@@ -423,7 +438,7 @@
       <option value="2">supprimer</option>
     </select>
     <br/><br/>
-    <button id="cr_sauve" onClick="g_exporter();">Créer l'exercice</button>
+    <button id="cr_sauve" onClick="g_exporter();">Finaliser l'exercice</button>
     <button href="../livre.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>">Retour au livre</button>
   </div>
 </body>

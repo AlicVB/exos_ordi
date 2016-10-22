@@ -87,7 +87,13 @@ function cr_coul_nb_change(e, modif)
   for (let i=1; i<elems.length; i++)
   {
     if (i>nb) elems[i].style.display = 'none';
-    else elems[i].style.display = 'block';
+    else
+    {
+      elems[i].style.display = 'block';
+      document.getElementById("cr_coul" + i + "_maj").style.display = "inline";
+      document.getElementById("cr_coul" + i + "_suff").style.display = "inline";
+      document.getElementById("cr_coul" + i + "_suff_txt").style.display = "inline";
+    }
   }
   
   //on met à jour le bloc si besoin
@@ -204,8 +210,8 @@ function cr_audio_get_change(e)
       var option = document.createElement("option");
       option.text = audio_name;
       option.value = audio_name;
-      document.getElementById("cr_audio_select").add(option);
-      document.getElementById("cr_audio_select").value = audio_name;
+      document.getElementById(pre + "_audio_select").add(option);
+      document.getElementById(pre + "_audio_select").value = audio_name;
       if (pre == "cr")
       {
         // on récupère le bloc sélectionné
@@ -220,7 +226,7 @@ function cr_audio_get_change(e)
         //on sauvegarde
         g_sauver();
       }
-      else if (cr == "ci")
+      else if (pre == "ci")
       {
         infos.audio_name = "sons/" + audio_name;
         g_sauver_info();
@@ -295,10 +301,24 @@ function cr_coul_change(e)
         break;
       case "multi":
         // on change juste les options
-        bloc.multi_coul = new Array();
+        bloc.multi_coul = [];
+        bloc.multi_maj = [];
+        bloc.multi_suff = [];
         for (let i=0; i<document.getElementById("cr_coul_nb").value; i++)
         {
           bloc.multi_coul.push("#" + document.getElementById("cr_coul" + (i+1)).jscolor);
+          if (document.getElementById("cr_coul" + (i+1) + "_maj").checked) bloc.multi_maj.push(1);
+          else bloc.multi_maj.push(0);
+          if (document.getElementById("cr_coul" + (i+1) + "_suff").checked)
+          {
+            document.getElementById("cr_coul" + (i+1) + "_suff_txt").disabled = false;
+            bloc.multi_suff.push(document.getElementById("cr_coul" + (i+1) + "_suff_txt").value);
+          }
+          else
+          {
+            document.getElementById("cr_coul" + (i+1) + "_suff_txt").disabled = true;
+            bloc.multi_suff.push("");
+          }
         }
         break;
       default:
@@ -617,7 +637,11 @@ function cr_fond_alpha_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].fond_alpha = v;
-    document.getElementById(selection[i].id).style.backgroundColor = hex2rgba(selection[i].fond_coul, v);
+    if (selection[i].tpe == "cercle")
+    {
+      document.getElementById("svg_" + selection[i].id).style.fill = hex2rgba(selection[i].fond_coul, v);
+    }
+    else document.getElementById(selection[i].id).style.backgroundColor = hex2rgba(selection[i].fond_coul, v);
   }
   //on sauvegarde
   g_sauver();

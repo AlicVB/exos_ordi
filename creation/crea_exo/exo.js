@@ -487,7 +487,7 @@ function infos_ini()
 //on initialise la zone de rendu (uniquement le prénom)
 function rendu_ini()
 {
-  htm = "<span id=\"user\">Prénom : Joséphine</span>\n";
+  htm = "<span id=\"user\">Prénom : Exemple-Prénom</span>\n";
   document.getElementById("cr_rendu").innerHTML = htm;
 }
 
@@ -672,11 +672,8 @@ function selection_update()
   {
     elems[i].style.display = 'none';
   }
-  elems = document.getElementsByClassName('cr_texte_div');
-  for (let i=0; i<elems.length; i++)
-  {
-    elems[i].style.display = 'none';
-  }
+  document.getElementById("cr_texte_div").style.display = 'none';
+
   document.getElementById("cr_txt_ini_div").style.display = "none";
   document.getElementById("cr_img_get_div").style.display = "none";
   document.getElementById("cr_audio_get_div").style.display = "none";
@@ -869,6 +866,12 @@ function radiobtn_sel_update()
     var elems = document.getElementsByClassName('cr_coul');
     elems[1].style.display = "block";
     elems[2].style.display = "block";
+    document.getElementById("cr_coul1_maj").style.display = "none";
+    document.getElementById("cr_coul1_suff").style.display = "none";
+    document.getElementById("cr_coul1_suff_txt").style.display = "none";
+    document.getElementById("cr_coul2_maj").style.display = "none";
+    document.getElementById("cr_coul2_suff").style.display = "none";
+    document.getElementById("cr_coul2_suff_txt").style.display = "none";
     document.getElementById("cr_coul1").jscolor.fromString(selection[0].radiobtn_coul1);
     document.getElementById("cr_coul2").jscolor.fromString(selection[0].radiobtn_coul2);
   }
@@ -1101,7 +1104,7 @@ function texte_sel_update()
 function multi_new()
 {
   //on demande le texte initial
-  txt = prompt("blocs multi-positions\n\nEncadrer les blocs par '|' ; Le blocs à colorer commencent par le numéro de la couleur\n(1Le chat|2mange|les souris.)", "");
+  txt = prompt("blocs multi-positions\n\nEncadrer les blocs par '|' ; Les blocs à colorer commencent par le numéro de la couleur\n(1Le chat|2mange|les souris.)", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
@@ -1113,15 +1116,24 @@ function multi_new()
 }
 function multi_create_html(bloc, txt)
 {
-  htm = "";
+  var htm = "";
   htm += "<div class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
-  opts = "";
+  var opts = "";
+  var maj = "";
+  var suff = "";
   for (let i=0; i<bloc.multi_coul.length; i++)
   {
-    if (i>0) opts += "|";
+    if (i>0)
+    {
+      opts += "|";
+      maj += "|";
+      suff += "|";
+    }
     opts += hex2rgb(bloc.multi_coul[i]);
+    maj += bloc.multi_maj[i];
+    suff += bloc.multi_suff[i];
   }
-  htm += "options=\"" + opts + "\">\n";
+  htm += "options=\"" + opts + "\" maj=\"" + maj + "\" suff=\"" + suff + "\">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
   htm2 = "";
@@ -1154,6 +1166,8 @@ function multi_create_html(bloc, txt)
 function multi_ini(bloc)
 {
   bloc.multi_coul = ["#00ff00", "#ff0000"];
+  bloc.multi_maj = ["0", "0"];
+  bloc.multi_suff = ["", ""];
 }
 function multi_sel_update()
 {
@@ -1161,11 +1175,11 @@ function multi_sel_update()
   if (selection.length == 1)
   {
     bloc = selection[0];
-    document.getElementById("cr_expl").innerHTML = "<b>blocs multi-positions</b><br/>Encadrer les blocs par '|' ; Le blocs à colorer commencent par le numéro de la couleur<br/>(1Le chat|2mange|les souris.)";
+    document.getElementById("cr_expl").innerHTML = "<b>blocs multi-positions</b><br/>Encadrer les blocs par '|' ; Les blocs à colorer commencent par le numéro de la couleur<br/>(1Le chat|2mange|les souris.)";
     document.getElementById("cr_txt_ini_div").style.display = "inline";
   }
   
-  if (selection.length > 0 && selection_is_homogene("texte"))
+  if (selection.length > 0 && selection_is_homogene("multi"))
   {
     bloc = selection[0];
     document.getElementById("cr_coul_nb").value = bloc.multi_coul.length;
@@ -1173,6 +1187,9 @@ function multi_sel_update()
     {
       tx = "cr_coul" + (i+1);
       document.getElementById(tx).jscolor.fromString(bloc.multi_coul[i]);
+      document.getElementById(tx + "_maj").checked = (bloc.multi_maj[i] == "1");
+      document.getElementById(tx + "_suff").checked = (bloc.multi_suff[i] != "");
+      document.getElementById(tx + "_suff_txt").value = bloc.multi_suff[i];
     }
     document.getElementById("cr_coul_nb").style.display = "block";
     cr_coul_nb_change(document.getElementById("cr_coul_nb"), false);
@@ -1353,7 +1370,7 @@ function texte_simple_sel_update()
 
 function rect_create_html(bloc, txt)
 {
-  texte_simple_create_html(blo, txt);
+  texte_simple_create_html(bloc, txt);
 }
 function rect_ini(bloc)
 {
