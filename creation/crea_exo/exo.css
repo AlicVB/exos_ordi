@@ -123,6 +123,13 @@ input[type="number"] {
 #cr_tab_div {
   width: 95%;
   padding-left: 10px;
+  position: relative;
+}
+#cr_tab_div img {
+  position: absolute;
+  height: 25px;
+  right: 0px;
+  top: 0px;
 }
 .cr_tab_btn {
   display: inline-block;

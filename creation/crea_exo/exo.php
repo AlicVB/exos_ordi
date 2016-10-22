@@ -46,6 +46,7 @@
     <div id="cr_tab_div">
       <div class="cr_tab_btn" id="cr_tab_info" onclick="cr_tab_click(this)">Informations</div>
       <div class="cr_tab_btn" id="cr_tab_create" onclick="cr_tab_click(this)">Blocs</div>
+      <img src="../../exotice.svg"/>
     </div>
     <div class="cr_pa1" id="cr_pa_info">
       <p>
@@ -423,7 +424,7 @@
     </select>
     <br/><br/>
     <button id="cr_sauve" onClick="g_exporter();">Créer l'exercice</button>
-    <br><a href="../livre.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>">Retour au livre</a>
+    <button href="../livre.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>">Retour au livre</button>
   </div>
 </body>
 </html>

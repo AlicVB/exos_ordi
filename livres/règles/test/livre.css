@@ -14,8 +14,8 @@ body {
 }
 #exitdiv {
   position: absolute;
-  left: 1vh;
-  top: 1vh;
+  left: 2px;
+  top: 2px;
 }
 #exitimg {
   height: 4vh;
@@ -91,11 +91,13 @@ a.pagebilan {
   vertical-align: middle;
   margin-right: 0.5vw;
   margin-top: 1vh;
+  padding-top: 5px;
 }
 #titrelivre {
   font-family: StayPuft;
   font-weight: bold;
   font-size: 7vh;
+  margin-top: 5px;
 }
 #titreexo {
   font-weight: bold;
@@ -108,6 +110,13 @@ a.pagebilan {
   width: 100%;
   text-align: left;
   margin-top: 4vh;
+}
+#consigne img {
+  height: 6vh;
+  vertical-align: middle;
+}
+#consigne audio {
+  display: none;
 }
 #bas {
   position: absolute;
@@ -209,4 +218,18 @@ div.coin_g:hover {
 }
 #bysa span {
   filter: invert(100%);
+}
+#exoticediv {
+  position: absolute;
+  transform:rotate(-90deg);
+  transform-origin: top left;
+  left: 1px;
+  bottom: 0px;
+  width: 100vh;
+  text-align: center;
+}
+#exoticeimg {
+  height: 25px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 2px;
 }

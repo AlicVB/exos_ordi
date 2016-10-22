@@ -73,6 +73,8 @@
   $titre_exo = $vals[0];
   $consigne = $vals[1];
   $exo_coul = $vals[10];
+  $exo_audio = "";
+  if (count($vals)>11) $exo_audio = $vals[11];
   $txt = htmlentities(str_replace("\n", "§", addslashes($txt_exo)));
 ?>
 
@@ -89,10 +91,19 @@
   </head>
   <body onload="charge('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '<?php echo $root ?>/');" style="background-color: <?php echo $coul_livre ?>;">
     <script type="text/javascript" src="<?php echo $root ?>/libs/dragula.min.js"></script>
+    <div id="bysa"><img src="<?php echo $root ?>/icons/by-sa.png" /><span style="color: <?php echo $coul_livre ?>">© <?php echo $aut_livre ?></span></div>
+    <div id="exoticediv">
+      <a href="<?php echo $root ?>/exotice.php"><img id="exoticeimg" src="<?php echo $root ?>/exotice.svg" /></a>
+    </div>
     <div id="c2" style="background-color: <?php echo $exo_coul ?>;">
       <span id="titrelivre"><?php echo $titre_livre ?></span>
       <br/><span id="titreexo"><?php echo $titre_exo ?></span>
-      <br/><div id="consigne"><?php echo $consigne ?></div>
+      <br/><div id="consigne">
+        <?php
+          if ($exo_audio != "") echo "<img src=\"$root/icons/audacity.svg\" onclick=\"consigne_play()\"/><audio id=\"consigne_audio\" src=\"$exo_audio\"></audio>";
+          echo $consigne;
+        ?>
+      </div>
       <br/>
       <div id="aideimg">
         <img src="<?php echo $root ?>/icons/help-hint.svg" onmouseover="affiche_aide(true);" onmouseout="affiche_aide(false);" />
@@ -124,7 +135,7 @@
       </div>
       <img id="aide" src="<?php echo $img_livre ?>"  onload="intro_img_load(this)"/>
       <div id="exitdiv">
-        <a href="<?php echo $root ?>/sommaire.php?user=<?php echo $user ?>"><img id="exitimg" src="<?php echo $root ?>/icons/system-shutdown.svg" /></a>
+        <a href="<?php echo $root ?>/sommaire.php?user=<?php echo $user ?>"><img id="exitimg" src="<?php echo $root ?>/icons/edit-undo.svg" /></a>
         <a id="erasea" href="livre.php?user=<?php echo $user ?>&exo=<?php echo $exo ?>&erase=1"><img id="eraseimg" src="<?php echo $root ?>/icons/draw-eraser.svg" /></a>
       </div>
     </div>
@@ -139,6 +150,5 @@
         }
       ?>
     </div>
-    <div id="bysa"><img src="<?php echo $root ?>/icons/by-sa.png" /><span style="color: <?php echo $coul_livre ?>">© <?php echo $aut_livre ?></span></div>
   </body>
 </html>

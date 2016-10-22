@@ -1,0 +1,40 @@
+*********************** Arborescence : *******************************
+
+*********************** Syntaxe du fichier exo.txt : *******************************
+Nom de l'exercice
+Consigne (peut contenir de l'html)
+Total de l'exercice|arrondi(1,0.5,0.1,0.01)
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) \
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) |
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) |=> 6 lignes obligées pour désactiver 1 ligne mettre des scores impossibles
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) |
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) |
+score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) /
+nb d'essais maximum (0 = infini)
+couleur de fond (au formats html)
+chemin vers consigne audio (peut être vide)
+
+
+*********************** Syntaxe du fichier livre.txt : *******************************
+Titre du livre
+couleur du livre
+auteur du livre
+image principale
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)  => 7 lignes
+//vide (pour plus tard)
+//vide (pour plus tard)
+//vide (pour plus tard)
+détails du livre (peut être sur plusieurs lignes)
+
+
+*********************** Syntaxe du fichier de sauvegarde : *******************************
+tableau de blocs au format JSON
+
+
+*********************** Syntaxe du fichier php : *******************************
+<div class="item ..." tpe="..." [opt="..."] [points="..."] item="...">              -> bloc item (contient toutes les infos)
+  <?? class="exo ..." ... ... onchange="change(this)" itemid="...">              -> élément à sauvegarder en cas de modif
+</div>

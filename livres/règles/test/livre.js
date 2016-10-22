@@ -14,3 +14,8 @@ function intro_img_load(e)
   }
   else e.style.width = "55vh";
 }
+
+function consigne_play()
+{
+  document.getElementById("consigne_audio").play();
+}
