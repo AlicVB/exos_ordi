@@ -351,7 +351,7 @@ function multi_score(e, tt)
   scores = new Array(opts.length);
   for (let i=0; i<scores.length; i++)
   {
-    scores[i] = 0;
+    scores[i] = 1;
   }
   
   // we look at all the subitems
@@ -361,20 +361,22 @@ function multi_score(e, tt)
     elems[i].disabled = true;
     // on récupère la valeur juste
     var juste = "transparent";
+    var just_id = -1;
     var coul = elems[i].style.backgroundColor;
+    if (!coul || coul == "") coul = "transparent";
     if (elems[i].hasAttribute('juste'))
     {
-      nb = parseInt(elems[i].getAttribute('juste')) - 1;
-      if (nb>=0 && nb<opts.length) juste = opts[nb];
+      juste_id = parseInt(elems[i].getAttribute('juste')) - 1;
+      if (juste_id>=0 && juste_id<opts.length) juste = opts[juste_id];
+      else juste_id = -1;
     }
     //on vérifie la couleur
+    if (coul == juste) continue;
+    //on enlève les points
     for (let j=0; j<opts.length; j++)
     {
-      if (coul == opts[j])
-      {
-        if (juste == coul) scores[j] += 1;
-        else scores[j] -= 1;
-      }
+      if (coul == opts[j]) scores[j] = 0;
+      else if (juste == opts[j]) scores[j] = 0;
     }
   }
   
