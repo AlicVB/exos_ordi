@@ -873,16 +873,16 @@ function affiche_score(sauve)
     ns = s*nt/t;
     switch (vals[1])
     {
-      case 1:
+      case "1":
         ns = Math.round(ns);
         break;
-      case 0.5:
+      case "0.5":
         ns = Math.round(ns*2)/2;
         break;
-      case 0.1:
+      case "0.1":
         ns = Math.round(ns*10)/10;
         break;
-      case 0.01:
+      case "0.01":
         ns = Math.round(ns*100)/100;
         break;
     }
