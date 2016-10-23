@@ -97,6 +97,7 @@ div.texte_corr {
   margin-left: 1vh;/*1vh*/
   margin-right: 1vh;
   vertical-align: middle;
+  font-size: inherit;
 }
 .multi span {
   cursor: pointer;

@@ -68,6 +68,7 @@ div.extrema {
   margin-left: 6.5px;/*1vh*/
   margin-right: 6.5px;
   vertical-align: middle;
+  font-size: inherit;
 }
 .radiobtn label {
     display:inline-block;
