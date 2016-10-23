@@ -1374,7 +1374,7 @@ function texte_simple_sel_update()
     document.getElementById("cr_txt_ini_div").style.display = "inline";
   }
   
-  if (selection.length > 0 && selection_is_homogene("texte_simple")) selection_update_interactions();
+  if (selection.length > 0 && selection_is_homogene(selection[0].tpe)) selection_update_interactions();
 }
 
 function rect_create_html(bloc, txt)
