@@ -1208,7 +1208,7 @@ function multi_sel_update()
 function cible_new()
 {
   //on demande le texte initial
-  txt = prompt("zone cible\n\nIdentifiant des objet qui peuvent être posés\nséparer les identifiant par '|'", "");
+  txt = prompt("zone cible\n\nIdentifiant des objets qui peuvent être posés\nséparer les identifiant par '|'", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
@@ -1246,7 +1246,7 @@ function cible_sel_update()
   if (selection.length != 1) return;
   bloc = selection[0];
   
-  document.getElementById("cr_expl").innerHTML = "<b>zone cible</b><br/>Identifiant des objet qui peuvent être posés<br/>séparer les identifiant par '|'";
+  document.getElementById("cr_expl").innerHTML = "<b>zone cible</b><br/>Identifiant des objets qui peuvent être posés<br/>séparer les identifiant par '|'";
   document.getElementById("cr_txt_ini_div").style.display = "inline";
   //pas de texte...
   document.getElementById("cr_font_fam").disabled = true;
@@ -1272,7 +1272,7 @@ function image_create_html(bloc, txt)
   htm = "";
   htm += "<div";
   if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
-  htm += ">\n  <img class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += ">\n  <img ondragstart=\"return false;\" class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
