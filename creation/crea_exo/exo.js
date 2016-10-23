@@ -1623,6 +1623,7 @@ function _mv_ini()
   inter.resizable({
     preserveAspectRatio: true,
     onend: _drag_rs_end,
+    margin: 5,
     edges: { left: true, right: true, bottom: true, top: true }
   });
   inter.on('resizemove', _drag_rsl_resize);
@@ -1646,6 +1647,7 @@ function _mv_ini()
     onend: _drag_rs_end,
     // enable inertial throwing
     inertia: true,
+    
     // keep the element within the area of it's parent
     restrict: {
       restriction: "parent",
@@ -1655,6 +1657,7 @@ function _mv_ini()
   inter3.resizable({
     preserveAspectRatio: false,
     onend: _drag_rs_end,
+    margin: 5,
     edges: { left: true, right: true, bottom: true, top: true }
   });
   inter3.on('resizemove', _drag_rsl_resize);
