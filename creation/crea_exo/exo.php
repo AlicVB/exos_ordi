@@ -439,7 +439,7 @@
     </select>
     <br/><br/>
     <button id="cr_sauve" onClick="g_exporter();">Finaliser l'exercice</button>
-    <button href="../livre.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>">Retour au livre</button>
+    <button onclick="window.location.href='../livre.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>'">Retour au livre</button>
   </div>
 </body>
 </html>
