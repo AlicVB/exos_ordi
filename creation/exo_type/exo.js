@@ -325,20 +325,40 @@ function multi_change(elem)
   r = getrootitem(elem);
   if (!r.hasAttribute('options')) return;
   var opts = r.getAttribute('options').split("|");
-  
+  var maj = [];
+  var suff = [];
+  if (r.hasAttribute("maj")) maj = r.getAttribute('maj').split("|");
+  if (r.hasAttribute("suff")) suff = r.getAttribute('suff').split("|");
   //on fait les changements de couleur
   var ncoul = opts[0];
+  var nid = 0;
   for (let i=0; i<opts.length; i++)
   {
     if (elem.style.backgroundColor == opts[i])
     {
-      if (i == opts.length - 1) ncoul = "transparent";
-      else ncoul = opts[i+1];
+      if (i == opts.length - 1)
+      {
+        ncoul = "transparent";
+        nid = -1;
+      }
+      else
+      {
+        ncoul = opts[i+1];
+        nid = i+1;
+      }
       break;
     }
   }
-    
   elem.style.backgroundColor = ncoul;
+  var inis = elem.getElementsByClassName("multi_ini");
+  if (inis && inis.length>0)
+  {
+    var tx = inis[0].childNodes[0].nodeValue;
+    var ntx = tx;
+    if (nid>=0 && nid<maj.length && maj[nid] == "1") ntx = tx.substr(0,1).toUpperCase() + tx.substr(1);
+    if (nid>=0 && nid<suff.length && suff[nid] != "") ntx = tx + suff[nid];
+    elem.childNodes[0].nodeValue = ntx
+  }
 }
 
 function multi_score(e, tt)

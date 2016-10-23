@@ -1150,7 +1150,7 @@ function multi_create_html(bloc, txt)
         htm2 += "style=\"background-color: " + bloc.multi_coul[parseInt(tx.substr(0,1)) - 1] + ";\" ";
         tx = tx.substr(1);
       }
-      htm += ">" + tx + "</span>\n";
+      htm += ">" + tx + "<span class=\"multi_ini\">" + tx +"</span></span>\n";
       htm2 += ">" + tx + "</span>\n";
     }
   }
