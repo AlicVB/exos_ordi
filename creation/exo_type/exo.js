@@ -297,12 +297,11 @@ function drag_remove(event)
   el.parentNode.removeChild(el);
   el.style.position = "absolute"; 
   parent.appendChild(el);
-  el.removeEventListener('click', cible_remove, true);
+  el.removeEventListener('click', drag_remove, true);
 }
 
 function drag_deplace(e, id)
 {
-  console.log("deplace");
   el = document.getElementById(id);
   if (!el) return;
   var rect = el.getBoundingClientRect();
@@ -631,7 +630,7 @@ function sauve()
   var elems = document.getElementsByClassName('exo');
   for (let i=0; i<elems.length; i++)
   {
-    sav[i] = encodeURIComponent(getvalue(elems[i].id));
+    sav[elems[i].id] = encodeURIComponent(getvalue(elems[i]));
   }
 
   // et on le sauvegarde
