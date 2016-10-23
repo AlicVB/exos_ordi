@@ -64,6 +64,11 @@ div.extrema {
 .radiobtn input[type="radio"] {
     display:none; 
 }
+.texte input {
+  margin-left: 6.5px;/*1vh*/
+  margin-right: 6.5px;
+  vertical-align: middle;
+}
 .radiobtn label {
     display:inline-block;
     box-sizing: border-box;

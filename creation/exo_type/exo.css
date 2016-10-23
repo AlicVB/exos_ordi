@@ -5,14 +5,14 @@ div.ligne {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 13px;/*2vh*/
-  font-size: 13px;/*2vh*/
+  margin-top: 2vh;/*2vh*/
+  font-size: 2vh;/*2vh*/
   width: 100%;
 }
 div.ligne2 {
   text-align: center;
-  margin-top: 13px;/*2vh*/
-  font-size: 13px;/*2vh*/
+  margin-top: 2vh;/*2vh*/
+  font-size: 2vh;/*2vh*/
   width: 100%;
 }
 div.lignef {
@@ -53,16 +53,16 @@ line {
 .radio form {
   text-align: left;
   font-weight: bold;
-  margin-left: 6.5px; /*1vh*/
-  margin-right: 6.5px;
+  margin-left: 1vh; /*1vh*/
+  margin-right: 1vh;
 }
 .radio input {
   vertical-align: middle;
   margin: 0px;
 }
 .radiobtn form {
-  margin-left: 6.5px;/*1vh*/
-  margin-right: 6.5px;
+  margin-left: 1vh;/*1vh*/
+  margin-right: 1vh;
 }
 .radiobtn input[type="radio"] {
     display:none; 
@@ -71,13 +71,13 @@ line {
     display:inline-block;
     box-sizing: border-box;
     width: 100%;
-    padding-left: 6.5px;/*1vh*/
-    padding-right: 6.5px;
+    padding-left: 1vh;/*1vh*/
+    padding-right: 1vh;
     -moz-user-select: none;
 }
 .combo select {
-  margin-left: 6.5px;/*1vh*/
-  margin-right: 6.5px;
+  margin-left: 1vh;/*1vh*/
+  margin-right: 1vh;
 }
 div.combo_corr {
   width: 100%;
@@ -93,6 +93,11 @@ div.texte_corr {
   color: red;
   font-weight: bold;
 }
+.texte input {
+  margin-left: 1vh;/*1vh*/
+  margin-right: 1vh;
+  vertical-align: middle;
+}
 .multi span {
   cursor: pointer;
   -moz-user-select: none;
@@ -104,10 +109,10 @@ span.multi_corr {
   background-color: #BFBFBF;
   font-style: italic;
   visibility: hidden;
-  margin-right: 17px; /*2.5vh*/
+  margin-right: 2.5vh; /*2.5vh*/
 }
 img.multi_cim {
-  width: 17px; /*2.5vh*/
+  width: 2.5vh; /*2.5vh*/
   vertical-align: bottom;
 }
 .line_barre {
