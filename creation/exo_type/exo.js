@@ -286,7 +286,7 @@ function line_leave(event)
   line_orig_id = "";
 }
 
-function cible_remove(event)
+function drag_remove(event)
 {
   el = event.target;
   if (!el) return;
@@ -300,22 +300,42 @@ function cible_remove(event)
   el.removeEventListener('click', cible_remove, true);
 }
 
-function cible_ondrop(el, target, source)
+function drag_deplace(e, id)
 {
-  target.setAttribute("contains", el.id);
-  el.style.position = "static";
-  el.addEventListener('click', cible_remove, true);
-  change(target);
-}
-function cible_deplace(e, id)
-{
+  console.log("deplace");
   el = document.getElementById(id);
   if (!el) return;
+  var rect = el.getBoundingClientRect();
   el.parentNode.removeChild(el);
   e.setAttribute("contains", el.id);
   el.style.position = "static";
-  el.addEventListener('click', cible_remove, true);
-  e.appendChild(el);  
+  el.style.width = rect.width + "px";
+  el.style.height = rect.height + "px";
+  el.addEventListener('click', drag_remove, true);
+  e.appendChild(el); 
+}
+
+function drag_start(ev)
+{
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+function drag_over(ev)
+{
+  ev.preventDefault();
+}
+function drag_drop(ev)
+{
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  var el = document.getElementById(data);
+  var rect = el.getBoundingClientRect();
+  el.style.width = rect.width + "px";
+  el.style.height = rect.height + "px";
+  el.style.position = "static";
+  ev.target.setAttribute("contains", el.id);
+  el.addEventListener('click', drag_remove, true);
+  ev.target.appendChild(document.getElementById(data));
+  change(ev.target);
 }
 
 //Actions spécifiques de certains éléments
@@ -606,18 +626,17 @@ function getexos(e)
 
 function sauve()
 {
-  // on construit le fichier de sauvegarde
-  tx = "";
+  // on construit le fichier de sauvegarde (on commence par créer un objet adhoc
+  var sav = {};
   var elems = document.getElementsByClassName('exo');
   for (let i=0; i<elems.length; i++)
   {
-    if (i>0) tx += "|";
-    tx += encodeURIComponent(getvalue(elems[i]));
+    sav[i] = encodeURIComponent(getvalue(elems[i].id));
   }
 
   // et on le sauvegarde
   var xhr = new XMLHttpRequest();
-  ligne = "user=" + user +"&exoid=" + exoid + "&v=" + tx;
+  ligne = "user=" + user +"&exoid=" + exoid + "&v=" + JSON.stringify(sav);
   xhr.open("POST", exoid + "/sauve.php" , true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(ligne);
@@ -718,22 +737,6 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   // on initialise les messages
   read_details(txt_exo);
   
-  //on initialise les drag-drop
-  drake = dragula({
-    // un seul élément par conteneur
-    accepts: function (el, target, source, sibling) { return (target.childNodes.length < 2); }
-  });
-  elems = document.getElementsByClassName('mv_src');
-  for (let i=0;i<elems.length;i++)
-  {
-    drake.containers.push(elems[i]);
-  }
-  elems = document.getElementsByClassName('cible');
-  for (let i=0;i<elems.length;i++)
-  {
-    drake.containers.push(elems[i]);
-  }
-  drake.on('drop', cible_ondrop);
   //on initialise les lignes à relier
   elems = document.querySelectorAll("[line]");
   for (let i=0;i<elems.length;i++)
@@ -754,10 +757,15 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
     {
       // on met les bonnes valeurs aux bons endroits
       var elems = document.getElementsByClassName('exo');
-      var vals = xhr.responseText.split("|");
-      for (let i=0; i<elems.length && i<vals.length; i++)
+      var sav = null;
+      sav = JSON.parse(xhr.responseText);
+      if (sav)
       {
-        setvalue(elems[i], decodeURIComponent(vals[i]));
+        for (let i=0; i<elems.length; i++)
+        {
+          if (sav.hasOwnProperty(elems[i].id))
+            setvalue(elems[i], decodeURIComponent(sav[elems[i].id]));
+        }
       }
     }
   };
@@ -956,7 +964,7 @@ function setvalue(e, v)
       if (v != "") line_charge(e, v);
       break;
     case "cible":
-      if (v != "") cible_deplace(e, v);
+      if (v != "") drag_deplace(e, v);
       break;
   }
 }

@@ -996,7 +996,7 @@ function combo_create_html(bloc, txt)
   {
     // le choix
     htm += "  <div>\n";
-    htm += "    <select itemid=\"" + bloc.id + "\" class=\"exo\" onchange=\"change(this)\">\n";
+    htm += "    <select id=\"combo_" + bloc.id + "\" itemid=\"" + bloc.id + "\" class=\"exo\" onchange=\"change(this)\">\n";
     htm += "      <option value=\"0\">--</option>\n";
     v = vals[1].replace(/\*/g,"|*").replace(/\$/g,"|$").split("|");
     juste = "";
@@ -1069,7 +1069,7 @@ function texte_create_html(bloc, txt)
     htm += "  <div>\n";
     if (h > 1) htm += "   <textarea rows=\"" + h + "\" ";
     else htm += "   <input type=\"text\" ";
-    htm += "class=\"exo\" itemid=\"" + bloc.id + "\" onKeyUp=\"change(this)\" ";
+    htm += "class=\"exo\" id=\"texte_" + bloc.id + "\" itemid=\"" + bloc.id + "\" onKeyUp=\"change(this)\" ";
     if (l==0) htm += "style=\"box-sizing: border-box; width:100%;\">";
     else if (h>1) htm += "cols=\"" + l + "\">";
     else htm += "size=\"" + l + "\">";
@@ -1151,7 +1151,7 @@ function multi_create_html(bloc, txt)
     if (vals[i].length>0)
     {
       tx = vals[i];
-      htm += "  <span class=\"exo\" itemid=\"" + bloc.id + "\" onclick=\"change(this)\" ";
+      htm += "  <span id=\"multi_" + bloc.id + "_" + i + "\" class=\"exo\" itemid=\"" + bloc.id + "\" onclick=\"change(this)\" ";
       htm2 += "    <span ";
       if (parseInt(tx.substr(0,1)) < 6)
       {
@@ -1226,7 +1226,7 @@ function cible_create_html(bloc, txt)
   enter = bloc.texte_e;
   comp = bloc.texte_c;
   
-  htm = "<div class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
+  htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
   htm += "</div>\n";
   
   bloc.html = htm;
@@ -1271,8 +1271,11 @@ function image_create_html(bloc, txt)
 {
   htm = "";
   htm += "<div";
-  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
-  htm += ">\n  <img ondragstart=\"return false;\" class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
+  htm += ">\n  <img ";
+  if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
+  else htm += "ondragstart=\"return false;\" ";
+  htm += "class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1337,8 +1340,10 @@ function texte_simple_new(vide)
 function texte_simple_create_html(bloc, txt)
 {
   htm = "<div";
-  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
-  htm += ">\n  <div class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
+  htm += ">\n  <div ";
+  if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
+  htm += "class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1403,8 +1408,10 @@ function audio_create_html(bloc, txt)
 {
   htm = "";
   htm += "<div";
-  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
-  htm += ">\n  <img class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
+  htm += ">\n  <img ";
+  if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
+  htm += "class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1462,8 +1469,10 @@ function cercle_create_html(bloc, txt)
   //on calcule tous les paramètres
   
   htm = "<div";
-  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
-  htm += ">\n  <svg preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\" class=\"item lignef svg exo\" tpe=\"cercle\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
+  htm += ">\n  <svg ";
+  if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
+  htm += "preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\" class=\"item lignef svg exo\" tpe=\"cercle\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1559,8 +1568,10 @@ function ligne_create_html(bloc, txt)
   //on calcule tous les paramètres
   
   htm = "<div";
-  if (bloc.inter == 2) htm += " class=\"mv_src\" id=\"cible_" + bloc.id + "\"";
-  htm += ">\n  <svg class=\"item lignef svg exo\" tpe=\"ligne\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
+  htm += ">\n  <svg ";
+  if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
+  htm += "class=\"item lignef svg exo\" tpe=\"ligne\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
