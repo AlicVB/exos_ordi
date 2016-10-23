@@ -494,18 +494,27 @@ function rendu_ini()
 // on ajoute un bloc à la zone de rendu
 function rendu_add_bloc(bloc)
 {
-  // on crée le bloc
-  htm = "<div class=\"cr_rendu_bloc ";
-  if (bloc.size == "ratio") htm += "mv_rs\" ";
-  else if (bloc.size == "manuel") htm += "mv_rsl\" ";
-  else htm += "mv\" ";
-  htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
-  htm += bloc.html;
-  htm += "\n<div class=\"couverture\"></div></div>\n";
-  
-  //on l'ajoute
-  document.getElementById("cr_rendu").innerHTML += htm;
-  
+  // 2 cas : soit le bloc est déjà dans le rendu (modif) soit il faut l'ajouter
+  if (document.getElementById("cr_rendu_" + bloc.id))
+  {
+    var htm = bloc.html + "\n<div class=\"couverture\"></div>";
+    document.getElementById("cr_rendu_" + bloc.id).innerHTML = htm;
+  }
+  else
+  {
+    // on crée le bloc
+    var htm = "<div class=\"cr_rendu_bloc ";
+    if (bloc.size == "ratio") htm += "mv_rs\" ";
+    else if (bloc.size == "manuel") htm += "mv_rsl\" ";
+    else htm += "mv\" ";
+    htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
+    htm += bloc.html;
+    htm += "\n<div class=\"couverture\"></div></div>\n";
+    
+    //on l'ajoute
+    document.getElementById("cr_rendu").innerHTML += htm;
+  }
+
   //si c'est une image, on règle les chemins
   if (bloc.tpe == "image")
   {

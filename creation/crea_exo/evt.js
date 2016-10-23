@@ -282,7 +282,7 @@ function cr_new_txt_click(e)
   document.getElementById("cr_html").value = bloc.html;
   
   // et on modifie le rendu itou
-  rendu_get_superbloc(bloc).innerHTML = bloc.html;
+  rendu_add_bloc(bloc);
   //on sauvegarde
   g_sauver(); 
 }
@@ -327,7 +327,7 @@ function cr_coul_change(e)
     //on change le rendu
     bloc_create_html(bloc);
     document.getElementById("cr_html").value = bloc.html;
-    rendu_get_superbloc(bloc).innerHTML = bloc.html;
+    rendu_add_bloc(bloc);
   }
   //on sauvegarde
   g_sauver();
@@ -347,7 +347,7 @@ function cr_texte_change(e)
     texte_create_html(bloc, document.getElementById("cr_txt_ini").value);
     document.getElementById("cr_html").value = bloc.html;
     
-    rendu_get_superbloc(bloc).innerHTML = bloc.html; 
+    rendu_add_bloc(bloc); 
   }
   //on sauvegarde
   g_sauver();
