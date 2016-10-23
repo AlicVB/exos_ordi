@@ -867,9 +867,7 @@ function affiche_score(sauve)
   {
     elems[i].removeEventListener('mousedown',line_start,true);
   }
-  //et les éléments à déplacer
-  drake.containers = [];
-  
+
   //on ajuste le score par rapport au total
   vals = total.split("|");
   ns = s;

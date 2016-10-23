@@ -9,7 +9,42 @@ if ($cat == "livres")
   $cat = "";
 }
   
-require("$root/fpdf/fpdf.php");
+require("$root/libs/fpdf/fpdf.php");
+
+class PDF_Rotate extends FPDF
+{
+var $angle=0;
+
+function Rotate($angle,$x=-1,$y=-1)
+{
+    if($x==-1)
+        $x=$this->x;
+    if($y==-1)
+        $y=$this->y;
+    if($this->angle!=0)
+        $this->_out('Q');
+    $this->angle=$angle;
+    if($angle!=0)
+    {
+        $angle*=M_PI/180;
+        $c=cos($angle);
+        $s=sin($angle);
+        $cx=$x*$this->k;
+        $cy=($this->h-$y)*$this->k;
+        $this->_out(sprintf('q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm',$c,$s,-$s,$c,$cx,$cy,-$cx,-$cy));
+    }
+}
+
+function _endpage()
+{
+    if($this->angle!=0)
+    {
+        $this->angle=0;
+        $this->_out('Q');
+    }
+    parent::_endpage();
+}
+}
 
 $user = (isset($_GET["user"])) ? $_GET["user"] : NULL;
 
@@ -17,6 +52,7 @@ if ($user)
 {
   $v = explode("\n", file_get_contents("livre.txt"));
   $titre = $v[0];
+  $auth = $v[2];
   $details = "";
   for ($i=11; $i<count($v); $i++)
   {
@@ -28,7 +64,7 @@ if ($user)
   }
   
   // ****************en-têtes****************
-  $pdf = new FPDF();
+  $pdf = new PDF_Rotate();
   $pdf->AddPage();
   $pdf->SetMargins(15,15);
   $pdf->SetFont('Arial','I',10);
@@ -45,6 +81,7 @@ if ($user)
   $pdf->SetFont('Arial','I',10);
   $pdf->Cell(74,8,utf8_decode("Prénom : $user"), '', 0);
   $pdf->Cell(64,8,utf8_decode('Bilan livret informatique'), '', 1, "R");
+  $pdf->Image("$root/exotice.png", 76, 52);
   $pdf->SetFont('Arial','B',44);
   $pdf->Cell(148,25,utf8_decode("$titre"), '', 1, 'C');
   $pdf->SetFont('Arial','I',14);
@@ -95,6 +132,11 @@ if ($user)
   {
     $pdf->Cell(148,25,utf8_decode("Impossible de trouver le bilan du livre..."), '', 1, 'C');
   }
+  // **************Copyright***********
+  $pdf->SetFont('Arial','',10);
+  $pdf->Rotate(90,20,256);
+  $pdf->Text(20,256,utf8_decode("©".$auth));
+  $pdf->Rotate(0);
   
   $pdf->Output();
 }

@@ -507,7 +507,7 @@ function rendu_add_bloc(bloc)
     if (bloc.size == "ratio") htm += "mv_rs\" ";
     else if (bloc.size == "manuel") htm += "mv_rsl\" ";
     else htm += "mv\" ";
-    htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\">\n";
+    htm += "id=\"cr_rendu_" + bloc.id + "\" onmousedown=\"bloc_mousedown(this, event)\" title=\"" + bloc.tpe + " (id=" + bloc.id + ")\">\n";
     htm += bloc.html;
     htm += "\n<div class=\"couverture\"></div></div>\n";
     
