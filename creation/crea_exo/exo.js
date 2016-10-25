@@ -1143,7 +1143,7 @@ function multi_create_html(bloc, txt)
     maj += bloc.multi_maj[i];
     suff += bloc.multi_suff[i];
   }
-  htm += "options=\"" + opts + "\" maj=\"" + maj + "\" suff=\"" + suff + "\">\n";
+  htm += " options=\"" + opts + "\" maj=\"" + maj + "\" suff=\"" + suff + "\">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
   htm2 = "";

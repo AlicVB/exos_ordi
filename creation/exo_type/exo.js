@@ -390,10 +390,13 @@ function multi_score(e, tt)
   var opts = e.getAttribute('options').split("|");
   
   // on initialise un tableau de score
-  scores = new Array(opts.length);
+  var scores = new Array(opts.length);
+  var nbjuste = new Array(opts.length);
+  var nbjuste_total = 0;
   for (let i=0; i<scores.length; i++)
   {
     scores[i] = 1;
+    nbjuste[i] = 0;
   }
   
   // we look at all the subitems
@@ -403,13 +406,18 @@ function multi_score(e, tt)
     elems[i].disabled = true;
     // on récupère la valeur juste
     var juste = "transparent";
-    var just_id = -1;
+    var juste_id = -1;
     var coul = elems[i].style.backgroundColor;
     if (!coul || coul == "") coul = "transparent";
     if (elems[i].hasAttribute('juste'))
     {
       juste_id = parseInt(elems[i].getAttribute('juste')) - 1;
-      if (juste_id>=0 && juste_id<opts.length) juste = opts[juste_id];
+      if (juste_id>=0 && juste_id<opts.length)
+      {
+        juste = opts[juste_id];
+        nbjuste[juste_id] += 1;
+        nbjuste_total += 1;
+      }
       else juste_id = -1;
     }
     //on vérifie la couleur
@@ -423,15 +431,20 @@ function multi_score(e, tt)
   }
   
   //we computes all scores
-  s = 0;
+  var s = 0;
+  var tot = 0;
   for (let i=0; i<scores.length; i++)
   {
-    // on veut un score entre 0 et 1
-    s += Math.min(Math.max(0,scores[i]),1);
+    if (nbjuste[i] > 0 || nbjuste_total == 0)
+    {
+      // on veut un score entre 0 et 1
+      s += Math.min(Math.max(0,scores[i]),1);
+      tot += 1;
+    }
   }
-  
+
   // we show the correction if needed
-  if (s<scores.length)
+  if (s<tot)
   {
     elems = e.getElementsByClassName('multi_corr');
     if (elems.length>0) elems[0].style.visibility = 'visible';
@@ -444,7 +457,13 @@ function multi_score(e, tt)
     if (elems.length>0) elems[0].src = root + "icons/dialog-apply.svg";
   }
   
-  return tt*s/scores.length;
+  // cas particulier ou rien ne doit être coloré => c'est juste ou faux !
+  if (nbjuste_total == 0)
+  {
+    if (s == scores.length) return tt;
+    else return 0;
+  }
+  else return tt*s/tot;
 }
 
 function radio_score(e, tt)
