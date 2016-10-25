@@ -55,8 +55,10 @@
         <div id="gotxt">On y va !</div>
         <a href="livre.php?user=<?php echo $user ?>&exo=0"><img id="goimg" src="<?php echo $root ?>/icons/go-next.svg" /></a>
       </div>
-      <div id="bysa"><img src="<?php echo $root ?>/icons/by-sa.png" />© <?php echo $aut ?></div>
+      <div id="bysa" title="livre créé par <?php echo $aut ?> -- licence Creative Commons CC-BY-SA"><img src="<?php echo $root ?>/icons/cc.svg" /><span> <?php echo $aut ?></span></div>
     </div>
+    
+    <div id="gpl"><img id="exotice" src="<?php echo $root ?>/exotice.svg" /><br/><img id="gplimg" src="<?php echo $root ?>/icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016</div>
   </body>
 </html>
 

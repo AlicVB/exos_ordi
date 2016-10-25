@@ -55,12 +55,28 @@ body {
   vertical-align: middle;
 }
 #bysa {
-  transform:rotate(-90deg);
-  transform-origin: bottom left;
   position: absolute;
   bottom: 2px;
-  left: -5px;
+  left: 0px;
+  width: 100%;
+  text-align: center;
 }
 #bysa img {
-  height: 10px;
+  height: 3vh;
+  vertical-align: middle;
+}
+#gpl {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  font-size: 1.6vh;
+  text-align: center;
+}
+#gplimg {
+  height: 4.5vh;
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+#exotice {
+  height: 6vh;
 }

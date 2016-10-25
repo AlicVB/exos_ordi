@@ -41,12 +41,18 @@ a.lien {
   text-decoration : none;
   color: black;
 }
-#bysa {
+#gpl {
   position: absolute;
-  left: 0px;
-  bottom: 0px;
-  font-size: 12px;
+  right: 1px;
+  bottom: 1px;
+  font-size: 1.6vh;
+  text-align: center;
 }
-#bysa img {
-  height: 12px;
+#gplimg {
+  height: 4.5vh;
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+#exotice {
+  height: 6vh;
 }

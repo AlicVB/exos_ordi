@@ -51,6 +51,6 @@
     }
     echo "</div>\n";
   ?>
-  <div id="bysa"><img src="icons/by-sa.png" />© A. RENAUDIN 2016</div>
+  <div id="gpl"><img id="exotice" src="exotice.svg" /><br/><img id="gplimg" src="icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016</div>
 </body>
 </html>

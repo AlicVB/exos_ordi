@@ -7,6 +7,7 @@
 </head>
 
 <body>
+  
   <div id="titre">Bienvenue <?php echo $_GET['user'];?></div>
   <p id="listetitre">Voici la liste des activités <?php if(isset($_GET['base'])) echo $_GET['base'];?> :</p>
   <table id="table">
@@ -49,6 +50,6 @@
       }
     ?>
   </table>
-  <div id="bysa"><img src="icons/by-sa.png" />© A. RENAUDIN 2016</div>
+  <div id="gpl"><img id="exotice" src="exotice.svg" /><br/><img id="gplimg" src="icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016</div>
 </body>
 </html>

@@ -15,6 +15,7 @@ p.titre {
   font-size: 4vh;
   text-align: center;
   margin-bottom: 5vh;
+  margin-top: 2vh;
 }
 p.ligne {
   text-align: left;
@@ -32,17 +33,23 @@ a.nom {
 }
 #col1 {
   float: left;
-  width: 45vw;
+  width: 40vw;
 }
 #col2 {
-  margin-left: 46vw;
+  margin-left: 41vw;
 }
-#bysa {
+#gpl {
   position: absolute;
-  left: 0px;
-  bottom: 0px;
-  font-size: 12px;
+  right: 1px;
+  bottom: 1px;
+  font-size: 1.6vh;
+  text-align: center;
 }
-#bysa img {
-  height: 12px;
+#gplimg {
+  height: 4.5vh;
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+#exotice {
+  height: 6vh;
 }

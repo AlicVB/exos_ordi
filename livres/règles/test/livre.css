@@ -214,22 +214,12 @@ div.coin_g:hover {
   font-size: 10px;
 }
 #bysa img {
-  height: 10px;
+  height: 15px;
+  vertical-align: middle;
 }
-#bysa span {
-  filter: invert(100%);
-}
-#exoticediv {
+#exotice {
+  height: 4vh;
   position: absolute;
-  transform:rotate(-90deg);
-  transform-origin: top left;
-  left: 1px;
-  bottom: 0px;
-  width: 100vh;
-  text-align: center;
-}
-#exoticeimg {
-  height: 25px;
-  background-color: rgba(255,255,255,0.5);
-  border-radius: 2px;
+  top: 0;
+  right: 2px;
 }

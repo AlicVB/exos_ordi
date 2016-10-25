@@ -89,11 +89,11 @@
     <link rel="stylesheet" href="<?php echo $root ?>/libs/dragula.min.css">
     <link rel="stylesheet" href="<?php echo $exos[$exo] ?>/exo.css">
   </head>
-  <body onload="charge('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '<?php echo $root ?>/');" style="background-color: <?php echo $coul_livre ?>;">
+  <body onload="livre_ini('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '<?php echo $root ?>/');" style="background-color: <?php echo $coul_livre ?>;">
     <script type="text/javascript" src="<?php echo $root ?>/libs/dragula.min.js"></script>
-    <div id="bysa"><img src="<?php echo $root ?>/icons/by-sa.png" /><span style="color: <?php echo $coul_livre ?>">© <?php echo $aut_livre ?></span></div>
+    <div id="bysa"><img id="cc_img" src="<?php echo $root ?>/icons/cc.svg" /><span> <?php echo $aut_livre ?></span></div>
     <div id="exoticediv">
-      <a href="<?php echo $root ?>/exotice.php"><img id="exoticeimg" src="<?php echo $root ?>/exotice.svg" /></a>
+      
     </div>
     <div id="c2" style="background-color: <?php echo $exo_coul ?>;">
       <span id="titrelivre"><?php echo $titre_livre ?></span>
@@ -138,6 +138,7 @@
         <a href="<?php echo $root ?>/sommaire.php?user=<?php echo $user ?>"><img id="exitimg" src="<?php echo $root ?>/icons/edit-undo.svg" /></a>
         <a id="erasea" href="livre.php?user=<?php echo $user ?>&exo=<?php echo $exo ?>&erase=1"><img id="eraseimg" src="<?php echo $root ?>/icons/draw-eraser.svg" /></a>
       </div>
+      <img id="exotice" src="<?php echo $root ?>/exotice.svg" />
     </div>
     <div id="c1" style="background-color: <?php echo $exo_coul ?>;">
       <span id="user">Prénom : <?php echo $user ?></span>
