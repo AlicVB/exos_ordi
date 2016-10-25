@@ -320,7 +320,10 @@ function drag_start(ev)
 }
 function drag_over(ev)
 {
-  ev.preventDefault();
+  if (ev.target.hasAttribute("tpe") && ev.target.getAttribute("tpe") == "cible" && !ev.target.hasAttribute("contains"))
+  {
+    ev.preventDefault();
+  }
 }
 function drag_drop(ev)
 {
