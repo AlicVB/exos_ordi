@@ -630,8 +630,9 @@ function rendu_select_blocs()
   if (selection.length == 1 && selection[0].tpe == "ligne")
   {
     var b = selection[0];
-    var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left+b.x1-4) + "px;top: " + (b.top+b.y1-4) + "px;\"></div>";
-    var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left+b.x2-4) + "px;top: " + (b.top+b.y2-4) + "px;\"></div>";
+    var ex = ligne_get_extrems(b);
+    var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (ex.x1-4) + "px;top: " + (ex.y1-4) + "px;\"></div>";
+    var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (ex.x2-4) + "px;top: " + (ex.y2-4) + "px;\"></div>";
     document.getElementById("cr_rendu").innerHTML += c1 + c2;
   }
   else
@@ -1521,15 +1522,48 @@ function ligne_new()
   selection = [bloc];
   selection_change();
 }
-function ligne_adapt_vals(bloc, x1, y1, x2, y2)
+function ligne_get_extrems(bloc)
 {
+  var ret = {};
+  ret.x1 = bloc.left;
+  ret.x2 = bloc.left + bloc.width;
+  if (bloc.y1 == 0)
+  {
+    ret.y1 = bloc.top;
+    ret.y2 = bloc.top + bloc.height;
+  }
+  else
+  {
+    ret.y2 = bloc.top;
+    ret.y1 = bloc.top + bloc.height;
+  }
+  return ret;
+}
+function ligne_adapt_vals(bloc, dx, dy, ex)
+{
+  //on remet tout en repère global
+  var ret = ligne_get_extrems(bloc);
+  var x1, x2, y1, y2;
+  if (ex == "1")
+  {
+    x1 = ret.x1 + dx;
+    y1 = ret.y1 + dy;
+    x2 = ret.x2;
+    y2 = ret.y2;
+  }
+  else
+  {
+    x1 = ret.x1;
+    y1 = ret.y1;
+    x2 = ret.x2 + dx;
+    y2 = ret.y2 + dy;
+  }
   //on cherche les extrems en x et y
-  var ep = Math.ceil(parseFloat(bloc.bord_size)/2);
   var nx1, nx2, nxy1, ny2;
   var rep = false;
   if (x1<x2)
   {
-    bloc.left += x1 - ep;
+    bloc.left = x1;
     nx1 = x1;
     ny1 = y1;
     nx2 = x2;
@@ -1538,28 +1572,26 @@ function ligne_adapt_vals(bloc, x1, y1, x2, y2)
   else
   {
     rep = true;
-    bloc.left += x2 - ep;
+    bloc.left = x2;
     nx1 = x2;
     ny1 = y2;
     nx2 = x1;
     ny2 = y1;
   }
-  bloc.width = nx2-nx1 + parseFloat(bloc.bord_size);
-  bloc.x1 = ep;
-  bloc.x2 = nx2-nx1 + ep;
+  bloc.width = nx2-nx1;
   if (ny1<ny2)
   {
-    bloc.top += ny1 - ep;
-    bloc.height = ny2-ny1 + parseFloat(bloc.bord_size);
-    bloc.y1 = ep;
-    bloc.y2 = ny2-ny1 + ep;
+    bloc.top = ny1;
+    bloc.height = ny2-ny1;
+    bloc.y1 = 0;
+    bloc.y2 = 100;
   }
   else
   {
-    bloc.top += ny2 - ep;
-    bloc.height = ny1-ny2 + parseFloat(bloc.bord_size);
-    bloc.y2 = ep;
-    bloc.y1 = ny1-ny2 + ep;
+    bloc.top = ny2;
+    bloc.height = ny1-ny2;
+    bloc.y2 = 0;
+    bloc.y1 = 100;
   }
   return rep;
 }
@@ -1571,14 +1603,14 @@ function ligne_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <svg ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "class=\"item lignef svg exo\" tpe=\"ligne\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "class=\"item lignef svg exo\" preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\" tpe=\"ligne\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
     if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
-  htm += "<line x1=\"" + bloc.x1 + "\" y1=\"" + bloc.y1 +"\" x2=\"" + bloc.x2 + "\" y2=\"" + bloc.y2 + "\" id=\"svg_" + bloc.id + "\" />";
+  htm += "<line vector-effect=\"non-scaling-stroke\" x1=\"" + bloc.x1 + "\" y1=\"" + bloc.y1 +"\" x2=\"" + bloc.x2 + "\" y2=\"" + bloc.y2 + "\" id=\"svg_" + bloc.id + "\" />";
   htm += "</svg>\n</div>\n";
   
   bloc.html = htm;
@@ -1588,10 +1620,10 @@ function ligne_ini(bloc)
   // rien à faire
   bloc.points = "0";
   bloc.size = "auto";
-  bloc.x1 = 2;
-  bloc.y1 = 2;
-  bloc.x2 = 82;
-  bloc.y2 = 12;
+  bloc.x1 = 0;
+  bloc.y1 = 0;
+  bloc.x2 = 100;
+  bloc.y2 = 100;
   bloc.width = 84;
   bloc.height = 14;
   bloc.bord_coul = "#4AC1D8";
@@ -1686,11 +1718,11 @@ function _dragMoveListener (event)
     var inv = false;
     if (event.target.getAttribute('extrema') == "1")
     {
-      inv = ligne_adapt_vals(bloc, bloc.x1 + event.dx, bloc.y1 + event.dy, bloc.x2, bloc.y2);
+      inv = ligne_adapt_vals(bloc, event.dx, event.dy, "1");
     }
     else
     {
-      inv = ligne_adapt_vals(bloc, bloc.x1, bloc.y1, bloc.x2 + event.dx, bloc.y2 + event.dy);
+      inv = ligne_adapt_vals(bloc, event.dx, event.dy, "2");
     }
     if (inv)
     {

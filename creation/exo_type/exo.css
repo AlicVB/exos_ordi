@@ -134,3 +134,6 @@ img.multi_cim {
 .multi_ini {
   display: none;
 }
+svg {
+  overflow: visible;
+}
