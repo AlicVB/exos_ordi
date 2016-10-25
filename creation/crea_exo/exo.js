@@ -201,7 +201,7 @@ function file_create_infos()
 function file_sauve(fic, txt)
 {
   let xhr = new XMLHttpRequest();
-  ligne = "io=sauve&fic=" + fic + "&v=" + txt;
+  ligne = "io=sauve&fic=" + fic + "&v=" + encodeURIComponent(txt);
   xhr.open("POST", "io.php" , true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(ligne);
