@@ -894,25 +894,22 @@ function affiche_score(sauve)
   vals = total.split("|");
   ns = s;
   nt = t;
-  if (vals[0] != "-1")
+  if (vals[0] != "-1") nt = parseInt(vals[0]);
+  ns = s*nt/t;
+  switch (vals[1])
   {
-    nt = parseInt(vals[0]);
-    ns = s*nt/t;
-    switch (vals[1])
-    {
-      case "1":
-        ns = Math.round(ns);
-        break;
-      case "0.5":
-        ns = Math.round(ns*2)/2;
-        break;
-      case "0.1":
-        ns = Math.round(ns*10)/10;
-        break;
-      case "0.01":
-        ns = Math.round(ns*100)/100;
-        break;
-    }
+    case "1":
+      ns = Math.round(ns);
+      break;
+    case "0.5":
+      ns = Math.round(ns*2)/2;
+      break;
+    case "0.1":
+      ns = Math.round(ns*10)/10;
+      break;
+    case "0.01":
+      ns = Math.round(ns*100)/100;
+      break;
   }
   escore.innerHTML = "score : " + ns + "/" + nt;
   np = ns/nt*100;
