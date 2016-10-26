@@ -1479,7 +1479,7 @@ function cercle_create_html(bloc, txt)
   htm += ">\n";
   var rr = 50
   if (bloc.bord != "hidden") rr -= parseFloat(bloc.bord_size)/2;
-  htm += "<ellipse cx=\"50\" cy=\"50\" rx=\"" + rr + "\" ry=\"" + rr + "\" id=\"svg_" + bloc.id + "\" />";
+  htm += "<ellipse vector-effect=\"non-scaling-stroke\" cx=\"50\" cy=\"50\" rx=\"" + rr + "\" ry=\"" + rr + "\" id=\"svg_" + bloc.id + "\" />";
   htm += "</svg>\n</div>\n";
   
   bloc.html = htm;
