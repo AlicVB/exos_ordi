@@ -1209,12 +1209,8 @@ function multi_sel_update()
 
 function cible_new()
 {
-  //on demande le texte initial
-  txt = prompt("zone cible\n\nIdentifiant des objets qui peuvent être posés\nséparer les identifiant par '|'", "");
-  if (!txt) return;
-  
   //on crée le nouveau bloc
-  bloc = bloc_new("cible", txt);
+  bloc = bloc_new("cible", "");
   
   //on le sélectionne
   selection = [bloc];
