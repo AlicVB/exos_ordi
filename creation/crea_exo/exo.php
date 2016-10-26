@@ -196,7 +196,7 @@
         <input type="number" id="cri_total" value="-1" min="-1" onchange="cri_total_change(this)" />
         arrondi <select id="cri_arrondi" onChange="cri_arrondi_change(this)"><option value="1" selected>unité</option><option value="0.5">0.5</option><option value="0.1">0.1</option><option value="0.01">0.01</option><option value="0">auncun</option></select>
         Nombre d'essais (0=infini) :
-        <input type="number" id="cri_essais" value="1" min="0" onKeyUp="cri_essais_change(this)" />
+        <input type="number" id="cri_essais" value="1" min="0" onchange="cri_essais_change(this)" />
       </p>
     </div>
     <div class="cr_pa1" id="cr_pa_create">
