@@ -28,6 +28,7 @@ button.jscolor {
 }
 .cr_rendu_bloc {
   position: absolute;
+  font-size: 0px;
 }
 .couverture {
   position: absolute;

@@ -1523,11 +1523,13 @@ function ligne_get_extrems(bloc)
 {
   var ret = {};
   ret.x1 = bloc.left;
-  ret.x2 = bloc.left + bloc.width;
+  if (bloc.x2 == 0) ret.x2 = bloc.left;
+  else ret.x2 = bloc.left + bloc.width;
   if (bloc.y1 == 0)
   {
     ret.y1 = bloc.top;
-    ret.y2 = bloc.top + bloc.height;
+    if (bloc.y2 == 0) ret.y2 = bloc.top;
+    else ret.y2 = bloc.top + bloc.height;
   }
   else
   {
@@ -1558,7 +1560,17 @@ function ligne_adapt_vals(bloc, dx, dy, ex)
   //on cherche les extrems en x et y
   var nx1, nx2, nxy1, ny2;
   var rep = false;
-  if (x1<x2)
+  bloc.x2 = 100;
+  if (x1 == x2)
+  {
+    bloc.left = x1;
+    bloc.x2 = 0;
+    nx1 = x1;
+    ny1 = y1;
+    nx2 = x2;
+    ny2 = y2;
+  }
+  else if (x1<x2)
   {
     bloc.left = x1;
     nx1 = x1;
@@ -1575,8 +1587,15 @@ function ligne_adapt_vals(bloc, dx, dy, ex)
     nx2 = x1;
     ny2 = y1;
   }
-  bloc.width = nx2-nx1;
-  if (ny1<ny2)
+  bloc.width = Math.max(1,nx2-nx1);
+  if (ny1 == ny2)
+  {
+    bloc.top = ny1;
+    bloc.height = 1;
+    bloc.y1 = 0;
+    bloc.y2 = 0;
+  }
+  else if (ny1<ny2)
   {
     bloc.top = ny1;
     bloc.height = ny2-ny1;
@@ -1766,16 +1785,8 @@ function _dragMoveListener (event)
         var elems = document.getElementsByClassName("extrema");
         for (let j=0; j<elems.length; j++)
         {
-          if (elems[j].getAttribute("extrema") == "1")
-          {
-            elems[j].style.left = bloc.left + bloc.x1 - 4 + "px";
-            elems[j].style.top = bloc.top + bloc.y1 - 4 + "px";
-          }
-          else
-          {
-            elems[j].style.left = bloc.left + bloc.x2 - 4 + "px";
-            elems[j].style.top = bloc.top + bloc.y2 - 4 + "px";
-          }
+          elems[j].style.left = parseFloat(elems[j].style.left) + event.dx + "px";
+          elems[j].style.top = parseFloat(elems[j].style.top) + event.dy + "px";
         }
       }
     }
