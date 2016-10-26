@@ -99,8 +99,6 @@ div.texte_corr {
   font-weight: bold;
 }
 .texte input {
-  margin-left: 1vh;/*1vh*/
-  margin-right: 1vh;
   vertical-align: middle;
   font-size: inherit;
 }

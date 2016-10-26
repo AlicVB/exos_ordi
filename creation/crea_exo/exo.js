@@ -1062,7 +1062,8 @@ function texte_create_html(bloc, txt)
   htm += comp + "|" + enter + "\" >\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
-  
+  if (vals.length>0 && vals[0].substr(-1) == " ") vals[0] = vals[0].slice(0,-1) + "&nbsp;";
+  if (vals.length>2 && vals[2].substr(0,1) == " ") vals[2] = "&nbsp;" + vals[2].substr(1) ;
   if (l == 0) htm += "  <div style=\"width: 100%;\">\n"
   if (vals.length>0) htm += "  <div>" + vals[0] + "</div>\n";
   if (vals.length>1)
