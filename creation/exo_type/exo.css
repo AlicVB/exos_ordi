@@ -41,14 +41,18 @@ div.ligne2f {
 .line {
   position: absolute;
   width: 3px;
-  background-color: #0700A3;
   transform-origin: top left;
+  stroke-width: 3px;
+  stroke: #0700A3;
+  stroke-linecap: round;
+}
+.line line {
   cursor: pointer;
 }
 ellipse {
   stroke-linecap: round;
 }
-line {
+[tpe="ligne"] line {
   stroke-linecap: round;
 }
 .radio form {

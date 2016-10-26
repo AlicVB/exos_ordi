@@ -11,7 +11,6 @@ var total;
 var line_cur = null;
 var line_orig = null;
 var line_orig_id = "";
-var drake = null;
 
 function audio_play(e)
 {
@@ -20,17 +19,23 @@ function audio_play(e)
   audio.play();
 }
 
+function line_new()
+{
+  let txt = "<svg class=\"line\" preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\"><line vector-effect=\"non-scaling-stroke\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"100\"></line></svg>";
+  document.body.insertAdjacentHTML('beforeend', txt);
+  var elems = document.getElementsByClassName("line");
+  return elems[elems.length - 1];
+}
+
 function line_start(e)
 {
   //on récupère le point de départ
   var rect = e.target.getBoundingClientRect();
 
   //on crée la ligne
-  li = document.createElement('div');
-  li.className = "line";
+  li = line_new();
   li.style.top = (rect.top + rect.height/2) + "px";
   li.style.left = (rect.left + rect.width/2) + "px";
-  document.body.appendChild(li);
   document.body.addEventListener('mouseup',line_leave,true);
   document.body.addEventListener('mousemove',line_move,true);
   
@@ -59,7 +64,7 @@ function line_move(event)
 }
 function line_remove(event)
 {
-  line = event.target;
+  let line = event.target.parentNode;
   e1 = document.getElementById(line.getAttribute("l1"));
   e2 = document.getElementById(line.getAttribute("l2"));
   document.body.removeChild(line);
@@ -137,12 +142,8 @@ function line_charge(e, v)
 function line_relie(e1, e2, line, corr)
 {
   if (!e1 || !e2) return;
-  if (!line)
-  {
-    line = document.createElement('div');
-    line.className = "line";
-    document.body.appendChild(line);
-  }
+  if (!line) line = line_new();
+
   //on détecte quels côtés on utilise
   var rect1 = e1.getBoundingClientRect();
   var rect2 = e2.getBoundingClientRect();
@@ -187,7 +188,7 @@ function line_relie(e1, e2, line, corr)
   line.setAttribute("l2", e2.id);
   if (corr)
   {
-    line.style.backgroundColor = "red";
+    line.style.stroke = "red";
   }
   else
   {
@@ -602,14 +603,10 @@ function line_score(e, tt)
       {
         s = 0;
         // il faut barrer la ligne en trop
-        var rect1 = e.getBoundingClientRect();
-        var rect2 = document.getElementById(id1[i]).getBoundingClientRect();
-        barre = document.createElement('span');
-        barre.className = "line_barre";
-        barre.innerHTML = "X";
-        document.body.appendChild(barre);
-        barre.style.top = ((rect1.top + rect1.height/2 + rect2.top + rect2.height/2)/2 - barre.offsetHeight/2) + "px";
-        barre.style.left = ((rect1.left + rect1.width/2 + rect2.left + rect2.width/2)/2 - barre.offsetWidth/2) + "px";
+        let li = line_relie(e, document.getElementById(id1[i]), null, true);
+        li.style.strokeDasharray = "2, 10";
+        li.style.strokeLinecap = "butt";
+        li.style.strokeWidth = "12px";
       }
     }
   }
