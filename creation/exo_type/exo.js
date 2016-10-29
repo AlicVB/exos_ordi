@@ -19,9 +19,12 @@ function audio_play(e)
   audio.play();
 }
 
-function line_new()
+function line_new(corr)
 {
-  let txt = "<svg class=\"line\" preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\"><line vector-effect=\"non-scaling-stroke\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"100\"></line></svg>";
+  let txt = "<svg class=\"line\" preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\">";
+  txt += "<line vector-effect=\"non-scaling-stroke\" x1=\"50\" y1=\"0\" x2=\"50\" y2=\"100\"></line>";
+  if (corr) txt += "<polygon points=\"-300 97, 50 100, 400 97\"/>";
+  txt += "</svg>";
   document.body.insertAdjacentHTML('beforeend', txt);
   var elems = document.getElementsByClassName("line");
   return elems[elems.length - 1];
@@ -30,10 +33,10 @@ function line_new()
 function line_start(e)
 {
   //on récupère le point de départ
-  var rect = e.target.getBoundingClientRect();
+  var rect = e.currentTarget.getBoundingClientRect();
 
   //on crée la ligne
-  li = line_new();
+  li = line_new(false);
   li.style.top = (rect.top + rect.height/2) + "px";
   li.style.left = (rect.left + rect.width/2) + "px";
   document.body.addEventListener('mouseup',line_leave,true);
@@ -41,8 +44,8 @@ function line_start(e)
   
   //on enregistre
   line_cur = li;
-  line_orig = e.target;
-  line_orig_id = e.target.id;
+  line_orig = e.currentTarget;
+  line_orig_id = e.currentTarget.id;
 }
 function line_move(event)
 {
@@ -142,7 +145,7 @@ function line_charge(e, v)
 function line_relie(e1, e2, line, corr)
 {
   if (!e1 || !e2) return;
-  if (!line) line = line_new();
+  if (!line) line = line_new(corr);
 
   //on détecte quels côtés on utilise
   var rect1 = e1.getBoundingClientRect();
@@ -571,7 +574,16 @@ function cible_score(e, tt)
       e.style.border = "2px solid red";
       e.style.borderRadius = "2vh";
       el2 = document.getElementById(e.getAttribute("juste"));
-      if (el2) line_relie(e, el2, null, true);
+      if (el2)
+      {
+        let svg = line_relie(el2, e, null, true);
+        let elems = svg.getElementsByTagName("polygon");
+        if (elems.length>0)
+        {
+          let li = elems[0];
+          li.style.display = "block";
+        }
+      }
     }
   }
   return 0;

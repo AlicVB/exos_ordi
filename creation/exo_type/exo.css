@@ -40,14 +40,20 @@ div.ligne2f {
 }
 .line {
   position: absolute;
-  width: 3px;
   transform-origin: top left;
   stroke-width: 3px;
   stroke: #0700A3;
   stroke-linecap: round;
+  width: 3px;
+  height: 1px;
 }
 .line line {
   cursor: pointer;
+}
+.line polygon {
+  stroke-width: 0;
+  fill: red;
+  display: none;
 }
 ellipse {
   stroke-linecap: round;
