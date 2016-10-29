@@ -1,0 +1,12 @@
+wxexercice
+sqdfscv
+0|0.01
+0|n|OH !<br />Tu n'as pas compris la consigne ou la règle !sf<br />Demande de l'aide à quelqu'un<br />et passe à la suite...|0
+20|r|Tu as encore fait trop d'erreurs !<br />Demande de l'aide à quelqu'un traciut<br />et passe à la suite...|1
+40|j|Tu as encore fait trop d'erreurs !<br />Relis la règle<br />et passe à la suite...|0
+60|b|Tu commences à comprendre,<br />mais il reste encore des erreurs !Passe à la suite...|1
+80|v|BIEN !<br />Tu n'as presque plus d'erreurs.Sauras-tu faire encore mieux<br />au prochain exercice ?|1
+99|c|BRAVO !<br />Seras-tu capable de faire aussi bien<br />au prochain exercice ?|0
+0
+#7661FF
+
