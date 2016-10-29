@@ -38,7 +38,22 @@ function free_path($fic)
   }
   return $p1."_".$i.$p2;
 }
-
+function livre_creation($dos)
+{
+  //on crée tout ce qu'il manque
+  if (!file_exists("$dos")) mkdir("$dos", 0777, true);
+  if (!file_exists("$dos/exos")) mkdir("$dos/exos", 0777, true);
+  if (!file_exists("$dos/img")) mkdir("$dos/img", 0777, true);
+  if (!file_exists("$dos/sons")) mkdir("$dos/sons", 0777, true);
+  if (!file_exists("$dos/livre.php")) copy("livre_type/livre.php", "$dos/livre.php");
+  if (!file_exists("$dos/livre.css")) copy("livre_type/livre.css", "$dos/livre.css");
+  if (!file_exists("$dos/livre.js")) copy("livre_type/livre.js", "$dos/livre.js");
+  if (!file_exists("$dos/bilan.php")) copy("livre_type/bilan.php", "$dos/bilan.php");
+  if (!file_exists("$dos/compteur.php")) copy("livre_type/compteur.php", "$dos/compteur.php");
+  if (!file_exists("$dos/intro.php")) copy("livre_type/intro.php", "$dos/intro.php");
+  if (!file_exists("$dos/intro.css")) copy("livre_type/intro.css", "$dos/intro.css");
+}
+  
   //on traite d'abord des actions à faire
   if (isset($_GET['action']) && isset($_GET['exo']) && isset($_GET['cat']) && isset($_GET['livre']))
   {
@@ -100,39 +115,6 @@ function free_path($fic)
         break;
     }
   }
-?>
-<!DOCTYPE html>
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>exotice -- livres</title>
-  <link rel="stylesheet" href="livre.css">
-  <script type="text/javascript" src="../libs/jscolor.min.js"></script>
-  <script type="text/javascript" src="livre.js"></script>
-</head>
-
-<body>
-  <div id="bandeau">
-    <a href="creation.php"><img class="bimg" src="../icons/applications-accessories.svg" title="gestion des livres et exercices"/></a>
-    <a href="../admin_users.php"><img class="bimg" src="../icons/stock_people.svg" title="gestion des utilisateurs"/></a>
-    <a href="../admin.php"><img class="bimg" src="../icons/edit-find-replace.svg" title="logs des exercices"/></a>
-  </div>
-<?php
-  function livre_creation($dos)
-  {
-    //on crée tout ce qu'il manque
-    if (!file_exists("$dos")) mkdir("$dos", 0777, true);
-    if (!file_exists("$dos/exos")) mkdir("$dos/exos", 0777, true);
-    if (!file_exists("$dos/img")) mkdir("$dos/img", 0777, true);
-    if (!file_exists("$dos/sons")) mkdir("$dos/sons", 0777, true);
-    if (!file_exists("$dos/livre.php")) copy("livre_type/livre.php", "$dos/livre.php");
-    if (!file_exists("$dos/livre.css")) copy("livre_type/livre.css", "$dos/livre.css");
-    if (!file_exists("$dos/livre.js")) copy("livre_type/livre.js", "$dos/livre.js");
-    if (!file_exists("$dos/bilan.php")) copy("livre_type/bilan.php", "$dos/bilan.php");
-    if (!file_exists("$dos/compteur.php")) copy("livre_type/compteur.php", "$dos/compteur.php");
-    if (!file_exists("$dos/intro.php")) copy("livre_type/intro.php", "$dos/intro.php");
-    if (!file_exists("$dos/intro.css")) copy("livre_type/intro.css", "$dos/intro.css");
-  }
   
   if (isset($_GET['cat']) && isset($_GET['livre']))
   {
@@ -165,6 +147,25 @@ function free_path($fic)
     {
       file_put_contents("$dos/livre.txt", "$titre\n$coul\n\n\n\n\n\n\n\n\n");
     }
+  }
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>exotice -- livres</title>
+  <link rel="stylesheet" href="livre.css">
+  <script type="text/javascript" src="../libs/jscolor.min.js"></script>
+  <script type="text/javascript" src="livre.js"></script>
+</head>
+
+<body onload="start('<?php echo $aut; ?>')">
+  <div id="bandeau">
+    <a href="creation.php"><img class="bimg" src="../icons/applications-accessories.svg" title="gestion des livres et exercices"/></a>
+    <a href="../admin_users.php"><img class="bimg" src="../icons/stock_people.svg" title="gestion des utilisateurs"/></a>
+    <a href="../admin.php"><img class="bimg" src="../icons/edit-find-replace.svg" title="logs des exercices"/></a>
+  </div>
+<?php
     echo "<div class=\"col\">\n";
     echo "<div class=\"titre\">informations</div>\n";
     echo "<table>";
@@ -224,7 +225,6 @@ function free_path($fic)
     echo "<tr><td class=\"enew\"><a class=\"enewa\" href=\"crea_exo/exo.php?cat=$cat&livre=$livre&exo=\">+ nouvel exercice...</a></td></tr>";
     echo "</table>";
     echo "</div>\n";
-  }
 ?>
   <img class="exotice" src="../exotice.svg" />
   <div class="copyright"><img src="../icons/gpl-v3-logo-nb.svg" /> © A. RENAUDIN 2016</div> 

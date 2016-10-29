@@ -1,3 +1,14 @@
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
 function iimg_load(e)
 {
   //on veut que l'image rentre dans un carré de 300x300
@@ -26,4 +37,16 @@ function infos_change(fic)
   xhr.open("POST", "livre_sauve.php" , true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(ligne);
+  
+  //on sauvegarde aussi en local le nom de l'auteur
+  document.cookie = "auteur=" + document.getElementById("iaut").value + "; expires=Sun, 28 Feb 8888 00:00:00 UTC";
+}
+
+function start(aut)
+{
+  if (aut == "")
+  {
+    let rep = readCookie("auteur");
+    if (rep) document.getElementById("iaut").value = rep;
+  }
 }
