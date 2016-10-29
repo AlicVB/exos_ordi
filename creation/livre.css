@@ -32,10 +32,14 @@ body {
 .td1 {
   text-align: right;
   padding: 5px;
+  white-space: nowrap;
 }
 .td2 {
   text-align: left;
   padding: 5px;
+}
+.td3 {
+  white-space: nowrap;
 }
 .ea {
   text-decoration: none;
@@ -47,4 +51,30 @@ body {
   text-decoration: none;
   font-weight: bold;
   color: orange;
+}
+#bandeau {
+  text-align: right;
+  width: 95%;
+}
+img.bimg {
+  height: 8vh;
+}
+.exotice {
+  position: absolute;
+  left: 2%;
+  top: 0%;
+  height: 8vh;
+}
+.copyright {
+  position: absolute;
+  transform-origin: top left;
+  transform: rotate(-90deg);
+  left: 2px;
+  bottom: -23px;
+  font-size: 15px;
+}
+.copyright img {
+  min-height: 25px;
+  height: 3vh;
+  vertical-align: middle;
 }

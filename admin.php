@@ -133,6 +133,7 @@
       }
     ?>
   </div>
-  <div id="bysa"><img src="icons/by-sa.png" />© A. RENAUDIN 2016</div>
+  <img class="exotice" src="exotice.svg" />
+  <div class="copyright"><img src="icons/gpl-v3-logo-nb.svg" /> © A. RENAUDIN 2016</div> 
 </body>
 </html>

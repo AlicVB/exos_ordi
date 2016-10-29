@@ -12,6 +12,7 @@
     <a href="admin.php"><img class="bimg" src="icons/edit-find-replace.svg" title="logs des exercices"/></a>
   </div>
   <div id="logs">
+    <div class="cat">Utilisateurs</div>
     <div id="aide">
       <?php
         if (isset($_POST['texte']))
@@ -26,8 +27,8 @@
       prénom|classe|couleur<br/><br/>
       prénom : doit être UNIQUE<br/>
       classe : peu importe<br/>
-      couleur : rouge, vert, bleu, blanc, gris, orange<br/><br/>
-      Attention AUCUN '/*."      
+      couleur au format html (couleur en Anglais, #XXXXXX, rgb(xx,xx,xx), ...)<br/><br/>
+      Attention AUCUN charactère : '/*."      
     </div>
     <div id="forme">
       <form action="admin_users.php" method="post">
@@ -36,5 +37,7 @@
       </form>
     </div>
   </div>
+  <img class="exotice" src="exotice.svg" />
+  <div class="copyright"><img src="icons/gpl-v3-logo-nb.svg" /> © A. RENAUDIN 2016</div> 
 </body>
 </html>

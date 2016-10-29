@@ -64,12 +64,24 @@ img.erimg {
 .exo a {
   text-decoration: none;
 }
-#bysa {
+.exotice {
   position: absolute;
-  left: 0px;
-  bottom: 0px;
-  font-size: 12px;
+  left: 2%;
+  top: 0%;
+  height: 8vh;
 }
-#bysa img {
-  height: 12px;
+.copyright {
+  position: fixed;
+  transform-origin: top left;
+  transform: rotate(-90deg);
+  left: 0;
+  bottom: -23px;
+  font-size: 15px;
+  background-color: #ADD8E6;
+  padding: 4px;
+}
+.copyright img {
+  min-height: 25px;
+  height: 3vh;
+  vertical-align: middle;
 }

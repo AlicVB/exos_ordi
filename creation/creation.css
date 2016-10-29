@@ -33,3 +33,22 @@ img.bimg {
   font-size: 3vh;
   padding: 5px;
 }
+.exotice {
+  position: absolute;
+  left: 2%;
+  top: 0%;
+  height: 8vh;
+}
+.copyright {
+  position: absolute;
+  transform-origin: top left;
+  transform: rotate(-90deg);
+  left: 2px;
+  bottom: -23px;
+  font-size: 15px;
+}
+.copyright img {
+  min-height: 25px;
+  height: 3vh;
+  vertical-align: middle;
+}

@@ -112,6 +112,11 @@ function free_path($fic)
 </head>
 
 <body>
+  <div id="bandeau">
+    <a href="creation.php"><img class="bimg" src="../icons/applications-accessories.svg" title="gestion des livres et exercices"/></a>
+    <a href="../admin_users.php"><img class="bimg" src="../icons/stock_people.svg" title="gestion des utilisateurs"/></a>
+    <a href="../admin.php"><img class="bimg" src="../icons/edit-find-replace.svg" title="logs des exercices"/></a>
+  </div>
 <?php
   function livre_creation($dos)
   {
@@ -209,7 +214,7 @@ function free_path($fic)
         echo "<tr style=\"background-color:$ecoul;\">\n";
         echo "<td class=\"td2\"><a class=\"ea\" href=\"crea_exo/exo.php?cat=$cat&livre=$livre&exo=$exo\">";
         echo "$et ($exos[$i])</a></td>\n";
-        echo "<td><a href=\"livre.php?cat=$cat&livre=$livre&action=remove&exo=$exo\"><img class=\"eimg\" src=\"../icons/window-close.svg\" title=\"supprimer l'exo\"/></a>\n";
+        echo "<td class=\"td3\"><a href=\"livre.php?cat=$cat&livre=$livre&action=remove&exo=$exo\"><img class=\"eimg\" src=\"../icons/window-close.svg\" title=\"supprimer l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=copie&exo=$exo\"><img class=\"eimg\" src=\"../icons/tab-new.svg\" title=\"copier l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=up&exo=$exo\"><img class=\"eimg\" src=\"../icons/go-up.svg\" title=\"monter l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=down&exo=$exo\"><img class=\"eimg\" src=\"../icons/go-down.svg\" title=\"descendre l'exo\"/></a>\n";
@@ -221,5 +226,7 @@ function free_path($fic)
     echo "</div>\n";
   }
 ?>
+  <img class="exotice" src="../exotice.svg" />
+  <div class="copyright"><img src="../icons/gpl-v3-logo-nb.svg" /> © A. RENAUDIN 2016</div> 
 </body>
 </html>
