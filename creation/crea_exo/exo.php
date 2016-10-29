@@ -198,6 +198,22 @@
         Nombre d'essais (0=infini) :
         <input type="number" id="cri_essais" value="1" min="0" onchange="cri_essais_change(this)" />
       </p>
+      <p id="cri_mod">
+        Appliquer le modèle : 
+        <select id="cri_mod_sel" onchange="cri_mod_sel_change(this)">
+          <option value="****"></option>
+          <option value="####">...Gestionnaire...</option>
+          <?php
+            $imgs = glob("modeles/*");
+            for ($i=0; $i<count($imgs); $i++)
+            {
+              echo "<option value=\"".basename($imgs[$i])."\">".basename($imgs[$i])."</option>";
+            }
+          ?>
+        </select>
+        <button id="cri_mod_save" onclick="cri_mod_save(this)">Sauver comme modèle</button>
+        <a id="cri_mod_gestion" href="modeles.php" target="_blank"></a>
+      </p>
     </div>
     <div class="cr_pa1" id="cr_pa_create">
       <div id="cr_btn_div">
@@ -368,7 +384,7 @@
           </div>
           <div class="cr_opt_ligne">
             Fond :
-            <input id="cr_fond_coul" type="text" class="cr_ jscolor {hash:true, value='#ffffff', onFineChange: 'cr_fond_coul_change(this)'}"  title="couleur de fond"></button>
+            <input id="cr_fond_coul" type="text" class="cr_ jscolor {hash:true, value:'#ffffff', onFineChange: 'cr_fond_coul_change(this)'}"  title="couleur de fond"></button>
             <input class="cr_" id="cr_fond_alpha" type="number" value="0" min="0" max="100" onchange="cr_fond_alpha_change(this)" title="opacité (100 = opaque)"/>%
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marges :
             <input class="cr_" id="cr_marges" type="number" value="0" min="0" max="500" onchange="cr_marges_change(this)" title="marges intérieures"/>

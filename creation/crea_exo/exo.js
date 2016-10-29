@@ -267,6 +267,13 @@ function g_restaurer_info(init)
       // on met les bonnes valeurs aux bons endroits
       var vals = [];
       var rep = xhr.responseText;
+      console.log(rep);
+      let tosave = false;
+      if (rep.length > 3 && rep.substr(0,4) == "****")
+      {
+        tosave = true;
+        rep = rep.substr(4);
+      }
       if (rep != "") vals = rep.split("\n");
       else g_sauver_info();
       if (vals.length>10)
@@ -294,6 +301,7 @@ function g_restaurer_info(init)
         infos.coul = vals[10];
         if (vals.length>11) infos.audio_name = vals[11];
       }
+      if (tosave) g_sauver_info();
       infos_change();
     }
   };

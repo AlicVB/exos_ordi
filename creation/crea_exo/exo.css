@@ -224,3 +224,8 @@ input[type="number"] {
 #ci_audio_get {
   display: none;
 }
+#cri_mod {
+  text-align: center;
+  background-color: #7F85A6;
+  margin: 20px 0px 20px 0px;
+}

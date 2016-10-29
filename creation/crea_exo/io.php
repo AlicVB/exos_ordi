@@ -58,9 +58,17 @@ function free_path($fic)
   {
     $io = $_POST["io"];
     $fic = $_POST["fic"];
-    if ($io == "charge" && file_exists($fic))
+    if ($io == "charge")
     {
-      $ret = file_get_contents($fic);
+      if (!file_exists($fic) && basename($fic) == "exo.txt")
+      {
+        $def = "basic";
+        if (file_exists("default_modele.txt")) $def = file_get_contents("default_modele.txt");
+        if (!file_exists("modeles/".$def)) $def = "basic";
+        $fic = "modeles/".$def;
+        if (file_exists($fic)) $ret = "****".file_get_contents($fic);
+      }
+      else if (file_exists($fic)) $ret = file_get_contents($fic);
     }
     else if ($io == "sauve" && isset($_POST["v"]))
     {

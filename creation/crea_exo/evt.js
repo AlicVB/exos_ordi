@@ -1098,3 +1098,70 @@ function cri_a_txt_change(e)
   infos.a[nb-1].txt = e.value;
   g_sauver_info();
 }
+function cri_mod_sel_change(e)
+{
+  if (e.value == "****")
+  {
+    //rien à faire
+  }
+  else if (e.value == "####")
+  {
+    //on ouvre le gestionnaire dans une nouvelle fenêtre
+    document.getElementById("cri_mod_gestion").click();
+  }
+  else
+  {
+    //on charge le modèle
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
+      {
+        // on met les bonnes valeurs aux bons endroits
+        var vals = [];
+        var rep = xhr.responseText;
+        if (rep != "") vals = rep.split("\n");
+        else return;
+        if (vals.length>10)
+        {
+          infos.titre = vals[0];
+          infos.consigne = vals[1];
+          vv = vals[2].split("|");
+          if (vv.length>1)
+          {
+            infos.total = vv[0];
+            infos.arrondi = vv[1];
+          }
+          for (let i=0; i<6; i++)
+          {
+            vv = vals[i+3].split("|");
+            if (vv.length>3)
+            {
+              infos.a[i].min = vv[0];
+              infos.a[i].coul = vv[1];
+              infos.a[i].txt = vv[2].replace(/<br \/>/g, "\n");
+              infos.a[i].re = vv[3];
+            }
+          }
+          infos.essais = vals[9];
+          infos.coul = vals[10];
+          if (vals.length>11) infos.audio_name = vals[11];
+        }
+        infos_change();
+      }
+    };
+    xhr.open("POST", "io.php" , true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send("io=charge&fic=modeles/" + e.value);
+  }
+  e.selectedIndex = 0;
+}
+function cri_mod_save(e)
+{
+  let txt = prompt("Nom du modèle (sans accents, espaces, etc...)\n\nAttention si il existe déjà, l'ancien sera écrasé !", "");
+  if (!txt | txt == "") return;
+  file_sauve("modeles/" + txt, file_create_infos());
+  var option = document.createElement("option");
+  option.text = txt;
+  option.value = txt;
+  document.getElementById("cri_mod_sel").add(option);
+}
