@@ -591,13 +591,14 @@ function cible_score(e, tt)
 
 function line_score(e, tt)
 {
-  s = 0;
-  if (e.hasAttribute("lineto") && e.hasAttribute("lineok"))
+  let s = 0;
+  if (e.hasAttribute("lineok"))
   {
     //on cherche l'erreur
     s = 1;
-    id1 = e.getAttribute("lineto").split("|");
-    id2 = e.getAttribute("lineok").split("|");
+    let id1 = [];
+    if (e.hasAttribute("lineto")) id1 = e.getAttribute("lineto").split("|");
+    let id2 = e.getAttribute("lineok").split("|");
     //on regarde d'abord si il manque des lignes
     for (let i=0; i<id2.length; i++)
     {
