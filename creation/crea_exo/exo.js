@@ -225,11 +225,47 @@ function g_exporter()
 
 function g_sauver()
 {
-  file_sauve(exo_dos + "/exo_sav.txt", JSON.stringify(blocs));
+  let txt = JSON.stringify(blocs);
+  file_sauve(exo_dos + "/exo_sav.txt", txt);
+  let pos = sessionStorage.getItem(exo_dos + "hist_last");
+  if (!pos) pos = -1;
+  pos++;
+  if (pos > 20)
+  {
+    //il faut supprimmer ceux du début
+    sessionStorage.removeItem(exo_dos + "hist_" + (pos-20));
+  }
+  sessionStorage.setItem(exo_dos + "hist_" + pos, txt);
+  sessionStorage.setItem(exo_dos + "hist_pos", pos);
 }
 function g_sauver_info()
 {
   file_sauve(exo_dos + "/exo.txt", file_create_infos());
+}
+function g_restaurer_hist(delta)
+{
+  let pos = sessionStorage.getItem(exo_dos + "hist_last");
+  if (!pos) pos = -1;
+  pos += delta;
+  let txt = sessionStorage.getItem(exo_dos + "hist_" + pos);
+  if (!txt || txt == "") return;
+  sessionStorage.setItem(exo_dos + "hist_pos", pos);
+  //on nettoie
+  rendu_ini();
+  blocs = [];
+  selection = [];
+  last_id = 0;
+  selection_change();
+  // on met les bonnes valeurs aux bons endroits
+  var b = null;
+  b = JSON.parse(txt);
+  if (b) blocs = b;
+  for (let i=0; i<blocs.length; i++)
+  {
+    // et au rendu
+    rendu_add_bloc(blocs[i]);
+    if (blocs[i].id > last_id) last_id = blocs[i].id;
+  }
 }
 function g_restaurer(init)
 {

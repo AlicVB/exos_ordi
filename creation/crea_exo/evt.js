@@ -28,7 +28,7 @@ function cr_tab_click(e)
 
 function cr_keydown(event)
 {
-  if (event.target != document.body || selection.length < 1) return;
+  if (event.target != document.body) return;
   //console.log(event.keyCode);
   var r = document.getElementById("cr_rendu")
   var mv = 5;
@@ -73,6 +73,14 @@ function cr_keydown(event)
       var e = {};
       e.value = "1";
       cr_action_change(e);
+      break;
+    case 89: //Y
+      g_restaurer_hist(1);
+      return;
+      break;
+    case 90: //Z
+      g_restaurer_hist(-1);
+      return;
       break;
   }
   selection_update();
