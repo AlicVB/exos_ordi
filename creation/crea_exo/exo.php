@@ -378,6 +378,12 @@
             <label for="cr_font_s" style="text-decoration: underline;" title="souligné (exclu barré)">S</label>
             <input class="cr_" type="checkbox" id="cr_font_b" onchange="cr_font_b_change(this)"/>
             <label for="cr_font_b" style="text-decoration: line-through;" title="barré (exclu souligné)">B</label>
+            <input class="cr_" type="radio" id="cr_align_l" name="cr_align" onchange="cr_align_change(this)"/>
+            <label for="cr_align_l" title="aligner à gauche"><img src="icons/align_l.svg" /></label>
+            <input class="cr_" type="radio" id="cr_align_c" name="cr_align" onchange="cr_align_change(this)"/>
+            <label for="cr_align_c" title="centrer"><img src="icons/align_c.svg" /></label>
+            <input class="cr_" type="radio" id="cr_align_r" name="cr_align" onchange="cr_align_change(this)"/>
+            <label for="cr_align_r" title="aligner à droite"><img src="icons/align_r.svg" /></label>
           </div>
           <div class="cr_opt_ligne">
             Taille :

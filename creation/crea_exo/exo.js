@@ -118,6 +118,9 @@ function file_create_css()
     if (b.font_i == "true") txt += "font-style: italic; ";
     if (b.font_s == "true") txt += "text-decoration: underline; ";
     if (b.font_b == "true") txt += "text-decoration: line-throught; ";
+    if (b.align == "1") txt += "text-align: left; ";
+    else if (b.align == "2") txt += "text-align: center; ";
+    else if (b.align == "3") txt += "text-align: right; ";
     //position-taille
     txt += "position: absolute; ";
     txt += "left: " + b.left*100/443 + "%; ";
@@ -383,6 +386,7 @@ function bloc_ini(bloc)
   bloc.font_i = "false";
   bloc.font_s = "false";
   bloc.font_b = "false";
+  bloc.align = "2";
   //taille-position
   bloc.left = 5;
   bloc.top = 300;
@@ -734,10 +738,13 @@ function selection_update()
   document.getElementById("cr_font_fam").value = bloc.font_fam;
   document.getElementById("cr_font_size").value = bloc.font_size;
   document.getElementById("cr_font_coul").jscolor.fromString(bloc.font_coul);
-  document.getElementById("cr_font_g").value = (bloc.font_g == "true");
-  document.getElementById("cr_font_i").value = (bloc.font_i == "true");
-  document.getElementById("cr_font_s").value = (bloc.font_s == "true");
-  document.getElementById("cr_font_b").value = (bloc.font_b == "true");
+  document.getElementById("cr_font_g").checked = (bloc.font_g == "true");
+  document.getElementById("cr_font_i").checked = (bloc.font_i == "true");
+  document.getElementById("cr_font_s").checked = (bloc.font_s == "true");
+  document.getElementById("cr_font_b").checked = (bloc.font_b == "true");
+  document.getElementById("cr_align_l").checked = (bloc.align == "1");
+  document.getElementById("cr_align_c").checked = (bloc.align == "2");
+  document.getElementById("cr_align_r").checked = (bloc.align == "3");
   //taille-position
   document.getElementById("cr_tp_l").value = bloc.left;
   document.getElementById("cr_tp_t").value = bloc.top;

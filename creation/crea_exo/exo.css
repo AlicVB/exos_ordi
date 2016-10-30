@@ -97,6 +97,9 @@ input[type="number"] {
 .cr_font input[type="checkbox"] {
   display:none; 
 }
+.cr_font input[type="radio"] {
+  display:none; 
+}
 .cr_font label {
   display:inline-block;
   box-sizing: border-box;
@@ -105,7 +108,13 @@ input[type="number"] {
   background-color: #D0D0D0;
   text-align: center;
 }
+.cr_font img {
+  width: 16px;
+}
 .cr_font input[type="checkbox"]:checked + label {
+  background-color: #909090;
+}
+.cr_font input[type="radio"]:checked + label {
   background-color: #909090;
 }
 #cr_css {

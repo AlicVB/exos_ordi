@@ -456,6 +456,22 @@ function cr_font_b_change(e)
   //on sauvegarde
   g_sauver();
 }
+function cr_align_change(e)
+{
+  let v = "0";
+  if (e.id == "cr_align_l") v = "1";
+  else if (e.id == "cr_align_c") v = "2";
+  else if (e.id == "cr_align_r") v = "3";
+  else return;
+  for (let i=0; i<selection.length; i++)
+  {
+    selection[i].align = v;
+    if (v == "1") document.getElementById(selection[i].id).style.textAlign = "left";
+    else if (v == "2") document.getElementById(selection[i].id).style.textAlign = "center";
+    else if (v == "3") document.getElementById(selection[i].id).style.textAlign = "right";
+  }
+  g_sauver();
+}
 
 function cr_tp_w_change(e)
 {
