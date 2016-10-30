@@ -227,7 +227,7 @@ function g_sauver()
 {
   let txt = JSON.stringify(blocs);
   file_sauve(exo_dos + "/exo_sav.txt", txt);
-  let pos = sessionStorage.getItem(exo_dos + "hist_last");
+  let pos = sessionStorage.getItem(exo_dos + "hist_pos");
   if (!pos) pos = -1;
   pos++;
   if (pos > 20)
@@ -244,9 +244,9 @@ function g_sauver_info()
 }
 function g_restaurer_hist(delta)
 {
-  let pos = sessionStorage.getItem(exo_dos + "hist_last");
+  let pos = sessionStorage.getItem(exo_dos + "hist_pos");
   if (!pos) pos = -1;
-  pos += delta;
+  pos = parseInt(pos) + delta;
   let txt = sessionStorage.getItem(exo_dos + "hist_" + pos);
   if (!txt || txt == "") return;
   sessionStorage.setItem(exo_dos + "hist_pos", pos);

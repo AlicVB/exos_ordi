@@ -82,6 +82,8 @@ function cr_keydown(event)
       g_restaurer_hist(-1);
       return;
       break;
+    default:
+      return;
   }
   selection_update();
   g_sauver();
