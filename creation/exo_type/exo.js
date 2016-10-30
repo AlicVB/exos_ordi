@@ -345,7 +345,7 @@ function drag_drop(ev)
 }
 
 //Actions spécifiques de certains éléments
-function multi_change(elem)
+function multi_change(elem, clic)
 {
   // on récupère les options
   r = getrootitem(elem);
@@ -353,8 +353,10 @@ function multi_change(elem)
   var opts = r.getAttribute('options').split("|");
   var maj = [];
   var suff = [];
+  var barre = [];
   if (r.hasAttribute("maj")) maj = r.getAttribute('maj').split("|");
   if (r.hasAttribute("suff")) suff = r.getAttribute('suff').split("|");
+  if (r.hasAttribute("barre")) barre = r.getAttribute('barre').split("|");
   //on fait les changements de couleur
   var ncoul = opts[0];
   var nid = 0;
@@ -362,20 +364,28 @@ function multi_change(elem)
   {
     if (elem.style.backgroundColor == opts[i])
     {
-      if (i == opts.length - 1)
+      if (clic)
       {
-        ncoul = "transparent";
-        nid = -1;
+        if (i == opts.length - 1)
+        {
+          ncoul = "transparent";
+          nid = -1;
+        }
+        else
+        {
+          ncoul = opts[i+1];
+          nid = i+1;
+        }
       }
-      else
-      {
-        ncoul = opts[i+1];
-        nid = i+1;
-      }
+      else nid = i;
       break;
     }
   }
-  elem.style.backgroundColor = ncoul;
+  if (clic) elem.style.backgroundColor = ncoul;
+  //texte barré
+  if (nid < 0 || nid >= barre.length || barre[nid] != "1") elem.style.textDecoration = "none";
+  else elem.style.textDecoration = "line-through";
+  //majuscules et suffixes
   var inis = elem.getElementsByClassName("multi_ini");
   if (inis && inis.length>0)
   {
@@ -829,7 +839,7 @@ function change(elem)
   switch (gettype(elem))
   {
     case "multi":
-      multi_change(elem);
+      multi_change(elem, true);
       break;
   }
   
@@ -988,6 +998,7 @@ function setvalue(e, v)
       break;
     case "multi":
       e.style.backgroundColor = v;
+      multi_change(e, false);
       break;
     case "texte_simple":
     case "image":

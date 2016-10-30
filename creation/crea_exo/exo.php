@@ -314,33 +314,38 @@
             <div class="cr_coul">Nombre de positions :
               <select id="cr_coul_nb" onChange="cr_coul_nb_change(this, 'true')"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
             </div>
-            <div class="cr_coul" id="cr_div_coul1">Couleur1
+            <div class="cr_coul" id="cr_div_coul1">Etat 1
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul1" value="#00ff00" />
-              <input type="checkbox" name="cr_coul1_maj" id="cr_coul1_maj" onchange="cr_coul_change(this)"/><label for="cr_coul1_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul1_barre" id="cr_coul1_barre" onchange="cr_coul_change(this)"/><label for="cr_coul1_barre">barré</label>
+              <input type="checkbox" name="cr_coul1_maj" id="cr_coul1_maj" onchange="cr_coul_change(this)"/><label for="cr_coul1_maj">maj.</label>
               <input type="checkbox" name="cr_coul1_suff" id="cr_coul1_suff" onchange="cr_coul_change(this)"/><label for="cr_coul1_suff">suffixe</label>
               <input type="text" size="3" id="cr_coul1_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
-            <div class="cr_coul" id="cr_div_coul2">Couleur2
+            <div class="cr_coul" id="cr_div_coul2">Etat 2
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul2" value="#ff0000" />
-              <input type="checkbox" name="cr_coul2_maj" id="cr_coul2_maj" onchange="cr_coul_change(this)"/><label for="cr_coul2_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul2_barre" id="cr_coul2_barre" onchange="cr_coul_change(this)"/><label for="cr_coul2_barre">barré</label>
+              <input type="checkbox" name="cr_coul2_maj" id="cr_coul2_maj" onchange="cr_coul_change(this)"/><label for="cr_coul2_maj">maj.</label>
               <input type="checkbox" name="cr_coul2_suff" id="cr_coul2_suff" onchange="cr_coul_change(this)"/><label for="cr_coul2_suff">suffixe</label>
               <input type="text" size="3" id="cr_coul2_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
-            <div class="cr_coul" id="cr_div_coul3">Couleur3
+            <div class="cr_coul" id="cr_div_coul3">Etat 3
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul3" value="#0000ff" />
-              <input type="checkbox" name="cr_coul3_maj" id="cr_coul3_maj" onchange="cr_coul_change(this)"/><label for="cr_coul3_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul3_barre" id="cr_coul3_barre" onchange="cr_coul_change(this)"/><label for="cr_coul2_barre">barré</label>
+              <input type="checkbox" name="cr_coul3_maj" id="cr_coul3_maj" onchange="cr_coul_change(this)"/><label for="cr_coul3_maj">maj.</label>
               <input type="checkbox" name="cr_coul3_suff" id="cr_coul3_suff" onchange="cr_coul_change(this)"/><label for="cr_coul3_suff">suffixe</label>
               <input type="text" size="3" id="cr_coul3_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
-            <div class="cr_coul" id="cr_div_coul4">Couleur4
+            <div class="cr_coul" id="cr_div_coul4">Etat 4
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul4" value="#ffff00" />
-              <input type="checkbox" name="cr_coul4_maj" id="cr_coul4_maj" onchange="cr_coul_change(this)"/><label for="cr_coul4_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul4_barre" id="cr_coul4_barre" onchange="cr_coul_change(this)"/><label for="cr_coul4_barre">barré</label>
+              <input type="checkbox" name="cr_coul4_maj" id="cr_coul4_maj" onchange="cr_coul_change(this)"/><label for="cr_coul4_maj">maj.</label>
               <input type="checkbox" name="cr_coul4_suff" id="cr_coul4_suff" onchange="cr_coul_change(this)"/><label for="cr_coul4_suff">suffixe</label>
               <input type="text" size="3" id="cr_coul4_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>
-            <div class="cr_coul" id="cr_div_coul5">Couleur5
+            <div class="cr_coul" id="cr_div_coul5">Etat 5
               <input class="jscolor {hash:true, onFineChange: 'cr_coul_change(this)'}" type="text" id="cr_coul5" value="#00ffff" />
-              <input type="checkbox" name="cr_coul5_maj" id="cr_coul5_maj" onchange="cr_coul_change(this)"/><label for="cr_coul5_maj">majuscule</label>
+              <input type="checkbox" name="cr_coul5_barre" id="cr_coul5_barre" onchange="cr_coul_change(this)"/><label for="cr_coul4_barre">barré</label>
+              <input type="checkbox" name="cr_coul5_maj" id="cr_coul5_maj" onchange="cr_coul_change(this)"/><label for="cr_coul5_maj">maj.</label>
               <input type="checkbox" name="cr_coul5_suff" id="cr_coul5_suff" onchange="cr_coul_change(this)"/><label for="cr_coul4_suff">suffixe</label>
               <input type="text" size="3" id="cr_coul5_suff_txt" onchange="cr_coul_change(this)" disabled/>
             </div>

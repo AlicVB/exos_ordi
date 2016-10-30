@@ -100,6 +100,7 @@ function cr_coul_nb_change(e, modif)
     else
     {
       elems[i].style.display = 'block';
+      document.getElementById("cr_coul" + i + "_barre").style.display = "inline";
       document.getElementById("cr_coul" + i + "_maj").style.display = "inline";
       document.getElementById("cr_coul" + i + "_suff").style.display = "inline";
       document.getElementById("cr_coul" + i + "_suff_txt").style.display = "inline";
@@ -335,9 +336,12 @@ function cr_coul_change(e)
         bloc.multi_coul = [];
         bloc.multi_maj = [];
         bloc.multi_suff = [];
+        bloc.multi_barre = [];
         for (let i=0; i<document.getElementById("cr_coul_nb").value; i++)
         {
           bloc.multi_coul.push("#" + document.getElementById("cr_coul" + (i+1)).jscolor);
+          if (document.getElementById("cr_coul" + (i+1) + "_barre").checked) bloc.multi_barre.push(1);
+          else bloc.multi_barre.push(0);
           if (document.getElementById("cr_coul" + (i+1) + "_maj").checked) bloc.multi_maj.push(1);
           else bloc.multi_maj.push(0);
           if (document.getElementById("cr_coul" + (i+1) + "_suff").checked)

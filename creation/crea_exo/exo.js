@@ -117,7 +117,7 @@ function file_create_css()
     if (b.font_g == "true") txt += "font-weight: bold; ";
     if (b.font_i == "true") txt += "font-style: italic; ";
     if (b.font_s == "true") txt += "text-decoration: underline; ";
-    if (b.font_b == "true") txt += "text-decoration: line-throught; ";
+    if (b.font_b == "true") txt += "text-decoration: line-through; ";
     if (b.align == "1") txt += "text-align: left; ";
     else if (b.align == "2") txt += "text-align: center; ";
     else if (b.align == "3") txt += "text-align: right; ";
@@ -945,9 +945,11 @@ function radiobtn_sel_update()
     var elems = document.getElementsByClassName('cr_coul');
     elems[1].style.display = "block";
     elems[2].style.display = "block";
+    document.getElementById("cr_coul1_barre").style.display = "none";
     document.getElementById("cr_coul1_maj").style.display = "none";
     document.getElementById("cr_coul1_suff").style.display = "none";
     document.getElementById("cr_coul1_suff_txt").style.display = "none";
+    document.getElementById("cr_coul2_barre").style.display = "none";
     document.getElementById("cr_coul2_maj").style.display = "none";
     document.getElementById("cr_coul2_suff").style.display = "none";
     document.getElementById("cr_coul2_suff_txt").style.display = "none";
@@ -1201,6 +1203,7 @@ function multi_create_html(bloc, txt)
   var opts = "";
   var maj = "";
   var suff = "";
+  var barre = "";
   for (let i=0; i<bloc.multi_coul.length; i++)
   {
     if (i>0)
@@ -1208,12 +1211,14 @@ function multi_create_html(bloc, txt)
       opts += "|";
       maj += "|";
       suff += "|";
+      barre += "|";
     }
     opts += hex2rgb(bloc.multi_coul[i]);
     maj += bloc.multi_maj[i];
     suff += bloc.multi_suff[i];
+    barre += bloc.multi_barre[i];
   }
-  htm += " options=\"" + opts + "\" maj=\"" + maj + "\" suff=\"" + suff + "\">\n";
+  htm += " options=\"" + opts + "\" maj=\"" + maj + "\" suff=\"" + suff + "\" barre=\"" + barre + "\">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
   htm2 = "";
@@ -1248,6 +1253,7 @@ function multi_ini(bloc)
   bloc.multi_coul = ["#00ff00", "#ff0000"];
   bloc.multi_maj = ["0", "0"];
   bloc.multi_suff = ["", ""];
+  bloc.multi_barre = ["0", "0"];
 }
 function multi_sel_update()
 {
@@ -1267,6 +1273,7 @@ function multi_sel_update()
     {
       tx = "cr_coul" + (i+1);
       document.getElementById(tx).jscolor.fromString(bloc.multi_coul[i]);
+      document.getElementById(tx + "_barre").checked = (bloc.multi_barre[i] == "1");
       document.getElementById(tx + "_maj").checked = (bloc.multi_maj[i] == "1");
       document.getElementById(tx + "_suff").checked = (bloc.multi_suff[i] != "");
       document.getElementById(tx + "_suff_txt").value = bloc.multi_suff[i];
