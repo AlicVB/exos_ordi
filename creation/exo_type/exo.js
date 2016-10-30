@@ -602,14 +602,14 @@ function line_score(e, tt)
     //on regarde d'abord si il manque des lignes
     for (let i=0; i<id2.length; i++)
     {
-      if (id1.indexOf(id2[i]) == -1)
+      if (id2[i] != "" && id1.indexOf(id2[i]) == -1)
       {
         s = 0;
         // il faut tracer la ligne qui manque
         line_relie(e, document.getElementById(id2[i]), null, true);
       }
     }
-    // on regarde si il ya des lignes en trop
+    // on regarde si il y a des lignes en trop
     for (let i=0; i<id1.length; i++)
     {
       if (id2.indexOf(id1[i]) == -1)
