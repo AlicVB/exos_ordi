@@ -62,6 +62,8 @@ if ($user)
       $details .= $v[$i];
     }    
   }
+  setlocale(LC_TIME, 'fr_FR.utf8','fra');
+  $d = strftime("%A %e %B");
   
   // ****************en-têtes****************
   $pdf = new PDF_Rotate();
@@ -77,10 +79,12 @@ if ($user)
   $pdf->SetXY(15,50);
   $pdf->Cell(148,210,'', 'LRBT');
   // on écrit le texte
-  $pdf->SetXY(20,55);
+  $pdf->SetXY(20,53);
   $pdf->SetFont('Arial','I',10);
   $pdf->Cell(74,8,utf8_decode("Prénom : $user"), '', 0);
   $pdf->Cell(64,8,utf8_decode('Bilan livret informatique'), '', 1, "R");
+  $pdf->SetXY(20,58);
+  $pdf->Cell(74,8,utf8_decode("Date : $d"), '', 1);
   $pdf->Image("$root/exotice.png", 76, 52);
   $pdf->SetFont('Arial','B',44);
   $pdf->Cell(148,25,utf8_decode("$titre"), '', 1, 'C');
@@ -135,7 +139,7 @@ if ($user)
   // **************Copyright***********
   $pdf->SetFont('Arial','',10);
   $pdf->Rotate(90,20,256);
-  $pdf->Text(20,256,utf8_decode("©".$auth));
+  $pdf->Text(20,256,utf8_decode("© ".$auth));
   $pdf->Rotate(0);
   
   $pdf->Output();
