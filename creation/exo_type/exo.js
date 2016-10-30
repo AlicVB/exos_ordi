@@ -881,6 +881,10 @@ function affiche_score(sauve)
           break;
         case "texte_simple":
         case "image":
+        case "rect":
+        case "cercle":
+        case "ligne":
+        case "audio":
           s += line_score(e, tt);
           break;
       }
@@ -986,6 +990,10 @@ function setvalue(e, v)
       break;
     case "texte_simple":
     case "image":
+    case "rect":
+    case "cercle":
+    case "ligne":
+    case "audio":
       if (v != "") line_charge(e, v);
       break;
     case "cible":
@@ -1010,6 +1018,10 @@ function getvalue(e)
       return (e.style.backgroundColor);
     case "texte_simple":
     case "image":
+    case "rect":
+    case "cercle":
+    case "ligne":
+    case "audio":
       if (e.hasAttribute("linkedto")) return e.getAttribute("linkedto");
     case "cible":
       if (e.hasAttribute("contains")) return e.getAttribute("contains");
