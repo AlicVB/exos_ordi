@@ -691,14 +691,7 @@ function cr_inter_change(e)
       // on enlève le lien "relier" sur l'ancienne cible
       if (selection[i].relie_id != "")
       {
-        b2 = bloc_get_from_id(selection[i].relie_id);
-        if (b2)
-        {
-          b2.inter = "0";
-          b2.relie_id = "";
-          b2.relie_cible_de = "";
-          bloc_create_html(b2);
-        }
+        relie_update_cible(bloc_get_from_id(selection[i].relie_id));
       }
       selection[i].relie_id = "";
       selection[i].relie_cible_de = "";
@@ -710,14 +703,7 @@ function cr_inter_change(e)
       // on enlève le lien "relier" sur l'ancienne cible
       if (selection[i].relie_id != "")
       {
-        b2 = bloc_get_from_id(selection[i].relie_id);
-        if (b2)
-        {
-          b2.inter = "0";
-          b2.relie_id = "";
-          b2.relie_cible_de = "";
-          bloc_create_html(b2);
-        }
+        relie_update_cible(bloc_get_from_id(selection[i].relie_id));
       }
       selection[i].relie_id = "";
       selection[i].relie_cible_de = "";
@@ -737,33 +723,103 @@ function cr_inter_change(e)
 
 function cr_relie_id_change(e)
 {
-  v = e.value;
+  let v = e.value;
+  //on vérifie les valeurs
+  let elems = v.split("|");
+  let txt = "";
+  for (let i=0; i<elems.length; i++)
+  {
+    let b = bloc_get_from_id(elems[i]);
+    if (!b) txt += "\n" + "l'élément avec l'id " + elems[i] + " est introuvable !";
+    else if (b.relie_id != "" && b.relie_id != "*") txt += "\n" + "l'élément avec l'id " + elems[i] + " est déjà une source de relier !";
+    else
+    {
+      switch (b.tpe)
+      {
+        case "texte":
+        case "radio":
+        case "radiobtn":
+        case "check":
+        case "multi":
+        case "combo":
+        case "cible":
+          txt += "\n" + "les éléments de type " + b.tpe + " ne peuvent pas être reliés !";
+          break;
+      }
+      for (let j=0; j<selection.length; j++)
+      {
+        if (selection[j].id == b.id) txt += "\n" + "l'élément avec l'id " + b.id + " ne peut se relier à lui-même !";
+      }
+    }
+  }
+  if (txt != "")
+  {
+    alert("!! ERREUR !!\n" + txt);
+    e.value = "";
+    v = "";
+    elems = [];
+  }
   for (let i=0; i<selection.length; i++)
   {
     bloc = selection[i];
+    let old_elems = bloc.relie_id.split("|");
     bloc.relie_id = v;
     bloc.relie_cible_de = "";
     if (v != "" && bloc.points == "0") bloc.points = "1";
     else if (v == "") bloc.points = "0";
     bloc_create_html(bloc);
     //on change aussi les cibles
-    let elems = v.split("|");
     for (let j=0; j<elems.length; j++)
     {
-      let b2 = bloc_get_from_id(elems[j]);
-      if (b2)
-      {
-        b2.inter = "1";
-        b2.relie_id = "*";
-        b2.relie_cible_de = bloc.id;
-        b2.points = "0";
-        bloc_create_html(b2);
-      }
+      relie_update_cible(bloc_get_from_id(elems[j]));
+    }
+    for (let j=0; j<old_elems.length; j++)
+    {
+      relie_update_cible(bloc_get_from_id(old_elems[j]));
     }
   }
   selection_update();
   //on sauvegarde
   g_sauver();
+}
+function relie_update_cible(bloc)
+{
+  console.log("hein");
+  if (!bloc) return;
+  // on parcoure tous les autres blocs pour voir ceux qui citent celui en cours
+  let cible = "";
+  for (let i=0; i<blocs.length; i++)
+  {
+    if (blocs[i] == bloc) continue;
+    if (blocs[i].inter != "1") continue;
+    let v = blocs[i].relie_id.split("|");
+    for (let j=0; j<v.length; j++)
+    {
+      if (v[j] == bloc.id)
+      {
+        if (cible != "") cible += "|";
+        cible += blocs[i].id;
+        break;
+      }
+    }
+  }
+  console.log(cible);
+  if (cible == "")
+  {
+    bloc.inter = "0";
+    bloc.relie_id = "";
+    bloc.relie_cible_de = "";
+    bloc.points = "0";
+    bloc_create_html(bloc);
+  }
+  else
+  {
+    bloc.inter = "1";
+    bloc.relie_id = "*";
+    bloc.relie_cible_de = cible;
+    bloc.points = "0";
+    bloc_create_html(bloc);
+  }
 }
 
 function cr_points_change(e)

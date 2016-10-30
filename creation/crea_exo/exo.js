@@ -269,7 +269,6 @@ function g_restaurer_info(init)
       // on met les bonnes valeurs aux bons endroits
       var vals = [];
       var rep = xhr.responseText;
-      console.log(rep);
       let tosave = false;
       if (rep.length > 3 && rep.substr(0,4) == "****")
       {
