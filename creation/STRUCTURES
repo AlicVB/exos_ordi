@@ -13,7 +13,8 @@ score_min|score_max|couleur(n,r,j,b,v,c)|texte de l'apréciation|btn retry(0,1) 
 nb d'essais maximum (0 = infini)
 couleur de fond (au formats html)
 chemin vers consigne audio (peut être vide)
-
+montrer l'exercice dans le bilan (0,1)
+Image principale (vide = celle du livre)|afficher au survol (0) ou tout le temps (1)
 
 *********************** Syntaxe du fichier livre.txt : *******************************
 Titre du livre

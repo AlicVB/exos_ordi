@@ -175,7 +175,7 @@ input[type="number"] {
   border: 1px solid black;
 }
 #cri_consigne {
-  width: 800px;
+  width: 500px;
   height: 42px;
 }
 .cr_img_btn {
@@ -228,4 +228,7 @@ input[type="number"] {
   text-align: center;
   background-color: #7F85A6;
   margin: 20px 0px 20px 0px;
+}
+#ci_img_get {
+  display: none;
 }

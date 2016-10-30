@@ -105,6 +105,7 @@ function cr_coul_nb_change(e, modif)
 
 function cr_img_get_change(e)
 {
+  var pre = e.id.substr(0,2);
   //on sauvegarde l'image sélectionnée
   var xhr = new XMLHttpRequest();
   var fd  = new FormData(e.form);
@@ -112,45 +113,54 @@ function cr_img_get_change(e)
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
-      // on récupère le bloc sélectionné
-      if (selection.length < 1) return;
-      bloc = selection[0];
-      if (bloc.tpe != "image") return;
-  
       let img_name = xhr.responseText;
       if (img_name.startsWith("*"))
       {
         alert(img_name.substr(1));
-        document.getElementById("cr_img_select").value = "";
+        document.getElementById(pre + "_img_select").value = "";
         return;
       }
-      //on récupère les chemins
-      rpath = "img/" + img_name;
-      vpath = exo_dos + "/../../" + rpath;
       
-      bloc.img_rpath = rpath;
-      bloc.img_vpath = vpath;
-      bloc.img_name = img_name;
-      
-      image_create_html(bloc, "");
-      document.getElementById("cr_html").value = bloc.html;
-      document.getElementById(bloc.id).onload = function () {
-        //on met à jour les infos de hauteur
-        var h = document.getElementById(bloc.id).getBoundingClientRect().height;
-        rendu_get_superbloc(bloc).style.height = h + "px";
-        bloc.height = h;
-        document.getElementById("cr_tp_h").value = h;
-        };
-      // on met à jour le rendu
-      document.getElementById(bloc.id).src = vpath;
       // et la liste des images
       var option = document.createElement("option");
       option.text = img_name;
       option.value = img_name;
-      document.getElementById("cr_img_select").add(option);
-      document.getElementById("cr_img_select").value = img_name;
-      //on sauvegarde
-      g_sauver();
+      document.getElementById(pre + "_img_select").add(option);
+      document.getElementById(pre + "_img_select").value = img_name;
+      
+      if (pre == "cr")
+      {
+        // on récupère le bloc sélectionné
+        if (selection.length < 1) return;
+        bloc = selection[0];
+        if (bloc.tpe != "image") return;
+        //on récupère les chemins
+        rpath = "img/" + img_name;
+        vpath = exo_dos + "/../../" + rpath;
+        
+        bloc.img_rpath = rpath;
+        bloc.img_vpath = vpath;
+        bloc.img_name = img_name;
+        
+        image_create_html(bloc, "");
+        document.getElementById("cr_html").value = bloc.html;
+        document.getElementById(bloc.id).onload = function () {
+          //on met à jour les infos de hauteur
+          var h = document.getElementById(bloc.id).getBoundingClientRect().height;
+          rendu_get_superbloc(bloc).style.height = h + "px";
+          bloc.height = h;
+          document.getElementById("cr_tp_h").value = h;
+          };
+        // on met à jour le rendu
+        document.getElementById(bloc.id).src = vpath;
+        //on sauvegarde
+        g_sauver();
+      }
+      else if (pre == "ci")
+      {
+        infos.image = img_name;
+        g_sauver_info();
+      }      
     }
   };
   // We setup our request
@@ -159,13 +169,15 @@ function cr_img_get_change(e)
 }
 function cr_img_select_change(e)
 {
-  var v = document.getElementById("cr_img_select").value;
+  var pre = e.id.substr(0,2);
+  
+  var v = e.value;
   if (!v) return;
   if (v == "****")
   {
-    document.getElementById("cr_img_get").click();
+    document.getElementById(pre + "_img_get").click();
   }
-  else
+  else if (pre == "cr")
   {
     if (selection.length < 1) return;
     bloc = selection[0];
@@ -191,6 +203,11 @@ function cr_img_select_change(e)
     document.getElementById(bloc.id).src = vpath;
     g_sauver();
   }
+  else if (pre == "ci")
+  {
+    infos.image = v;
+    g_sauver_info();
+  }
 }
 
 function cr_audio_get_change(e)
@@ -207,7 +224,7 @@ function cr_audio_get_change(e)
       if (audio_name.startsWith("*"))
       {
         alert(audio_name.substr(1));
-        document.getElementById("cr_audio_select").value = "";
+        document.getElementById(pre + "_audio_select").value = "";
         return;
       }
       // et la liste des images
@@ -1096,6 +1113,18 @@ function cri_a_txt_change(e)
 {
   nb = parseInt(e.id.substr(0,1));
   infos.a[nb-1].txt = e.value;
+  g_sauver_info();
+}
+function cri_show_bilan_change(e)
+{
+  if (e.checked) infos.show_bilan = "1";
+  else infos.show_bilan = "0";
+  g_sauver_info();
+}
+function cri_img_hover_change(e)
+{
+  if (e.checked) infos.image_hover = "1";
+  else infos.image_hover = "0";
   g_sauver_info();
 }
 function cri_mod_sel_change(e)

@@ -109,22 +109,26 @@ if ($user)
       $f = "$exos[$i]/exo.txt";
       if (file_exists($f))
       {
-        // on lit le nom de l'exercice
         $v = explode("\n", file_get_contents($f));
-        $pdf->Cell(74,10,utf8_decode("$v[0] : "), '', 0, 'R');
-        // et le score si il existe
-        for ($j=0; $j<count($logs); $j++)
+        //on vérifie que l'exercice doit être montré
+        if (count($v)<13 || $v[12] == "1" || $v[12] == "")
         {
-          $vv = explode("|", $logs[$j]);
-          if (count($vv)>3 && basename($vv[1]) == basename($exos[$i]))
+          // on lit le nom de l'exercice
+          $pdf->Cell(74,10,utf8_decode("$v[0] : "), '', 0, 'R');
+          // et le score si il existe
+          for ($j=0; $j<count($logs); $j++)
           {
-            $pdf->Cell(73,10,"$vv[2]/$vv[3]", '', 0, 'L');
-            $s += $vv[2];
-            $t += $vv[3];
-            break;
+            $vv = explode("|", $logs[$j]);
+            if (count($vv)>3 && basename($vv[1]) == basename($exos[$i]))
+            {
+              $pdf->Cell(73,10,"$vv[2]/$vv[3]", '', 0, 'L');
+              $s += $vv[2];
+              $t += $vv[3];
+              break;
+            }
           }
+          $pdf->Ln();
         }
-        $pdf->Ln();
       }
     }
     $pdf->SetFont('Arial','B',20);

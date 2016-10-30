@@ -59,8 +59,6 @@
         <tr>
           <td>Consigne (html) :</th>
           <td><textarea id="cri_consigne" onKeyUp="cri_consigne_change(this)"></textarea></td>
-        </tr>
-        <tr>
           <td>Consigne audio :</th>
           <td>
             <div class="cr_opt_ligne" id="ci_audio_get_div">
@@ -197,6 +195,29 @@
         arrondi <select id="cri_arrondi" onChange="cri_arrondi_change(this)"><option value="1" selected>unité</option><option value="0.5">0.5</option><option value="0.1">0.1</option><option value="0.01">0.01</option><option value="0">auncun</option></select>
         Nombre d'essais (0=infini) :
         <input type="number" id="cri_essais" value="1" min="0" onchange="cri_essais_change(this)" />
+        <input type="checkbox" id="cri_show_bilan" name="cri_show_bilan" onchange="cri_show_bilan_change(this)" />
+        <label for="cri_show_bilan">Afficher dans le bilan</label>
+      </p>
+      <p>
+        <div class="cr_opt_ligne" id="ci_img_get_div">
+          Image de l'exercice :
+          <select id="ci_img_select" onchange="cr_img_select_change(this)" title="Si aucune image est choisie, celle du livre sera utilisée">
+            <option value="" selected></option>
+            <option value="****">Parcourir...</options>
+            <?php
+              $imgs = glob("$dos_l/img/*");
+              for ($i=0; $i<count($imgs); $i++)
+              {
+                echo "<option value=\"".basename($imgs[$i])."\">".basename($imgs[$i])."</option>";
+              }
+            ?>
+          </select>
+          <form enctype="multipart/form-data">
+            <input name="cr_img_get" type="file" id="ci_img_get" accept="image/*" onchange="cr_img_get_change(this)"/>
+          </form>
+          <input type="checkbox" id="cri_img_hover" name="cri_img_hover" onchange="cri_img_hover_change(this)" title="sinon, l'image sera montrée uniquement au survol de l'icone ampoule"/>
+          <label for="cri_img_hover">Afficher l'image en permanence</label>
+        </div>
       </p>
       <p id="cri_mod">
         Appliquer le modèle : 

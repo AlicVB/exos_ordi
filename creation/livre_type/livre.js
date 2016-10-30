@@ -7,12 +7,42 @@ function affiche_aide(val)
 
 function intro_img_load(e)
 {
-  if (e.offsetHeight > e.offsetWidth)
+  //Attention, il faut regarder si elle doit être affichée en permanence ou non !
+  let ic = document.getElementById("aideimg");
+  if (ic)
   {
-    e.style.width = "auto";
-    e.style.height = "55vh";
+    //image d'aide masquée sauf au survol
+    if (e.offsetHeight > e.offsetWidth)
+    {
+      e.style.width = "auto";
+      e.style.height = "55vh";
+    }
+    else e.style.width = "55vh";
   }
-  else e.style.width = "55vh";
+  else
+  {
+    //image affichée en permanence
+    let rec1 = document.getElementById("consigne").getBoundingClientRect();
+    let rec2 = document.getElementById("corr").getBoundingClientRect();
+    let reci = e.getBoundingClientRect();
+    let w_max = rec1.width;
+    let h_max = rec2.top - rec1.bottom;
+    if (reci.width/reci.height > w_max/h_max)
+    {
+      e.style.width = w_max*0.8 + "px";
+      e.style.left = (rec1.left + w_max*0.1) + "px";
+      e.style.height = w_max*0.8*reci.height/reci.width + "px";
+      e.style.top = (rec1.bottom + (h_max - parseFloat(e.style.height))/2) + "px"
+    }
+    else
+    {
+      e.style.height = h_max*0.8 + "px";
+      e.style.top = (rec1.bottom + h_max*0.1) + "px";
+      e.style.width = h_max*0.8*reci.width/reci.height + "px";
+      e.style.left = (rec1.left + (w_max - parseFloat(e.style.width))/2) + "px"
+    }
+    e.style.visibility = "visible";
+  }
 }
 
 function consigne_play()
@@ -24,7 +54,6 @@ function copy_set_style()
 {
   //on récupère la couleur de fond et on décompose
   c = document.body.style.backgroundColor;
-  console.log(c);
   var rgb = c.match(/\d+/g);
   if (rgb.length>2)
   {

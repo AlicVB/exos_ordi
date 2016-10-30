@@ -75,6 +75,18 @@
   $exo_coul = $vals[10];
   $exo_audio = "";
   if (count($vals)>11) $exo_audio = $vals[11];
+  $exo_image = $img_livre;
+  $exo_image_hover = "0";
+  if (count($vals)>13)
+  {
+    $vv = explode("|", $vals[13]);
+    if (count($vv)>1)
+    {
+      $exo_image = "img/".$vv[0];
+      $exo_image_hover = $vv[1];
+    }
+  }
+  if ($exo_image == "") $exo_image = $img_livre;
   $txt = htmlentities(str_replace("\n", "§", addslashes($txt_exo)));
 ?>
 
@@ -86,11 +98,9 @@
     <script type="text/javascript" src="<?php echo $exos[$exo] ?>/exo.js"></script>
     <script type="text/javascript" src="livre.js"></script>
     <link rel="stylesheet" href="livre.css">
-    <link rel="stylesheet" href="<?php echo $root ?>/libs/dragula.min.css">
     <link rel="stylesheet" href="<?php echo $exos[$exo] ?>/exo.css">
   </head>
   <body onload="livre_ini('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '<?php echo $root ?>/');" style="background-color: <?php echo $coul_livre ?>;">
-    <script type="text/javascript" src="<?php echo $root ?>/libs/dragula.min.js"></script>
     <div id="bysa"><img id="cc_img" src="<?php echo $root ?>/icons/cc.svg" /><span> <?php echo $aut_livre ?></span></div>
     <div id="exoticediv">
       
@@ -105,9 +115,12 @@
         ?>
       </div>
       <br/>
-      <div id="aideimg">
-        <img src="<?php echo $root ?>/icons/help-hint.svg" onmouseover="affiche_aide(true);" onmouseout="affiche_aide(false);" />
-      </div>
+      <?php
+        if ($exo_image_hover == "0")
+        {
+          echo "<div id=\"aideimg\"><img src=\"$root/icons/help-hint.svg\" onmouseover=\"affiche_aide(true);\" onmouseout=\"affiche_aide(false);\" /></div>";
+        }
+      ?>
       <div id="corr">
         <table id="ctable">
           <tr><th colspan="3" id="cscore">Sujets : 10/10 -- Verbes : 10/10</th></tr>
@@ -133,13 +146,14 @@
           if ($lien_next != "") echo "<a href=\"$lien_next\"><img style=\"height: 3vh; vertical-align: bottom;\" src=\"$root/icons/go-next.svg\" /></a>\n";
         ?>
       </div>
-      <img id="aide" src="<?php echo $img_livre ?>"  onload="intro_img_load(this)"/>
+      <?php if ($exo_image_hover == "0") echo "<img id=\"aide\" src=\"$exo_image\"  onload=\"intro_img_load(this)\"/>"; ?>
       <div id="exitdiv">
         <a href="<?php echo $root ?>/sommaire.php?user=<?php echo $user ?>"><img id="exitimg" src="<?php echo $root ?>/icons/edit-undo.svg" /></a>
         <a id="erasea" href="livre.php?user=<?php echo $user ?>&exo=<?php echo $exo ?>&erase=1"><img id="eraseimg" src="<?php echo $root ?>/icons/draw-eraser.svg" /></a>
       </div>
       <img id="exotice" src="<?php echo $root ?>/exotice.svg" />
     </div>
+    <?php if ($exo_image_hover != "0") echo "<img id=\"aide\" src=\"$exo_image\"  onload=\"intro_img_load(this)\"/>"; ?>
     <div id="c1" style="background-color: <?php echo $exo_coul ?>;">
       <span id="user">Prénom : <?php echo $user ?></span>
       <?php include "$exos[$exo]/exo.php" ?>

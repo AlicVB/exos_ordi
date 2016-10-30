@@ -195,6 +195,8 @@ function file_create_infos()
   txt += infos.essais + "\n";
   txt += infos.coul + "\n";
   txt += infos.audio_name + "\n";
+  txt += infos.show_bilan + "\n";
+  txt += infos.image + "|" + infos.image_hover;
   
   return txt;
 }
@@ -288,7 +290,7 @@ function g_restaurer_info(init)
         }
         for (let i=0; i<6; i++)
         {
-          vv = vals[i+3].split("|");
+          let vv = vals[i+3].split("|");
           if (vv.length>3)
           {
             infos.a[i].min = vv[0];
@@ -300,6 +302,16 @@ function g_restaurer_info(init)
         infos.essais = vals[9];
         infos.coul = vals[10];
         if (vals.length>11) infos.audio_name = vals[11];
+        if (vals.length>12) infos.show_bilan = vals[12];
+        if (vals.length>13)
+        {
+          let vv = vals[13].split("|");
+          if (vv.length>1)
+          {
+            infos.image = vv[0];
+            infos.image_hover = vv[1];
+          }
+        }
       }
       if (tosave) g_sauver_info();
       infos_change();
@@ -326,6 +338,10 @@ function infos_change()
     document.getElementById((j+1) + "_cri_a_re").checked = (infos.a[j].re == "1");
     document.getElementById((j+1) + "_cri_a_txt").value = infos.a[j].txt;
   }
+  document.getElementById("ci_audio_select").value = infos.audio_name;
+  document.getElementById("cri_show_bilan").checked = (infos.show_bilan == "1");
+  document.getElementById("ci_img_select").value = infos.image;
+  document.getElementById("cri_img_hover").checked = (infos.image_hover == "1");
 }
 
 function g_reinit()
@@ -490,6 +506,9 @@ function infos_ini()
   infos.a[4].txt = "BIEN !\nTu n'as presque plus d'erreurs.\Sauras-tu faire encore mieux\nau prochain exercice ?";
   infos.a[5].txt = "BRAVO !\nSeras-tu capable de faire aussi bien\nau prochain exercice ?";
   infos.audio_name = "";
+  infos.show_bilan = "1";
+  infos.image = "";
+  infos.image_hover = "0";
 }
 
 //on initialise la zone de rendu (uniquement le prénom)
