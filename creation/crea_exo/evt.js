@@ -746,15 +746,19 @@ function cr_relie_id_change(e)
     if (v != "" && bloc.points == "0") bloc.points = "1";
     else if (v == "") bloc.points = "0";
     bloc_create_html(bloc);
-    //on change aussi la cible
-    b2 = bloc_get_from_id(v);
-    if (b2)
+    //on change aussi les cibles
+    let elems = v.split("|");
+    for (let j=0; j<elems.length; j++)
     {
-      b2.inter = "1";
-      b2.relie_id = "";
-      b2.relie_cible_de = bloc.id;
-      b2.points = "0";
-      bloc_create_html(b2);
+      let b2 = bloc_get_from_id(elems[j]);
+      if (b2)
+      {
+        b2.inter = "1";
+        b2.relie_id = "*";
+        b2.relie_cible_de = bloc.id;
+        b2.points = "0";
+        bloc_create_html(b2);
+      }
     }
   }
   selection_update();

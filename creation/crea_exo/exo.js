@@ -1304,7 +1304,7 @@ function image_create_html(bloc, txt)
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
-    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+    if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += "src=\"" + bloc.img_rpath;
   htm += "\" id=\"" + bloc.id + "\" />\n</div>";
@@ -1372,7 +1372,7 @@ function texte_simple_create_html(bloc, txt)
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
-    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+    if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
   htm += txt.replace(/(?:\r\n|\r|\n)/g, '<br />');
@@ -1440,7 +1440,7 @@ function audio_create_html(bloc, txt)
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
-    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+    if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += "src=\"audacity.svg\" onclick=\"audio_play(this)\"";
   htm += " id=\"" + bloc.id + "\" />\n";
@@ -1501,7 +1501,7 @@ function cercle_create_html(bloc, txt)
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
-    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+    if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
   var rr = 50
@@ -1650,7 +1650,7 @@ function ligne_create_html(bloc, txt)
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
-    if (bloc.relie_id != "") htm += "lineok=\"" + bloc.relie_id + "\" ";
+    if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
   htm += "<line vector-effect=\"non-scaling-stroke\" x1=\"" + bloc.x1 + "\" y1=\"" + bloc.y1 +"\" x2=\"" + bloc.x2 + "\" y2=\"" + bloc.y2 + "\" id=\"svg_" + bloc.id + "\" />";
