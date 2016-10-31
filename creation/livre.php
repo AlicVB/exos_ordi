@@ -219,6 +219,7 @@ function livre_creation($dos)
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=copie&exo=$exo\"><img class=\"eimg\" src=\"../icons/tab-new.svg\" title=\"copier l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=up&exo=$exo\"><img class=\"eimg\" src=\"../icons/go-up.svg\" title=\"monter l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=down&exo=$exo\"><img class=\"eimg\" src=\"../icons/go-down.svg\" title=\"descendre l'exo\"/></a>\n";
+        echo "<a href=\"livre_sauve.php?export&exo=".urlencode($exos[$i])."&nom=".urlencode($et)."\"><img class=\"eimg\" src=\"crea_exo/icons/document-save.svg\" title=\"exporter l'exo\"/></a>\n";
         echo "</td></tr>\n";
       }
     }
