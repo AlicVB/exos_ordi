@@ -1229,14 +1229,21 @@ function multi_create_html(bloc, txt)
       tx = vals[i];
       htm += "  <span id=\"multi_" + bloc.id + "_" + i + "\" class=\"exo\" itemid=\"" + bloc.id + "\" onclick=\"change(this)\" ";
       htm2 += "    <span ";
-      if (parseInt(tx.substr(0,1)) < 6)
+      let idjuste = parseInt(tx.substr(0,1));
+      let tx2 = tx;
+      if (idjuste < 6)
       {
-        htm += "juste=\"" + parseInt(tx.substr(0,1)) + "\" ";
-        htm2 += "style=\"background-color: " + bloc.multi_coul[parseInt(tx.substr(0,1)) - 1] + ";\" ";
+        htm += "juste=\"" + idjuste + "\" ";
+        htm2 += "style=\"background-color: " + bloc.multi_coul[idjuste - 1] + ";";
+        if (bloc.multi_barre[idjuste - 1] == "1") htm2 += "text-decoration: line-through;";
+        htm2 += "\" ";
         tx = tx.substr(1);
+        tx2 = tx;
+        if (bloc.multi_maj[idjuste - 1] == "1") tx2 = tx.substr(0,1).toUpperCase() + tx.substr(1);
+        if (bloc.multi_suff[idjuste - 1] != "") tx2 = tx + bloc.multi_suff[idjuste - 1];
       }
       htm += ">" + tx + "<span class=\"multi_ini\">" + tx +"</span></span>\n";
-      htm2 += ">" + tx + "</span>\n";
+      htm2 += ">" + tx2 + "</span>\n";
     }
   }
   htm += "  <img class=\"multi_cim\" />\n";

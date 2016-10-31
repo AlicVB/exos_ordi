@@ -116,7 +116,7 @@ div.texte_corr {
   border: 1px solid grey;
 }
 span.multi_corr {
-  background-color: #BFBFBF;
+  border: 1px dashed red;
   font-style: italic;
   visibility: hidden;
   margin-right: 2.5vh; /*2.5vh*/
