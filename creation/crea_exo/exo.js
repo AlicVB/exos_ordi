@@ -376,7 +376,9 @@ function infos_change()
     document.getElementById((j+1) + "_cri_a_re").checked = (infos.a[j].re == "1");
     document.getElementById((j+1) + "_cri_a_txt").value = infos.a[j].txt;
   }
-  document.getElementById("ci_audio_select").value = infos.audio_name;
+  let audio = infos.audio_name;
+  if (audio.length>5) audio = audio.substr(5);
+  document.getElementById("ci_audio_select").value = audio;
   document.getElementById("cri_show_bilan").checked = (infos.show_bilan == "1");
   document.getElementById("ci_img_select").value = infos.image;
   document.getElementById("cri_img_hover").checked = (infos.image_hover == "1");

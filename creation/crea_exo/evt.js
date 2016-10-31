@@ -274,7 +274,7 @@ function cr_audio_select_change(e)
   var pre = e.id.substr(0,2);
   var v = e.value;
   document.getElementById(pre + "_record_div").style.display = "none";
-  if (!v) return;
+  if (!v) v = "";
   if (v == "******") //enregistrer
   {
     record_ini(e);
@@ -289,7 +289,8 @@ function cr_audio_select_change(e)
     bloc = selection[0];
     if (bloc.tpe != "audio") return;
     //on récupère les chemins
-    bloc.audio_name = "sons/" + v;
+    if (v != "") bloc.audio_name = "sons/" + v;
+    else bloc.audio_name = "";
     
     audio_create_html(bloc, "");
     document.getElementById("cr_html").value = bloc.html;
@@ -297,7 +298,8 @@ function cr_audio_select_change(e)
   }
   else if (pre == "ci")
   {
-    infos.audio_name = "sons/" + v;
+    if (v != "") infos.audio_name = "sons/" + v;
+    else infos.audio_name = "";
     g_sauver_info();
   }
 }
