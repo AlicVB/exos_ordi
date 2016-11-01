@@ -380,6 +380,8 @@ function cr_texte_change(e)
     bloc.texte_h = document.getElementById("cr_texte_h").value;
     bloc.texte_e = document.getElementById("cr_texte_e").value;
     bloc.texte_c = document.getElementById("cr_texte_c").value;
+    if (document.getElementById("cr_texte_corr").checked) bloc.texte_corr = "1";
+    else bloc.texte_corr = "0";
     
     texte_create_html(bloc, document.getElementById("cr_txt_ini").value);
     document.getElementById("cr_html").value = bloc.html;

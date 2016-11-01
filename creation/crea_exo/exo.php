@@ -358,6 +358,7 @@
               <select id="cr_texte_e" onchange="cr_texte_change(this)"><option value="1" selected>autorisé</option><option value="0">interdit</option></select>
               <br/>Comparaison :
               <select id="cr_texte_c" onchange="cr_texte_change(this)"><option value="0" selected>strict</option><option value="1">Sans Maj. au début</option><option value="2">Sans Maj.</option></select>
+              <br/><input type="checkbox" name="cr_texte_corr" id="cr_texte_corr" onchange="cr_texte_change(this)"/><label for="cr_texte_corr">afficher la correction</label>
             </div>
           </div>
         </div>

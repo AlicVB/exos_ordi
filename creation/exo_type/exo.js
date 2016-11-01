@@ -529,11 +529,13 @@ function combo_score(e, tt)
 function texte_score(e, tt)
 {
   // on récupère les options (type de comparaison)
-  cc = 0;
+  let cc = 0;
+  let corr = "0";
   if (e.hasAttribute('options'))
   {
     var opts = e.getAttribute('options').split("|");
     if (opts.length>0) cc = opts[0];
+    if (opts.length>2) corr = opts[2];
   }
   
   // on récupère les valeurs
@@ -568,6 +570,14 @@ function texte_score(e, tt)
   {
     elems[0].style.border = "2px solid red";
     elems[0].style.borderRadius = "2vh";
+    if (corr == "1")
+    {
+      let els = e.getElementsByClassName("texte_corr2");
+      for (let i=0; i<els.length; i++)
+      {
+        els[i].style.visibility = "visible";
+      }
+    }
   }
   return s;
 }

@@ -12,6 +12,21 @@ body {
 .titre {
   font-weight: bold;
   font-size: 2em;
+  position: relative;
+  background-color: #9A9A9A;
+}
+.exo_menu {
+  position: absolute;
+  right: 2px;
+  top: 0px;
+}
+.exo_menu a {
+  padding: 2px;
+  background-color: #C6C6C6;
+  border-radius: 1px;
+}
+.exo_menu img {
+  height: 2em;
 }
 .iligne {
   display: flex;

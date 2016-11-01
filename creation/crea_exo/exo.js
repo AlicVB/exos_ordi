@@ -1129,16 +1129,18 @@ function texte_create_html(bloc, txt)
   h = bloc.texte_h;
   enter = bloc.texte_e;
   comp = bloc.texte_c;
+  let corr = "texte_corr";
+  if (bloc.texte_corr == "1") corr += "2";
   
   htm = "";
   htm += "<div class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
-  htm += comp + "|" + enter + "\" >\n";
+  htm += comp + "|" + enter + "|" + bloc.texte_corr + "\" >\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
   if (vals.length>0 && vals[0].substr(-1) == " ") vals[0] = vals[0].slice(0,-1) + "&nbsp;";
   if (vals.length>2 && vals[2].substr(0,1) == " ") vals[2] = "&nbsp;" + vals[2].substr(1) ;
   if (l == 0) htm += "  <div style=\"width: 100%;\">\n"
-  if (vals.length>0) htm += "  <div>" + vals[0] + "</div>\n";
+  if (vals.length>0) htm += "  <div>" + vals[0] + "<div class=\"" + corr + "\">&nbsp;</div></div>\n";
   if (vals.length>1)
   {
     htm += "  <div>\n";
@@ -1149,10 +1151,10 @@ function texte_create_html(bloc, txt)
     else if (h>1) htm += "cols=\"" + l + "\">";
     else htm += "size=\"" + l + "\">";
     if (h>1) htm += "</textarea>";
-    htm += "\n    <div class=\"texte_corr\">" + vals[1] + "</div>\n";
+    htm += "\n    <div class=\"" + corr + "\">" + vals[1] + "</div>\n";
     htm += "  </div>\n";
   }
-  if (vals.length>2) htm += "  <div>" + vals[2] + "</div>\n";
+  if (vals.length>2) htm += "  <div>" + vals[2] + "<div class=\"" + corr + "\">&nbsp;</div></div>\n";
   if (l == 0) htm += "  </div>\n";
   htm += "</div>\n";
   
@@ -1164,6 +1166,7 @@ function texte_ini(bloc)
   bloc.texte_h = "1";
   bloc.texte_e = "0";
   bloc.texte_c = "0";
+  bloc.texte_corr = "0";
 }
 function texte_sel_update()
 {
@@ -1181,6 +1184,7 @@ function texte_sel_update()
     document.getElementById("cr_texte_h").value = bloc.texte_h;
     document.getElementById("cr_texte_e").value = bloc.texte_e;
     document.getElementById("cr_texte_c").value = bloc.texte_c;
+    document.getElementById("cr_texte_corr").checked = (bloc.texte_corr == "1");
     document.getElementById("cr_texte_div").style.display = "block";
   }
 }

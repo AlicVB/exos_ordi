@@ -195,7 +195,7 @@ function livre_creation($dos)
     echo "</table>";
     echo "</div>\n";
     echo "<div class=\"col\">\n";
-    echo "  <div class=\"titre\">exercices</div>\n";
+    echo "  <div class=\"titre\">exercices<div class=\"exo_menu\"><a href=\"crea_exo/exo.php?cat=$cat&livre=$livre&exo=\"><img src=\"crea_exo/icons/list-add.svg\"/></a></div></div>\n";
     echo "<table>";
     $exos = glob("$dos/exos/*" , GLOB_ONLYDIR);
     for ($i=0; $i<count($exos); $i++)

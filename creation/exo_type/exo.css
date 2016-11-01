@@ -104,6 +104,13 @@ div.texte_corr {
   color: red;
   font-weight: bold;
 }
+div.texte_corr2 {
+  width: 100%;
+  text-align: center;
+  visibility: hidden;
+  color: red;
+  font-weight: bold;
+}
 .texte input {
   vertical-align: middle;
   font-size: inherit;
