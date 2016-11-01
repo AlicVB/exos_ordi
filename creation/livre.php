@@ -195,7 +195,7 @@ function livre_creation($dos)
     echo "</table>";
     echo "</div>\n";
     echo "<div class=\"col\">\n";
-    echo "  <div class=\"titre\">exercices<div class=\"exo_menu\"><a href=\"crea_exo/exo.php?cat=$cat&livre=$livre&exo=\"><img src=\"crea_exo/icons/list-add.svg\"/></a></div></div>\n";
+    echo "  <div class=\"titre\">exercices</div>\n";
     echo "<table>";
     $exos = glob("$dos/exos/*" , GLOB_ONLYDIR);
     for ($i=0; $i<count($exos); $i++)
@@ -219,12 +219,29 @@ function livre_creation($dos)
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=copie&exo=$exo\"><img class=\"eimg\" src=\"../icons/tab-new.svg\" title=\"copier l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=up&exo=$exo\"><img class=\"eimg\" src=\"../icons/go-up.svg\" title=\"monter l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=down&exo=$exo\"><img class=\"eimg\" src=\"../icons/go-down.svg\" title=\"descendre l'exo\"/></a>\n";
-        echo "<a href=\"livre_sauve.php?export&exo=".urlencode($exos[$i])."&nom=".urlencode($et)."\"><img class=\"eimg\" src=\"crea_exo/icons/document-save.svg\" title=\"exporter l'exo\"/></a>\n";
         echo "</td></tr>\n";
       }
     }
-    echo "<tr><td class=\"enew\"><a class=\"enewa\" href=\"crea_exo/exo.php?cat=$cat&livre=$livre&exo=\">+ nouvel exercice...</a></td></tr>";
     echo "</table>";
+    echo "<div class=\"enew\"><button onclick=\"window.location.href='crea_exo/exo.php?cat=$cat&livre=$livre&exo='\">nouvel exercice</button>&nbsp;&nbsp;";
+    echo "<select onchange=\"add_select(this, '$dos')\">";
+    echo "<option value=\"\" selected>exercice existant...</option>";
+    $it = new RecursiveDirectoryIterator("../livres/");
+    foreach(new RecursiveIteratorIterator($it) as $file)
+    {
+      if (basename($file) == "exo.txt")
+      {
+        $v = explode("\n", file_get_contents($file));
+        if (count($v) > 0)
+        {
+          $d = dirname(dirname(dirname($file)));
+          $d = substr($d, 10);
+          echo "<option value=\"".dirname($file)."\">$d - $v[0]</option>";
+        }
+      }
+    }
+    echo "</select>";
+    echo "</div>";
     echo "</div>\n";
 ?>
   <img class="exotice" src="../exotice.svg" />

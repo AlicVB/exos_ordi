@@ -50,3 +50,22 @@ function start(aut)
     if (rep) document.getElementById("iaut").value = rep;
   }
 }
+
+function add_select(e, dos)
+{
+  if (e.value != "")
+  {
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
+      {
+        // on met les bonnes valeurs aux bons endroits
+        window.location.reload(true);
+      }
+    };
+    ligne = "copy=&dest=" + dos + "&src=" + e.value;
+    xhr.open("POST", "livre_sauve.php" , true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send(ligne);
+  }
+}

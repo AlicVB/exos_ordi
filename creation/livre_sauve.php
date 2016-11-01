@@ -44,7 +44,35 @@ function wd_remove_accents($str, $charset='utf-8')
     header('Content-type: application/zip');
     readfile($tmp_file);
   }
-  if (isset($_POST["fic"]) && isset($_POST["v"])) 
+  else if (isset($_POST["copy"]) && isset($_POST["dest"]) && isset($_POST["src"]))
+  {
+    $dest = $_POST["dest"];
+    $src = $_POST["src"];
+    $src2 = dirname(dirname($src));
+    //on détermine le dossier du nouvel exercice
+    $exos = glob("$dest/exos/*" , GLOB_ONLYDIR);
+    if (count($exos)>0) $exo = chr(ord(basename($exos[count($exos)-1])) + 1);
+    else $exo = "A";
+    $dest2 = "$dest/exos/$exo";
+    //on copie les fichier "classiques"
+    if (!file_exists($dest2)) mkdir("$dest2", 0777, true);
+    $fics = glob("$src/*");
+    for($i=0; $i<count($fics); $i++)
+    {
+      copy($fics[$i], "$dest2/".basename($fics[$i]));
+    }
+    
+    //et on s'occupe des images et des sons
+    preg_match_all("/src=\"([^\"]*)\"/", file_get_contents("$dest2/exo.php"), $matches);
+    for ($i=0; $i<count($matches[1]); $i++)
+    {
+      $img = $matches[1][$i];
+      if (file_exists("$dest/$img")) continue;
+      if (!file_exists("$src2/$img")) continue;
+      copy("$src2/$img", "$dest/$img");
+    }
+  }
+  else if (isset($_POST["fic"]) && isset($_POST["v"])) 
   {
     //on veut juste sauvegarder les infos du livre
     header("Content-Type: text/plain"); // Utilisation d'un header pour spécifier le type de contenu de la page. Ici, il s'agit juste de texte brut (text/plain). 
