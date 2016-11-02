@@ -11,7 +11,6 @@ var total;
 var line_cur = null;
 var line_orig = null;
 var line_orig_id = "";
-var drake = null;
 
 function audio_play(e)
 {
@@ -20,24 +19,33 @@ function audio_play(e)
   audio.play();
 }
 
+function line_new(corr)
+{
+  let txt = "<svg class=\"line\" preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\">";
+  txt += "<line vector-effect=\"non-scaling-stroke\" x1=\"50\" y1=\"0\" x2=\"50\" y2=\"100\"></line>";
+  if (corr) txt += "<polygon points=\"-300 97, 50 100, 400 97\"/>";
+  txt += "</svg>";
+  document.body.insertAdjacentHTML('beforeend', txt);
+  var elems = document.getElementsByClassName("line");
+  return elems[elems.length - 1];
+}
+
 function line_start(e)
 {
   //on récupère le point de départ
-  var rect = e.target.getBoundingClientRect();
+  var rect = e.currentTarget.getBoundingClientRect();
 
   //on crée la ligne
-  li = document.createElement('div');
-  li.className = "line";
+  li = line_new(false);
   li.style.top = (rect.top + rect.height/2) + "px";
   li.style.left = (rect.left + rect.width/2) + "px";
-  document.body.appendChild(li);
   document.body.addEventListener('mouseup',line_leave,true);
   document.body.addEventListener('mousemove',line_move,true);
   
   //on enregistre
   line_cur = li;
-  line_orig = e.target;
-  line_orig_id = e.target.id;
+  line_orig = e.currentTarget;
+  line_orig_id = e.currentTarget.id;
 }
 function line_move(event)
 {
@@ -59,7 +67,7 @@ function line_move(event)
 }
 function line_remove(event)
 {
-  line = event.target;
+  let line = event.target.parentNode;
   e1 = document.getElementById(line.getAttribute("l1"));
   e2 = document.getElementById(line.getAttribute("l2"));
   document.body.removeChild(line);
@@ -137,12 +145,8 @@ function line_charge(e, v)
 function line_relie(e1, e2, line, corr)
 {
   if (!e1 || !e2) return;
-  if (!line)
-  {
-    line = document.createElement('div');
-    line.className = "line";
-    document.body.appendChild(line);
-  }
+  if (!line) line = line_new(corr);
+
   //on détecte quels côtés on utilise
   var rect1 = e1.getBoundingClientRect();
   var rect2 = e2.getBoundingClientRect();
@@ -187,7 +191,7 @@ function line_relie(e1, e2, line, corr)
   line.setAttribute("l2", e2.id);
   if (corr)
   {
-    line.style.backgroundColor = "red";
+    line.style.stroke = "red";
   }
   else
   {
@@ -320,7 +324,10 @@ function drag_start(ev)
 }
 function drag_over(ev)
 {
-  ev.preventDefault();
+  if (ev.target.hasAttribute("tpe") && ev.target.getAttribute("tpe") == "cible" && !ev.target.hasAttribute("contains"))
+  {
+    ev.preventDefault();
+  }
 }
 function drag_drop(ev)
 {
@@ -338,7 +345,7 @@ function drag_drop(ev)
 }
 
 //Actions spécifiques de certains éléments
-function multi_change(elem)
+function multi_change(elem, clic)
 {
   // on récupère les options
   r = getrootitem(elem);
@@ -346,8 +353,10 @@ function multi_change(elem)
   var opts = r.getAttribute('options').split("|");
   var maj = [];
   var suff = [];
+  var barre = [];
   if (r.hasAttribute("maj")) maj = r.getAttribute('maj').split("|");
   if (r.hasAttribute("suff")) suff = r.getAttribute('suff').split("|");
+  if (r.hasAttribute("barre")) barre = r.getAttribute('barre').split("|");
   //on fait les changements de couleur
   var ncoul = opts[0];
   var nid = 0;
@@ -355,20 +364,32 @@ function multi_change(elem)
   {
     if (elem.style.backgroundColor == opts[i])
     {
-      if (i == opts.length - 1)
+      if (clic)
       {
-        ncoul = "transparent";
-        nid = -1;
+        if (i == opts.length - 1)
+        {
+          ncoul = "transparent";
+          nid = -1;
+        }
+        else
+        {
+          ncoul = opts[i+1];
+          nid = i+1;
+        }
       }
-      else
-      {
-        ncoul = opts[i+1];
-        nid = i+1;
-      }
+      else nid = i;
       break;
     }
   }
-  elem.style.backgroundColor = ncoul;
+  if (clic)
+  {
+    elem.style.backgroundColor = ncoul;
+    elem.style.boxShadow = "inset 0 0 0 2000px " + ncoul;
+  }
+  //texte barré
+  if (nid < 0 || nid >= barre.length || barre[nid] != "1") elem.style.textDecoration = "none";
+  else elem.style.textDecoration = "line-through";
+  //majuscules et suffixes
   var inis = elem.getElementsByClassName("multi_ini");
   if (inis && inis.length>0)
   {
@@ -387,10 +408,13 @@ function multi_score(e, tt)
   var opts = e.getAttribute('options').split("|");
   
   // on initialise un tableau de score
-  scores = new Array(opts.length);
+  var scores = new Array(opts.length);
+  var nbjuste = new Array(opts.length);
+  var nbjuste_total = 0;
   for (let i=0; i<scores.length; i++)
   {
     scores[i] = 1;
+    nbjuste[i] = 0;
   }
   
   // we look at all the subitems
@@ -400,13 +424,18 @@ function multi_score(e, tt)
     elems[i].disabled = true;
     // on récupère la valeur juste
     var juste = "transparent";
-    var just_id = -1;
+    var juste_id = -1;
     var coul = elems[i].style.backgroundColor;
     if (!coul || coul == "") coul = "transparent";
     if (elems[i].hasAttribute('juste'))
     {
       juste_id = parseInt(elems[i].getAttribute('juste')) - 1;
-      if (juste_id>=0 && juste_id<opts.length) juste = opts[juste_id];
+      if (juste_id>=0 && juste_id<opts.length)
+      {
+        juste = opts[juste_id];
+        nbjuste[juste_id] += 1;
+        nbjuste_total += 1;
+      }
       else juste_id = -1;
     }
     //on vérifie la couleur
@@ -420,15 +449,20 @@ function multi_score(e, tt)
   }
   
   //we computes all scores
-  s = 0;
+  var s = 0;
+  var tot = 0;
   for (let i=0; i<scores.length; i++)
   {
-    // on veut un score entre 0 et 1
-    s += Math.min(Math.max(0,scores[i]),1);
+    if (nbjuste[i] > 0 || nbjuste_total == 0)
+    {
+      // on veut un score entre 0 et 1
+      s += Math.min(Math.max(0,scores[i]),1);
+      tot += 1;
+    }
   }
-  
+
   // we show the correction if needed
-  if (s<scores.length)
+  if (s<tot)
   {
     elems = e.getElementsByClassName('multi_corr');
     if (elems.length>0) elems[0].style.visibility = 'visible';
@@ -441,7 +475,13 @@ function multi_score(e, tt)
     if (elems.length>0) elems[0].src = root + "icons/dialog-apply.svg";
   }
   
-  return tt*s/scores.length;
+  // cas particulier ou rien ne doit être coloré => c'est juste ou faux !
+  if (nbjuste_total == 0)
+  {
+    if (s == scores.length) return tt;
+    else return 0;
+  }
+  else return tt*s/tot;
 }
 
 function radio_score(e, tt)
@@ -493,11 +533,13 @@ function combo_score(e, tt)
 function texte_score(e, tt)
 {
   // on récupère les options (type de comparaison)
-  cc = 0;
+  let cc = 0;
+  let corr = "0";
   if (e.hasAttribute('options'))
   {
     var opts = e.getAttribute('options').split("|");
     if (opts.length>0) cc = opts[0];
+    if (opts.length>2) corr = opts[2];
   }
   
   // on récupère les valeurs
@@ -532,6 +574,14 @@ function texte_score(e, tt)
   {
     elems[0].style.border = "2px solid red";
     elems[0].style.borderRadius = "2vh";
+    if (corr == "1")
+    {
+      let els = e.getElementsByClassName("texte_corr2");
+      for (let i=0; i<els.length; i++)
+      {
+        els[i].style.visibility = "visible";
+      }
+    }
   }
   return s;
 }
@@ -548,7 +598,16 @@ function cible_score(e, tt)
       e.style.border = "2px solid red";
       e.style.borderRadius = "2vh";
       el2 = document.getElementById(e.getAttribute("juste"));
-      if (el2) line_relie(e, el2, null, true);
+      if (el2)
+      {
+        let svg = line_relie(el2, e, null, true);
+        let elems = svg.getElementsByTagName("polygon");
+        if (elems.length>0)
+        {
+          let li = elems[0];
+          li.style.display = "block";
+        }
+      }
     }
   }
   return 0;
@@ -556,38 +615,35 @@ function cible_score(e, tt)
 
 function line_score(e, tt)
 {
-  s = 0;
-  if (e.hasAttribute("lineto") && e.hasAttribute("lineok"))
+  let s = 0;
+  if (e.hasAttribute("lineok"))
   {
     //on cherche l'erreur
     s = 1;
-    id1 = e.getAttribute("lineto").split("|");
-    id2 = e.getAttribute("lineok").split("|");
+    let id1 = [];
+    if (e.hasAttribute("lineto")) id1 = e.getAttribute("lineto").split("|");
+    let id2 = e.getAttribute("lineok").split("|");
     //on regarde d'abord si il manque des lignes
     for (let i=0; i<id2.length; i++)
     {
-      if (id1.indexOf(id2[i]) == -1)
+      if (id2[i] != "" && id1.indexOf(id2[i]) == -1)
       {
         s = 0;
         // il faut tracer la ligne qui manque
         line_relie(e, document.getElementById(id2[i]), null, true);
       }
     }
-    // on regarde si il ya des lignes en trop
+    // on regarde si il y a des lignes en trop
     for (let i=0; i<id1.length; i++)
     {
       if (id2.indexOf(id1[i]) == -1)
       {
         s = 0;
         // il faut barrer la ligne en trop
-        var rect1 = e.getBoundingClientRect();
-        var rect2 = document.getElementById(id1[i]).getBoundingClientRect();
-        barre = document.createElement('span');
-        barre.className = "line_barre";
-        barre.innerHTML = "X";
-        document.body.appendChild(barre);
-        barre.style.top = ((rect1.top + rect1.height/2 + rect2.top + rect2.height/2)/2 - barre.offsetHeight/2) + "px";
-        barre.style.left = ((rect1.left + rect1.width/2 + rect2.left + rect2.width/2)/2 - barre.offsetWidth/2) + "px";
+        let li = line_relie(e, document.getElementById(id1[i]), null, true);
+        li.style.strokeDasharray = "2, 10";
+        li.style.strokeLinecap = "butt";
+        li.style.strokeWidth = "12px";
       }
     }
   }
@@ -761,7 +817,7 @@ function change(elem)
   switch (gettype(elem))
   {
     case "multi":
-      multi_change(elem);
+      multi_change(elem, true);
       break;
   }
   
@@ -814,6 +870,10 @@ function affiche_score(sauve)
           break;
         case "texte_simple":
         case "image":
+        case "rect":
+        case "cercle":
+        case "ligne":
+        case "audio":
           s += line_score(e, tt);
           break;
       }
@@ -836,25 +896,22 @@ function affiche_score(sauve)
   vals = total.split("|");
   ns = s;
   nt = t;
-  if (vals[0] != "-1")
+  if (vals[0] != "-1") nt = parseInt(vals[0]);
+  ns = s*nt/t;
+  switch (vals[1])
   {
-    nt = parseInt(vals[0]);
-    ns = s*nt/t;
-    switch (vals[1])
-    {
-      case "1":
-        ns = Math.round(ns);
-        break;
-      case "0.5":
-        ns = Math.round(ns*2)/2;
-        break;
-      case "0.1":
-        ns = Math.round(ns*10)/10;
-        break;
-      case "0.01":
-        ns = Math.round(ns*100)/100;
-        break;
-    }
+    case "1":
+      ns = Math.round(ns);
+      break;
+    case "0.5":
+      ns = Math.round(ns*2)/2;
+      break;
+    case "0.1":
+      ns = Math.round(ns*10)/10;
+      break;
+    case "0.01":
+      ns = Math.round(ns*100)/100;
+      break;
   }
   escore.innerHTML = "score : " + ns + "/" + nt;
   np = ns/nt*100;
@@ -919,9 +976,14 @@ function setvalue(e, v)
       break;
     case "multi":
       e.style.backgroundColor = v;
+      multi_change(e, false);
       break;
     case "texte_simple":
     case "image":
+    case "rect":
+    case "cercle":
+    case "ligne":
+    case "audio":
       if (v != "") line_charge(e, v);
       break;
     case "cible":
@@ -946,6 +1008,10 @@ function getvalue(e)
       return (e.style.backgroundColor);
     case "texte_simple":
     case "image":
+    case "rect":
+    case "cercle":
+    case "ligne":
+    case "audio":
       if (e.hasAttribute("linkedto")) return e.getAttribute("linkedto");
     case "cible":
       if (e.hasAttribute("contains")) return e.getAttribute("contains");
