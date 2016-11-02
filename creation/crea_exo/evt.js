@@ -406,12 +406,14 @@ function cr_font_fam_change(e)
 function cr_font_size_change(e)
 {
   s1 = e.value;
-  s2 = s1*0.65;
+  s2 = s1*0.641;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_size = s1;
     document.getElementById(selection[i].id).style.fontSize = s2 + "px";
+    bloc_create_html(selection[i]);
   }
+  selection_update();
   //on sauvegarde
   g_sauver();
 }

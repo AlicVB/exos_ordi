@@ -113,7 +113,7 @@ function file_create_css()
     //police
     txt += "font-family: \"" + b.font_fam + "\"; ";
     txt += "font-size: " + (b.font_size/10) + "vh; ";
-    txt += "color: " + b.font_coul + "; ";
+    txt += "color: unset; text-shadow: 0 0 " + b.font_coul + "; ";
     if (b.font_g == "true") txt += "font-weight: bold; ";
     if (b.font_i == "true") txt += "font-style: italic; ";
     if (b.font_s == "true") txt += "text-decoration: underline; ";
@@ -124,18 +124,18 @@ function file_create_css()
     //position-taille
     txt += "position: absolute; ";
     txt += "left: " + b.left*100/443 + "%; ";
-    txt += "top: " + b.top*100/641 + "%; ";
+    txt += "top: " + b.top*100/631 + "%; ";
     if (b.size == "manuel" || b.size == "ratio" || b.tpe == "ligne")
     {
       if (b.tpe == "cible")
       {
         txt += "min-width: " + b.width*100/443 + "%; ";
-        txt += "min-height: " + b.height*100/641 + "%; ";
+        txt += "min-height: " + b.height*100/631 + "%; ";
       }
       else
       {
         txt += "width: " + b.width*100/443 + "%; ";
-        txt += "height: " + b.height*100/641 + "%; ";
+        txt += "height: " + b.height*100/631 + "%; ";
       }
     }
     if (b.rotation != "0") txt += "transform: rotate(" + b.rotation + "deg); ";
@@ -171,7 +171,7 @@ function file_create_css()
     }
     else if (b.fond_alpha != 0)
     {
-      txt += "background-color: " + hex2rgba(b.fond_coul, b.fond_alpha) + "; ";
+      txt += "background-color: unset; box-shadow: inset 0 0 0 2000px " + hex2rgba(b.fond_coul, b.fond_alpha) + "; ";
     }
     //marges
     if (b.marges > 0)
@@ -555,7 +555,7 @@ function infos_ini()
 //on initialise la zone de rendu (uniquement le prénom)
 function rendu_ini()
 {
-  htm = "<span id=\"user\">Prénom : Exemple-Prénom</span>\n";
+  htm = "<span fs=\"20\" id=\"user\">Prénom : Exemple-Prénom</span>\n";
   document.getElementById("cr_rendu").innerHTML = htm;
 }
 
@@ -600,7 +600,7 @@ function rendu_add_bloc(bloc)
   
   //police
   e.style.fontFamily = bloc.font_fam;
-  e.style.fontSize = (parseInt(bloc.font_size)*0.65) + "px";
+  e.style.fontSize = (parseInt(bloc.font_size)*0.641) + "px";
   e.style.color = bloc.font_coul;
   if (bloc.font_g == true) e.style.fontWeight = "bold";
   if (bloc.font_i == true) e.style.fontStyle = "italic";
@@ -1006,7 +1006,7 @@ function radio_create_html(bloc, txt)
     htm += "<style>[id=\"" + bloc.id + "\"] label {background-color: " + bloc.radiobtn_coul1;
     htm += ";} [id=\"" + bloc.id + "\"] input[type=\"radio\"]:checked + label {background-color: " + bloc.radiobtn_coul2 + ";}</style>\n";
   }
-  htm += "<div class=\"item lignef " + cl + "\" tpe=\"" + bloc.tpe + "\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "<div fs=\"" + bloc.font_size + "\" class=\"item lignef " + cl + "\" tpe=\"" + bloc.tpe + "\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.tpe == "radiobtn") htm += "options=\"" + bloc.radiobtn_coul1 + "|" + bloc.radiobtn_coul2 + "\" ";
   htm += ">\n";
   //on coupe suivant '|'
@@ -1062,7 +1062,7 @@ function combo_new()
 function combo_create_html(bloc, txt)
 {
   htm = "";
-  htm += "<div class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
+  htm += "<div fs=\"" + bloc.font_size + "\" class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
   if (vals.length>0) htm += "  <div>" + vals[0] + "</div>\n";
@@ -1133,7 +1133,7 @@ function texte_create_html(bloc, txt)
   if (bloc.texte_corr == "1") corr += "2";
   
   htm = "";
-  htm += "<div class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
+  htm += "<div fs=\"" + bloc.font_size + "\" class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
   htm += comp + "|" + enter + "|" + bloc.texte_corr + "\" >\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
@@ -1205,7 +1205,7 @@ function multi_new()
 function multi_create_html(bloc, txt)
 {
   var htm = "";
-  htm += "<div class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
+  htm += "<div fs=\"" + bloc.font_size + "\" class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
   var opts = "";
   var maj = "";
   var suff = "";
@@ -1313,7 +1313,7 @@ function cible_create_html(bloc, txt)
   enter = bloc.texte_e;
   comp = bloc.texte_c;
   
-  htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
+  htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" fs=\"" + bloc.font_size + "\" class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
   htm += "</div>\n";
   
   bloc.html = htm;
@@ -1362,7 +1362,7 @@ function image_create_html(bloc, txt)
   htm += ">\n  <img ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
   else htm += "ondragstart=\"return false;\" ";
-  htm += "class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "fs=\"" + bloc.font_size + "\" class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1430,7 +1430,7 @@ function texte_simple_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <div ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "fs=\"" + bloc.font_size + "\" class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1498,7 +1498,7 @@ function audio_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <img ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "fs=\"" + bloc.font_size + "\" class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";

@@ -99,12 +99,10 @@
     <script type="text/javascript" src="livre.js"></script>
     <link rel="stylesheet" href="livre.css">
     <link rel="stylesheet" href="<?php echo $exos[$exo] ?>/exo.css">
+    <link rel="stylesheet" href="livre_print.css" media="print">
   </head>
   <body onload="livre_ini('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '<?php echo $root ?>/');" style="background-color: <?php echo $coul_livre ?>;">
     <div id="bysa"><img id="cc_img" src="<?php echo $root ?>/icons/cc.svg" /><span> <?php echo $aut_livre ?></span></div>
-    <div id="exoticediv">
-      
-    </div>
     <div id="c2" style="background-color: <?php echo $exo_coul ?>;">
       <span id="titrelivre"><?php echo $titre_livre ?></span>
       <br/><span id="titreexo"><?php echo $titre_exo ?></span>
@@ -149,6 +147,7 @@
       <?php if ($exo_image_hover == "0") echo "<img id=\"aide\" src=\"$exo_image\"  onload=\"intro_img_load(this)\"/>"; ?>
       <div id="exitdiv">
         <a href="<?php echo $root ?>/sommaire.php?user=<?php echo $user ?>"><img id="exitimg" src="<?php echo $root ?>/icons/edit-undo.svg" /></a>
+        <img onclick="page_print()" id="exitimg" src="<?php echo $root ?>/icons/printer.svg" />
         <a id="erasea" href="livre.php?user=<?php echo $user ?>&exo=<?php echo $exo ?>&erase=1"><img id="eraseimg" src="<?php echo $root ?>/icons/draw-eraser.svg" /></a>
       </div>
       <img id="exotice" src="<?php echo $root ?>/exotice.svg" />
