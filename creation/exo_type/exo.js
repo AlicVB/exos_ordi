@@ -976,6 +976,7 @@ function setvalue(e, v)
       break;
     case "multi":
       e.style.backgroundColor = v;
+      if (v != "") e.style.boxShadow = "inset 0 0 0 2000px " + v;
       multi_change(e, false);
       break;
     case "texte_simple":
