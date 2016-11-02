@@ -97,6 +97,7 @@
     <title><?php echo "$titre_livre -- $titre_exo" ?></title>
     <script type="text/javascript" src="<?php echo $exos[$exo] ?>/exo.js"></script>
     <script type="text/javascript" src="livre.js"></script>
+    <link rel="shortcut icon" href="<?php echo $root ?>/icons/gnome-palm.png" >
     <link rel="stylesheet" href="livre.css">
     <link rel="stylesheet" href="<?php echo $exos[$exo] ?>/exo.css">
     <link rel="stylesheet" href="livre_print.css" media="print">

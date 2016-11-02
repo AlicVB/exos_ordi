@@ -155,6 +155,7 @@ function livre_creation($dos)
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>exotice -- livres</title>
   <link rel="stylesheet" href="livre.css">
+  <link rel="shortcut icon" href="../icons/gnome-palm.png" >
   <script type="text/javascript" src="../libs/jscolor.min.js"></script>
   <script type="text/javascript" src="livre.js"></script>
 </head>

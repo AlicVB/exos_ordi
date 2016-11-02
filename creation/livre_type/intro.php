@@ -41,6 +41,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo $titre_livre ?></title>
+    <link rel="shortcut icon" href="<?php echo $root ?>/icons/gnome-palm.png" >
     <link rel="stylesheet" href="intro.css">
     <script type="text/javascript" src="livre.js"></script>
   </head>

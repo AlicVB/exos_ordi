@@ -19,6 +19,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>exotice -- categories</title>
+  <link rel="shortcut icon" href="../icons/gnome-palm.png" >
   <link rel="stylesheet" href="creation.css">
   <script>
     function add_new()

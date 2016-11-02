@@ -2,7 +2,8 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Sommaire</title>
+  <title>exotice -- Sommaire</title>
+  <link rel="shortcut icon" href="icons/gnome-palm.png" >
   <link rel="stylesheet" href="sommaire.css">
 </head>
 

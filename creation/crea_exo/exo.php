@@ -34,6 +34,7 @@
   <title>Création d'exercice</title>
   <link rel="stylesheet" href="exo.css">
   <link rel="stylesheet" href="base_exos.css">
+  <link rel="shortcut icon" href="../../icons/gnome-palm.png" >
   <script type="text/javascript" src="../../libs/interact.min.js"></script>
   <script type="text/javascript" src="../../libs/jscolor.min.js"></script>
   

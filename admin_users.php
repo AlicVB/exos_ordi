@@ -7,6 +7,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>exotice -- utilisateurs</title>
+  <link rel="shortcut icon" href="icons/gnome-palm.png" >
   <link rel="stylesheet" href="admin_users.css" >
 </head>
 
