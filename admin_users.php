@@ -1,3 +1,7 @@
+<?php
+  $fic = "utilisateurs.txt";
+  if (!file_exists($fic)) file_put_contents($fic, "__TEST__|XX|grey");
+?>
 <!DOCTYPE html>
 <html>
 <head>

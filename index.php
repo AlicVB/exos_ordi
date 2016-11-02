@@ -11,6 +11,8 @@
   <?php
     // on ouvre le fichier des utilisateurs
     $fic = "utilisateurs.txt";
+    if (!file_exists($fic)) file_put_contents($fic, "__TEST__|XX|grey");
+
     $vals = array();
     if (file_exists($fic))
     {
