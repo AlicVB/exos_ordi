@@ -120,6 +120,7 @@ function font_resize()
       elems[i].style.fontSize = fs*r + "px";
     }
   }
+  document.getElementById("exotice").style.height = 40*r + "px";
 }
 
 function page_print()

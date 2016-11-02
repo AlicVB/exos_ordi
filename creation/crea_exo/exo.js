@@ -555,7 +555,8 @@ function infos_ini()
 //on initialise la zone de rendu (uniquement le prénom)
 function rendu_ini()
 {
-  htm = "<span fs=\"20\" id=\"user\">Prénom : Exemple-Prénom</span>\n";
+  let htm = "<span fs=\"20\" id=\"user\">Prénom : Exemple-Prénom</span>\n";
+  htm += "<img id=\"exotice\" src=\"../../exotice.svg\" />";
   document.getElementById("cr_rendu").innerHTML = htm;
 }
 

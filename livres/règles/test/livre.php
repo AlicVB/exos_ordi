@@ -151,11 +151,10 @@
         <img onclick="page_print()" id="exitimg" src="<?php echo $root ?>/icons/printer.svg" />
         <a id="erasea" href="livre.php?user=<?php echo $user ?>&exo=<?php echo $exo ?>&erase=1"><img id="eraseimg" src="<?php echo $root ?>/icons/draw-eraser.svg" /></a>
       </div>
-      <img id="exotice" src="<?php echo $root ?>/exotice.svg" />
     </div>
     <?php if ($exo_image_hover != "0") echo "<img id=\"aide\" src=\"$exo_image\"  onload=\"intro_img_load(this)\"/>"; ?>
     <div id="c1" style="background-color: <?php echo $exo_coul ?>;">
-      <span id="user">Prénom : <?php echo $user ?></span>
+      <span fs="20" id="user">Prénom : <?php echo $user ?></span>
       <?php include "$exos[$exo]/exo.php" ?>
       <?php
         // coins page
@@ -164,6 +163,7 @@
           echo "<a href=\"$lien_next\"><img class=\"coin_d\" id=\"coinimg\" src=\"$root/icons/go-next_coin.svg\" /></a>\n";
         }
       ?>
+      <img id="exotice" src="<?php echo $root ?>/exotice.svg" />
     </div>
   </body>
 </html>

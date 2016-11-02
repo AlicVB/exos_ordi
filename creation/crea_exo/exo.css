@@ -241,3 +241,9 @@ input[type="number"] {
 #ci_img_get {
   display: none;
 }
+#exotice {
+  position: absolute;
+  top: 0px;
+  right: 2px;
+  height: 25.64px;
+}
