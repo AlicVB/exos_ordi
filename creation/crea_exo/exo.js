@@ -138,6 +138,12 @@ function file_create_css()
         txt += "height: " + b.height*100/631 + "%; ";
       }
     }
+    if (b.tpe == "ligne")
+    {
+      txt += "transform-origin: top left; ";
+      txt += "width: 3px; ";
+      txt += "height: " + b.height*100/631 + "%; ";
+    }
     if (b.rotation != "0") txt += "transform: rotate(" + b.rotation + "deg); ";
     //bords
     if (b.bord != "hidden")
@@ -609,7 +615,7 @@ function rendu_add_bloc(bloc)
   if (bloc.font_b == true) e.style.textDecoration = "line-through";
   //taille-position
   //pour les texte simples, on commence par initialiser les valeurs de tailles au texte
-  if (bloc.tpe == "texte_simple" || bloc.tpe == "rect")
+  if (bloc.tpe == "texte_simple" || bloc.tpe == "rect" || bloc.tpe == "ligne")
   {
     if (bloc.width == 0) bloc.width = Math.max(15, e.offsetWidth + 4);
     if (bloc.height == 0) bloc.height = Math.max(10, e.offsetHeight);
@@ -620,7 +626,7 @@ function rendu_add_bloc(bloc)
     e.style.width = "100%";
     e.style.height = "100%";
   }
-  else if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
+  else if (bloc.tpe == "cercle")
   {
     e.style.width = bloc.width + "px";
     e.style.height = bloc.height + "px";
@@ -648,6 +654,7 @@ function rendu_add_bloc(bloc)
   }
   b.style.left = bloc.left + "px";
   b.style.top = bloc.top + "px";
+  if (bloc.tpe == "ligne") b.style.transformOrigin = "top left";
   if (bloc.rotation != "0") b.style.transform = "rotate(" + bloc.rotation + "deg)";
   if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
   {
@@ -699,9 +706,8 @@ function rendu_select_blocs()
   if (selection.length == 1 && selection[0].tpe == "ligne")
   {
     var b = selection[0];
-    var ex = ligne_get_extrems(b);
-    var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (ex.x1-4) + "px;top: " + (ex.y1-4) + "px;\"></div>";
-    var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (ex.x2-4) + "px;top: " + (ex.y2-4) + "px;\"></div>";
+    var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left-4) + "px;top: " + (b.top-4) + "px;\"></div>";
+    var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2-4) + "px;top: " + (b.y2-4) + "px;\"></div>";
     document.getElementById("cr_rendu").innerHTML += c1 + c2;
   }
   else
@@ -1609,102 +1615,21 @@ function ligne_new()
   selection = [bloc];
   selection_change();
 }
-function ligne_get_extrems(bloc)
+function ligne_calc(bloc, x1, y1, x2, y2)
 {
-  var ret = {};
-  ret.x1 = bloc.left;
-  if (bloc.x2 == 0) ret.x2 = bloc.left;
-  else ret.x2 = bloc.left + bloc.width;
-  if (bloc.y1 == 0)
-  {
-    ret.y1 = bloc.top;
-    if (bloc.y2 == 0) ret.y2 = bloc.top;
-    else ret.y2 = bloc.top + bloc.height;
-  }
-  else
-  {
-    ret.y2 = bloc.top;
-    ret.y1 = bloc.top + bloc.height;
-  }
-  return ret;
-}
-function ligne_adapt_vals(bloc, dx, dy, ex)
-{
-  //on remet tout en repère global
-  var ret = ligne_get_extrems(bloc);
-  var x1, x2, y1, y2;
-  if (ex == "1")
-  {
-    x1 = ret.x1 + dx;
-    y1 = ret.y1 + dy;
-    x2 = ret.x2;
-    y2 = ret.y2;
-  }
-  else
-  {
-    x1 = ret.x1;
-    y1 = ret.y1;
-    x2 = ret.x2 + dx;
-    y2 = ret.y2 + dy;
-  }
-  //on cherche les extrems en x et y
-  var nx1, nx2, nxy1, ny2;
-  var rep = false;
-  bloc.x2 = 100;
-  if (x1 == x2)
-  {
-    bloc.left = x1;
-    bloc.x2 = 0;
-    nx1 = x1;
-    ny1 = y1;
-    nx2 = x2;
-    ny2 = y2;
-  }
-  else if (x1<x2)
-  {
-    bloc.left = x1;
-    nx1 = x1;
-    ny1 = y1;
-    nx2 = x2;
-    ny2 = y2;
-  }
-  else
-  {
-    rep = true;
-    bloc.left = x2;
-    nx1 = x2;
-    ny1 = y2;
-    nx2 = x1;
-    ny2 = y1;
-  }
-  bloc.width = Math.max(1,nx2-nx1);
-  if (ny1 == ny2)
-  {
-    bloc.top = ny1;
-    bloc.height = 1;
-    bloc.y1 = 0;
-    bloc.y2 = 0;
-  }
-  else if (ny1<ny2)
-  {
-    bloc.top = ny1;
-    bloc.height = ny2-ny1;
-    bloc.y1 = 0;
-    bloc.y2 = 100;
-  }
-  else
-  {
-    bloc.top = ny2;
-    bloc.height = ny1-ny2;
-    bloc.y2 = 0;
-    bloc.y1 = 100;
-  }
-  return rep;
+  bloc.left = x1;
+  bloc.top = y1;
+  bloc.x2 = x2;
+  bloc.y2 = y2;
+  bloc.height = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    
+  var angle = 180 / 3.1415 * Math.acos((y2 - y1) / bloc.height);
+  if(x2 > x1) angle *= -1;
+  bloc.rotation = angle;
 }
 function ligne_create_html(bloc, txt)
 {
   //on calcule tous les paramètres
-  
   htm = "<div";
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <svg ";
@@ -1716,7 +1641,7 @@ function ligne_create_html(bloc, txt)
     if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
-  htm += "<line vector-effect=\"non-scaling-stroke\" x1=\"" + bloc.x1 + "\" y1=\"" + bloc.y1 +"\" x2=\"" + bloc.x2 + "\" y2=\"" + bloc.y2 + "\" id=\"svg_" + bloc.id + "\" />";
+  htm += "<line vector-effect=\"non-scaling-stroke\" x1=\"50\" y1=\"0\" x2=\"50\" y2=\"100\" id=\"svg_" + bloc.id + "\" />";
   htm += "</svg>\n</div>\n";
   
   bloc.html = htm;
@@ -1726,12 +1651,11 @@ function ligne_ini(bloc)
   // rien à faire
   bloc.points = "0";
   bloc.size = "auto";
-  bloc.x1 = 0;
-  bloc.y1 = 0;
-  bloc.x2 = 100;
-  bloc.y2 = 100;
-  bloc.width = 84;
-  bloc.height = 14;
+  bloc.x2 = bloc.left + 50;
+  bloc.y2 = bloc.top + 50;
+  bloc.width = 3;
+  bloc.height = 70.71;
+  bloc.rotation = -45;
   bloc.bord_coul = "#4AC1D8";
   bloc.bord = "solid";
   bloc.bord_size = 4;
@@ -1821,37 +1745,20 @@ function _dragMoveListener (event)
     event.target.style.top = parseFloat(event.target.style.top) + event.dy + "px";
     event.target.style.left = parseFloat(event.target.style.left) + event.dx + "px";
     //on modifie la ligne comme il faut
-    var inv = false;
-    if (event.target.getAttribute('extrema') == "1")
+    if (event.target.id == "extrema_1")
     {
-      inv = ligne_adapt_vals(bloc, event.dx, event.dy, "1");
+      ligne_calc(bloc, bloc.left + event.dx, bloc.top + event.dy, bloc.x2, bloc.y2);
     }
     else
     {
-      inv = ligne_adapt_vals(bloc, event.dx, event.dy, "2");
-    }
-    if (inv)
-    {
-      //les extrema sont inversés, il faut donc le traduire sur les carrés
-      var elems = document.getElementsByClassName("extrema");
-      for (let i=0; i<elems.length; i++)
-      {
-        if (elems[i].getAttribute("extrema") == "1") elems[i].setAttribute("extrema", "2");
-        else elems[i].setAttribute("extrema", "1");
-      }
+      ligne_calc(bloc, bloc.left, bloc.top, bloc.x2 + event.dx, bloc.y2 + event.dy);
     }
     // on modifie le style de la ligne en conséquence
-    var svg = document.getElementById("svg_" + bloc.id);
-    var b = document.getElementById(bloc.id);
     var sb = rendu_get_superbloc(bloc);
     sb.style.left = bloc.left + "px";
     sb.style.top = bloc.top + "px";
-    b.style.width = bloc.width + "px";
-    b.style.height = bloc.height + "px";
-    svg.setAttribute("x1", bloc.x1);
-    svg.setAttribute("y1", bloc.y1);
-    svg.setAttribute("x2", bloc.x2);
-    svg.setAttribute("y2", bloc.y2);
+    sb.style.height = bloc.height + "px";
+    sb.style.transform = "rotate(" + bloc.rotation + "deg)";
     ligne_create_html(bloc, "");
   }
   else
@@ -1878,6 +1785,8 @@ function _dragMoveListener (event)
           elems[j].style.left = parseFloat(elems[j].style.left) + event.dx + "px";
           elems[j].style.top = parseFloat(elems[j].style.top) + event.dy + "px";
         }
+        bloc.x2 += event.dx;
+        bloc.y2 += event.dy;
       }
     }
   }
