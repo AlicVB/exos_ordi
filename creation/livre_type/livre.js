@@ -5,10 +5,11 @@ function affiche_aide(val)
   else e.style.visibility = "hidden";
 }
 
-function intro_img_load(e)
+function intro_img_load()
 {
   //Attention, il faut regarder si elle doit être affichée en permanence ou non !
   let ic = document.getElementById("aideimg");
+  let e = document.getElementById("aide");
   if (ic)
   {
     //image d'aide masquée sauf au survol
@@ -105,6 +106,7 @@ function page_resize(e)
     document.getElementById("c2").style.marginRight = "0.5vw";
     document.getElementById("c2").style.marginTop = "1vh";
   }
+  intro_img_load();
   font_resize;
 }
 function font_resize()

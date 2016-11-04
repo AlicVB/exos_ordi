@@ -153,7 +153,7 @@
         <a id="erasea" href="livre.php?user=<?php echo $user ?>&exo=<?php echo $exo ?>&erase=1"><img id="eraseimg" src="<?php echo $root ?>/icons/draw-eraser.svg" /></a>
       </div>
     </div>
-    <?php if ($exo_image_hover != "0") echo "<img id=\"aide\" src=\"$exo_image\"  onload=\"intro_img_load(this)\"/>"; ?>
+    <?php if ($exo_image_hover != "0") echo "<img id=\"aide\" src=\"$exo_image\"/>"; ?>
     <div id="c1" style="background-color: <?php echo $exo_coul ?>;">
       <span fs="20" id="user">Prénom : <?php echo $user ?></span>
       <?php include "$exos[$exo]/exo.php" ?>
