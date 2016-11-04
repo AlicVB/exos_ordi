@@ -423,10 +423,6 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marges :
             <input class="cr_" id="cr_marges" type="number" value="0" min="0" max="500" onchange="cr_marges_change(this)" title="marges intérieures"/>
           </div>
-          <div class="cr_opt_ligne">
-            Autre :
-            <textarea id="cr_css" title="autres valeurs (syntaxe css)"></textarea>
-          </div>
         </div>
         <div>
           <div class="cr_opt_ligne">
