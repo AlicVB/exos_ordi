@@ -162,7 +162,13 @@ input[type="number"] {
   width: 950px;
 }
 #cr_btn_div {
-  text-align: center;
+  text-align: left;
+  position: relative;
+  margin-left: 50px;
+}
+#cr_bloc_liste {
+  position: absolute;
+  right: 2px;
 }
 #cr_nom {
   text-align: center;

@@ -1060,6 +1060,15 @@ function cr_action_change(e)
       //on suprime les blocs du rendu
       sb = rendu_get_superbloc(selection[i]);
       sb.parentNode.removeChild(sb);
+      // et de la liste déroulante
+      for (let j=0; j<document.getElementById("cr_bloc_liste").options.length; j++)
+      {
+        if (document.getElementById("cr_bloc_liste").options[j].value == selection[i].id)
+        {
+          document.getElementById("cr_bloc_liste").remove(j);
+          break;
+        }
+      }
       // on supprime les blocs de la base
       for (let j=0; j<blocs.length; j++)
       {
@@ -1152,6 +1161,20 @@ function cr_record_delete(e)
   record.blob = null;
   record.recorder = null;
   record_ini(e);
+}
+
+function cr_bloc_liste_change(e)
+{
+  let b = bloc_get_from_id(e.value);
+  if (b)
+  {
+    selection = [b];
+    selection_change();
+  }
+  else
+  {
+    e.value = "";
+  }
 }
 
 function cri_titre_change(e)

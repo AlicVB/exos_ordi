@@ -254,7 +254,9 @@
         <img class="cr_btn" src="icons/rect.svg" onclick="texte_simple_new(true)" title="ajouter un rectangle"/>
         <img class="cr_btn" src="icons/cercle.svg" onclick="cercle_new()" title="ajouter une éllipse"/>
         <img class="cr_btn" src="icons/ligne.svg" onclick="ligne_new()" title="ajouter une ligne"/>
+        <select id="cr_bloc_liste" onchange="cr_bloc_liste_change(this)"><option value="">&nbsp;</option></select>
       </div>
+      
       <div id="cr_nom">
         élément sélectionné :&nbsp;
         <span id="cr_selection"></span>

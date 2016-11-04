@@ -260,6 +260,7 @@ function g_restaurer_hist(delta)
   rendu_ini();
   blocs = [];
   selection = [];
+  document.getElementById("cr_bloc_liste").options.length = 1;
   last_id = 0;
   selection_change();
   // on met les bonnes valeurs aux bons endroits
@@ -268,6 +269,11 @@ function g_restaurer_hist(delta)
   if (b) blocs = b;
   for (let i=0; i<blocs.length; i++)
   {
+    // dans la liste
+    let option = document.createElement("option");
+    option.text = blocs[i].id + " (" + blocs[i].tpe + ")";
+    option.value = blocs[i].id;
+    document.getElementById("cr_bloc_liste").add(option);
     // et au rendu
     rendu_add_bloc(blocs[i]);
     if (blocs[i].id > last_id) last_id = blocs[i].id;
@@ -291,6 +297,11 @@ function g_restaurer(init)
       last_id = 0;
       for (let i=0; i<blocs.length; i++)
       {
+        // on ajoute le bloc à la liste déroulante
+        let option = document.createElement("option");
+        option.text = blocs[i].id + " (" + blocs[i].tpe + ")";
+        option.value = blocs[i].id;
+        document.getElementById("cr_bloc_liste").add(option);
         // et au rendu
         rendu_add_bloc(blocs[i]);
         if (blocs[i].id > last_id) last_id = blocs[i].id;
@@ -398,6 +409,7 @@ function g_reinit()
   selection = [];
   last_id = 0;
   infos_ini();
+  document.getElementById("cr_bloc_liste").options.length = 1;
   selection_change();
   infos_change();
 }
@@ -417,6 +429,11 @@ function bloc_new(tpe, txt)
   blocs.push(bloc);
   // on ajoute le bloc pour le rendu
   rendu_add_bloc(bloc);
+  // et dans la liste
+  let option = document.createElement("option");
+  option.text = bloc.id + " (" + bloc.tpe + ")";
+  option.value = bloc.id;
+  document.getElementById("cr_bloc_liste").add(option);
   return bloc;
 }
 // on initialise les valeurs d'options comme il faut
@@ -743,6 +760,8 @@ function selection_change()
   }
   rendu_select_blocs();
   document.getElementById("cr_selection").innerHTML = txt;
+  if (selection.length == 1) document.getElementById("cr_bloc_liste").value = selection[0].id;
+  else document.getElementById("cr_bloc_liste").value = "";
 
   selection_update();
 }
