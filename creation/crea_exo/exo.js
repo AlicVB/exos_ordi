@@ -720,20 +720,17 @@ function rendu_select_blocs()
     rendu_get_superbloc(selection[i]).style.border = "1px dashed red";
   }
   //et les carrés pour la ligne
+  //on enlève les carrés existants
+  var c1 = document.getElementById("extrema_1");
+  var c2 = document.getElementById("extrema_2");
+  if (c1) c1.parentNode.removeChild(c1);
+  if (c2) c2.parentNode.removeChild(c2);
   if (selection.length == 1 && selection[0].tpe == "ligne")
   {
     var b = selection[0];
     var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left-4) + "px;top: " + (b.top-4) + "px;\"></div>";
     var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2-4) + "px;top: " + (b.y2-4) + "px;\"></div>";
     document.getElementById("cr_rendu").innerHTML += c1 + c2;
-  }
-  else
-  {
-    //on enlève les carrés existants
-    var c1 = document.getElementById("extrema_1");
-    var c2 = document.getElementById("extrema_2");
-    if (c1) c1.parentNode.removeChild(c1);
-    if (c2) c2.parentNode.removeChild(c2);
   }
 }
 
