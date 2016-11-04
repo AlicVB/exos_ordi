@@ -451,7 +451,7 @@
         </div>
         <div>
           Code html :<br/>
-          <textarea id="cr_html"></textarea>
+          <textarea id="cr_html" readonly></textarea>
         </div>
       </div>
       </div>
