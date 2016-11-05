@@ -150,9 +150,9 @@ function file_create_css()
     if (b.font_i == "true") txt += "font-style: italic; ";
     if (b.font_s == "true") txt += "text-decoration: underline; ";
     if (b.font_b == "true") txt += "text-decoration: line-through; ";
-    if (b.align == "1") txt += "text-align: left; ";
-    else if (b.align == "2") txt += "text-align: center; ";
-    else if (b.align == "3") txt += "text-align: right; ";
+    if (b.align == "1") txt += "justify-content: left; ";
+    else if (b.align == "2") txt += "justify-content: center; ";
+    else if (b.align == "3") txt += "justify-content: right; ";
     //position-taille
     txt += "position: absolute; ";
     txt += "left: " + b.left*100/443 + "%; ";
@@ -619,6 +619,9 @@ function rendu_add_bloc(bloc)
   if (bloc.font_i == true) e.style.fontStyle = "italic";
   if (bloc.font_s == true) e.style.textDecoration = "underline";
   if (bloc.font_b == true) e.style.textDecoration = "line-through";
+  if (bloc.align == "1") e.style.justifyContent = "start";
+  else if (bloc.align == "2") e.style.justifyContent = "center";
+  else if (bloc.align == "3") e.style.justifyContent = "end";
   //taille-position
   //pour les texte simples, on commence par initialiser les valeurs de tailles au texte
   if (bloc.tpe == "texte_simple" || bloc.tpe == "rect" || bloc.tpe == "ligne")

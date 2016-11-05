@@ -486,9 +486,9 @@ function cr_align_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].align = v;
-    if (v == "1") document.getElementById(selection[i].id).style.textAlign = "left";
-    else if (v == "2") document.getElementById(selection[i].id).style.textAlign = "center";
-    else if (v == "3") document.getElementById(selection[i].id).style.textAlign = "right";
+    if (v == "1") document.getElementById(selection[i].id).style.justifyContent = "start";
+    else if (v == "2") document.getElementById(selection[i].id).style.justifyContent = "center";
+    else if (v == "3") document.getElementById(selection[i].id).style.justifyContent = "end";
   }
   g_sauver();
 }
@@ -1038,7 +1038,7 @@ function cr_plans_change(id)
   }
   g_sauver();
 }
-function cr_action_change(id)
+function cr_action_change(e)
 {
   if (e.value == "1") //dupliquer
   {
