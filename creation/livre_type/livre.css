@@ -29,6 +29,8 @@ body {
   font-weight: bold;
   text-align: left;
   width: 100%;
+  margin-left: 20px;
+  margin-top: 8px;
 }
 a.page {
   background-color: #BFBFBF;

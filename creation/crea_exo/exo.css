@@ -66,6 +66,8 @@ button.jscolor {
   font-weight: bold;
   text-align: left;
   width: 100%;
+  margin-top: 8px;
+  margin-left: 20px;
 }
 #cr_img_get_div {
   display: none;

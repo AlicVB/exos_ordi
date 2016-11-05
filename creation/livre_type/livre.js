@@ -112,29 +112,45 @@ function page_resize(e)
 function font_resize()
 {
   //et on met les tailles de la partie de droite comme il faut
-  let elems = document.getElementById("c1").querySelectorAll("[fs]");
-  let r = parseFloat(document.getElementById("c1").offsetHeight)/1000;
+  let elems = document.getElementById("c1").querySelectorAll("[sss]");
+  let rf = parseFloat(document.getElementById("c1").offsetHeight)/1000;
+  let rw = parseFloat(document.getElementById("c1").offsetWidth)/443;
   for (let i=0; i<elems.length; i++)
   {
-    let fs = parseFloat(elems[i].getAttribute("fs"));
-    if (fs > 0)
+    let vv = elems[i].getAttribute("sss").split("|");
+    if (vv.length > 0)  // taille police
     {
-      elems[i].style.fontSize = fs*r + "px";
+      let v = parseFloat(vv[0]);
+      if (v > 0) elems[i].style.fontSize = v*rf + "px";
+    }
+    if (vv.length > 1)  // taille bordure
+    {
+      let v = parseFloat(vv[1]);
+      if (v > 0)
+      {
+        if (elems[i].getAttribute("tpe") == "cercle" || elems[i].getAttribute("tpe") == "ligne")
+        {
+          elems[i].style.strokeWidth = v*rw + "px";
+          if (vv.length > 3 && vv[3] == "dashed")
+          {
+            elems[i].style.strokeDasharray = (2 + v*rw*2) + " " + (v*rw*2);
+          }
+          else if (vv.length > 3 && vv[3] == "dotted")
+          {
+            elems[i].style.strokeDasharray = "0 " + (v*rw*1.5);
+          }
+        }
+        else elems[i].style.borderWidth = v*rw + "px";
+        
+      }
+    }
+    if (vv.length > 2)  // taille arrondi
+    {
+      let v = parseFloat(vv[2]);
+      if (v > 0) elems[i].style.borderRadius = v*rw + "px";
     }
   }
-  document.getElementById("exotice").style.height = 40*r + "px";
-  
-  //et aussi les bordures
-  elems = document.getElementById("c1").querySelectorAll("[bs]");
-  r = parseFloat(document.getElementById("c1").offsetWidth)/443;
-  for (let i=0; i<elems.length; i++)
-  {
-    let bs = parseFloat(elems[i].getAttribute("bs"));
-    if (bs > 0)
-    {
-      elems[i].style.borderWidth = bs*r + "px";
-    }
-  }
+  document.getElementById("exotice").style.height = 40*rf + "px";
 }
 
 function page_print()

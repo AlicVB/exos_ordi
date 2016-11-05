@@ -214,7 +214,7 @@ function file_create_css()
     //marges
     if (b.marges > 0)
     {
-      txt += "padding: " + b.marges + "px; ";
+      txt += "padding: " + b.marges*100/443 + "%; ";
     }
     txt += "}\n";
   }
@@ -517,6 +517,10 @@ function bloc_create_html(bloc)
 {
   window[bloc.tpe + "_create_html"](bloc, bloc.txt);
 }
+function bloc_get_size_part(bloc)
+{
+  return "sss=\"" + bloc.font_size + "|" + bloc.bord_size + "|" + bloc.bord_rond + "|" + bloc.bord + "\"";
+}
 
 function infos_ini()
 {
@@ -665,15 +669,15 @@ function rendu_add_bloc(bloc)
     switch (bloc.bord)
     {
       case "dashed":
-        svg.style.strokeDasharray = (2 + parseFloat(bloc.bord_size)*2) + " " + (parseFloat(bloc.bord_size)*2);
+        svg.style.strokeDasharray = (2 + bloc.bord_size*rendu.width/443*2) + " " + (bloc.bord_size*rendu.width/443*2);
         break;
       case "dotted":
-        svg.style.strokeDasharray = "0 " + (parseFloat(bloc.bord_size)*1.5);
+        svg.style.strokeDasharray = "0 " + (bloc.bord_size*rendu.width/443*1.5);
         break;
     }
     if (bloc.bord != "hidden")
     {
-      svg.style.strokeWidth = bloc.bord_size + "px";
+      svg.style.strokeWidth = bloc.bord_size*rendu.width/443 + "px";
       svg.style.stroke = bloc.bord_coul;
     }
   }
@@ -683,12 +687,12 @@ function rendu_add_bloc(bloc)
     e.style.borderStyle = bloc.bord;
     e.style.borderWidth = bloc.bord_size*rendu.width/443 + "px";
     e.style.borderColor = bloc.bord_coul;
-    e.style.borderRadius = bloc.bord_rond + "px";
+    e.style.borderRadius = bloc.bord_rond*rendu.width/443 + "px";
     //fond
     e.style.backgroundColor = hex2rgba(bloc.fond_coul, bloc.fond_alpha);
   }
   //marges
-  e.style.padding = bloc.marges + "px";
+  e.style.padding = bloc.marges*100/443 + "%";
 }
 
 function rendu_select_blocs()
@@ -1012,7 +1016,7 @@ function radio_create_html(bloc, txt)
     htm += "<style>[id=\"" + bloc.id + "\"] label {background-color: " + bloc.radiobtn_coul1;
     htm += ";} [id=\"" + bloc.id + "\"] input[type=\"radio\"]:checked + label {background-color: " + bloc.radiobtn_coul2 + ";}</style>\n";
   }
-  htm += "<div fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef " + cl + "\" tpe=\"" + bloc.tpe + "\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef " + cl + "\" tpe=\"" + bloc.tpe + "\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.tpe == "radiobtn") htm += "options=\"" + bloc.radiobtn_coul1 + "|" + bloc.radiobtn_coul2 + "\" ";
   htm += ">\n";
   //on coupe suivant '|'
@@ -1068,7 +1072,7 @@ function combo_new()
 function combo_create_html(bloc, txt)
 {
   htm = "";
-  htm += "<div fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
+  htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
   if (vals.length>0) htm += "  <div>" + vals[0] + "</div>\n";
@@ -1139,7 +1143,7 @@ function texte_create_html(bloc, txt)
   if (bloc.texte_corr == "1") corr += "2";
   
   htm = "";
-  htm += "<div fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
+  htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
   htm += comp + "|" + enter + "|" + bloc.texte_corr + "\" >\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
@@ -1211,7 +1215,7 @@ function multi_new()
 function multi_create_html(bloc, txt)
 {
   var htm = "";
-  htm += "<div fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
+  htm += "<div " + bloc_get_size_part(bloc) + " class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
   var opts = "";
   var maj = "";
   var suff = "";
@@ -1319,7 +1323,8 @@ function cible_create_html(bloc, txt)
   enter = bloc.texte_e;
   comp = bloc.texte_c;
   
-  htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
+  htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" " + bloc_get_size_part(bloc);
+  htm += " class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
   htm += "</div>\n";
   
   bloc.html = htm;
@@ -1368,7 +1373,7 @@ function image_create_html(bloc, txt)
   htm += ">\n  <img ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
   else htm += "ondragstart=\"return false;\" ";
-  htm += "fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += bloc_get_size_part(bloc) + " class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1436,7 +1441,7 @@ function texte_simple_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <div ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += bloc_get_size_part(bloc) + " class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1504,7 +1509,7 @@ function audio_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <img ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += bloc_get_size_part(bloc) + " class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1565,7 +1570,7 @@ function cercle_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <svg ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\" class=\"item lignef svg exo\" tpe=\"cercle\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += bloc_get_size_part(bloc) + " preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\" class=\"item lignef svg exo\" tpe=\"cercle\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1633,7 +1638,7 @@ function ligne_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <svg ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "class=\"item lignef svg exo\" preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\" tpe=\"ligne\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += bloc_get_size_part(bloc) + " class=\"item lignef svg exo\" preserveAspectRatio=\"none\" viewbox=\"0 0 100 100\" tpe=\"ligne\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";

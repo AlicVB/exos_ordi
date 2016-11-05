@@ -588,10 +588,10 @@ function cr_bord_change(e)
       switch (v)
       {
         case "dashed":
-          svg.style.strokeDasharray = (2 + parseFloat(selection[i].bord_size)*2) + " " + (parseFloat(selection[i].bord_size)*2);
+          svg.style.strokeDasharray = (2 + parseFloat(selection[i].bord_size)*rendu.width/443*2) + " " + (parseFloat(selection[i].bord_size)*rendu.width/443*2);
           break;
         case "dotted":
-          svg.style.strokeDasharray = "0 " + (parseFloat(selection[i].bord_size)*1.5);
+          svg.style.strokeDasharray = "0 " + (parseFloat(selection[i].bord_size)*rendu.width/443*1.5);
           break;
         case "hidden":
           svg.style.removeProperty("stroke");
@@ -639,7 +639,7 @@ function cr_bord_size_change(e)
     if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
     {
       svg = document.getElementById("svg_" + selection[i].id);
-      svg.style.strokeWidth = v;
+      svg.style.strokeWidth = v*rendu.width/443 + "px";
       if (bloc.tpe == "cercle")
       {
         //on modifie le rayon pour prendre en compte la bordure
@@ -648,32 +648,15 @@ function cr_bord_size_change(e)
         svg.setAttribute("rx", 50 - parseFloat(w)/2);
         svg.setAttribute("ry", 50 - parseFloat(w)/2);
       }
-      else if (bloc.tpe == "ligne")
-      {
-        bloc = selection[i];
-        //on recalcule tout pour ne pas clipper la ligne
-        ligne_adapt_vals(bloc, bloc.x1, bloc.y1, bloc.x2, bloc.y2);
-        var b = document.getElementById(bloc.id);
-        var sb = rendu_get_superbloc(bloc);
-        sb.style.left = bloc.left + "px";
-        sb.style.top = bloc.top + "px";
-        b.style.width = bloc.width + "px";
-        b.style.height = bloc.height + "px";
-        svg.setAttribute("x1", bloc.x1);
-        svg.setAttribute("y1", bloc.y1);
-        svg.setAttribute("x2", bloc.x2);
-        svg.setAttribute("y2", bloc.y2);
-      }
       switch (selection[i].bord)
       {
         case "dashed":
-          svg.style.strokeDasharray = (2 + parseFloat(selection[i].bord_size)*2) + " " + (parseFloat(selection[i].bord_size)*2);
+          svg.style.strokeDasharray = (2 + v*rendu.width/443*2) + " " + (v*rendu.width/443*2);
           break;
         case "dotted":
-          svg.style.strokeDasharray = "0 " + (parseFloat(selection[i].bord_size)*1.5);
+          svg.style.strokeDasharray = "0 " + (v*rendu.width/443*1.5);
           break;
       }
-      bloc_create_html(selection[i]);
     }
     else document.getElementById(selection[i].id).style.borderWidth = v*rendu.width/443 + "px";
     bloc_create_html(selection[i]);
@@ -688,7 +671,8 @@ function cr_bord_rond_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_rond = v;
-    document.getElementById(selection[i].id).style.borderRadius = v + "px";
+    document.getElementById(selection[i].id).style.borderRadius = v*rendu.width/443 + "px";
+    bloc_create_html(selection[i]);
   }
   //on sauvegarde
   g_sauver();
@@ -731,7 +715,7 @@ function cr_marges_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].marges = v;
-    document.getElementById(selection[i].id).style.padding = v + "px";
+    document.getElementById(selection[i].id).style.padding = v*100/443 + "%";
   }
   //on sauvegarde
   g_sauver();
