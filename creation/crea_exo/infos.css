@@ -1,0 +1,94 @@
+body {
+  background-color: #6D7BCF;
+}
+input.jscolor {
+  width: 5em;
+}
+button.jscolor {
+  width:50px;
+  height:20px;
+}
+input[type="number"] {
+  width: 40px;
+}
+#ci_record_div {
+  display: none;
+}
+#ci_record_div img {
+  height: 20px;
+  padding: 2px;
+  margin-left: 4px;
+  border-radius: 2px;
+  background-color: #D8D8D8;
+  display: none;
+}
+#ci_audio_get {
+  display: none;
+}
+#cri_mod {
+  text-align: center;
+  background-color: #7F85A6;
+  margin: 20px 0px 20px 0px;
+}
+#ci_img_get {
+  display: none;
+}
+.cri_a_txt {
+  width: 600px;
+  height: 42px;
+}
+.cri_table {
+  border-collapse: collapse;
+}
+.cri_table th {
+  border: 1px solid black;
+}
+#cri_consigne {
+  width: 500px;
+  height: 42px;
+}
+#cri_bandeau {
+  text-align: center;
+  background-color: #444444;
+  color: #E7E7E7;
+  font-size: 30px;
+  font-weight: bold;
+  position: relative;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#cri_info {
+  height: 32px;
+  margin-right: 10px;
+}
+#cri_dos_exo {
+  font-size: 15px;
+  font-style: italic;
+  font-weight: normal;
+  margin-left: 5px;
+}
+#cri_rendu {
+  position: absolute;
+  height: 42px;
+  right: 2px;
+  top: 2px;
+}
+.cr_opt_ligne {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+#gpl {
+  font-size: 1.6vh;
+  text-align: right;
+}
+#gplimg {
+  height: 4.5vh;
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+#exotice {
+  height: 6vh;
+}

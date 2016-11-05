@@ -206,9 +206,9 @@ function cr_img_select_change(e)
     document.getElementById(bloc.id).onload = function () {
       //on met à jour les infos de hauteur
       var h = document.getElementById(bloc.id).getBoundingClientRect().height;
-      rendu_get_superbloc(bloc).style.height = h + "px";
-      bloc.height = h;
-      document.getElementById("cr_tp_h").value = h;       
+      rendu_get_superbloc(bloc).style.height = h*100/rendu.height + "%";
+      bloc.height = h/rendu.height*631;
+      document.getElementById("cr_tp_h").value = h/rendu.height*631;       
       };
     // on met à jour le rendu
     document.getElementById(bloc.id).src = vpath;
@@ -406,7 +406,7 @@ function cr_font_fam_change(e)
 function cr_font_size_change(e)
 {
   s1 = e.value;
-  s2 = s1*0.641;
+  s2 = s1*rendu.height/1000;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_size = s1;
@@ -498,8 +498,18 @@ function cr_tp_w_change(e)
   v = e.value;
   for (let i=0; i<selection.length; i++)
   {
-    selection[i].width = v;
-    document.getElementById(selection[i].id).style.width = v + "px";
+    if (bloc.size == "ratio")
+    {
+      selection[i].height = selection[i].height*v/selection[i].width;
+      selection[i].width = v;      
+      rendu_get_superbloc(selection[i]).style.width = v*100/443 + "%";
+      rendu_get_superbloc(selection[i]).style.height = selection[i].height*100/631 + "%";
+    }
+    else if (bloc.size == "manuel")
+    {
+      selection[i].width = v;
+      rendu_get_superbloc(selection[i]).style.width = v*100/443 + "%";
+    }
   }
   //on sauvegarde
   g_sauver();
@@ -509,8 +519,18 @@ function cr_tp_h_change(e)
   v = e.value;
   for (let i=0; i<selection.length; i++)
   {
-    selection[i].height = v;
-    document.getElementById(selection[i].id).style.height = v + "px";
+    if (bloc.size == "ratio")
+    {
+      selection[i].width = selection[i].width*v/selection[i].height;
+      selection[i].height = v;      
+      rendu_get_superbloc(selection[i]).style.height = v*100/631 + "%";
+      rendu_get_superbloc(selection[i]).style.width = selection[i].width*100/443 + "%";
+    }
+    else if (bloc.size == "manuel")
+    {
+      selection[i].height = v;
+      rendu_get_superbloc(selection[i]).style.height = v*100/631 + "%";
+    }
   }
   //on sauvegarde
   g_sauver();
@@ -521,7 +541,7 @@ function cr_tp_t_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].top = v;
-    rendu_get_superbloc(selection[i]).style.top = v + "px";
+    rendu_get_superbloc(selection[i]).style.top = v*100/631 + "%";
   }
   //on sauvegarde
   g_sauver();
@@ -532,7 +552,7 @@ function cr_tp_l_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].left = v;
-    rendu_get_superbloc(selection[i]).style.left = v + "px";
+    rendu_get_superbloc(selection[i]).style.left = v*100/443 + "%";
   }
   //on sauvegarde
   g_sauver();
@@ -870,20 +890,20 @@ function cr_points_change(e)
   g_sauver();
 }
 
-function cr_aligne_change(e)
+function cr_aligne_change(id)
 {
   
   l = parseFloat(selection[0].left);
   ch = l + parseFloat(selection[0].width)/2;
   t = parseFloat(selection[0].top);
   cv = t + parseFloat(selection[0].height)/2;
-  switch (e.value)
+  switch (id)
   {
     case "1": //gauche
       for (let i=1; i<selection.length; i++)
       {
         selection[i].left = l;
-        rendu_get_superbloc(selection[i]).style.left = l + "px";
+        rendu_get_superbloc(selection[i]).style.left = l*100/443 + "px";
         document.getElementById("cr_tp_l").value = l;
       }
       break;
@@ -891,7 +911,7 @@ function cr_aligne_change(e)
       for (let i=1; i<selection.length; i++)
       {
         selection[i].left = ch - parseFloat(selection[i].width)/2;
-        rendu_get_superbloc(selection[i]).style.left = selection[i].left + "px";
+        rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "px";
         document.getElementById("cr_tp_l").value = selection[i].left;
       }
       break;
@@ -899,7 +919,7 @@ function cr_aligne_change(e)
       for (let i=1; i<selection.length; i++)
       {
         selection[i].left = l + parseFloat(selection[0].width) - parseFloat(selection[i].width);
-        rendu_get_superbloc(selection[i]).style.left = selection[i].left + "px";
+        rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "px";
         document.getElementById("cr_tp_l").value = selection[i].left;
       }
       break;
@@ -907,7 +927,7 @@ function cr_aligne_change(e)
       for (let i=1; i<selection.length; i++)
       {
         selection[i].top = t;
-        rendu_get_superbloc(selection[i]).style.top = t + "px";
+        rendu_get_superbloc(selection[i]).style.top = t*100/631 + "px";
         document.getElementById("cr_tp_t").value = t;
       }
       break;
@@ -915,7 +935,7 @@ function cr_aligne_change(e)
       for (let i=1; i<selection.length; i++)
       {
         selection[i].top = cv - parseFloat(selection[i].height)/2;
-        rendu_get_superbloc(selection[i]).style.top = selection[i].top + "px";
+        rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "px";
         document.getElementById("cr_tp_t").value = selection[i].top;
       }
       break;
@@ -923,13 +943,12 @@ function cr_aligne_change(e)
       for (let i=1; i<selection.length; i++)
       {
         selection[i].top = t + parseFloat(selection[0].height) - parseFloat(selection[i].height);
-        rendu_get_superbloc(selection[i]).style.top = selection[i].top + "px";
+        rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "px";
         document.getElementById("cr_tp_t").value = selection[i].top;
       }
       break;
   }
-  if (e.value >= 0) g_sauver();
-  e.selectedIndex = 0;
+  if (id >= 0) g_sauver();
 }
 function _repart_compare_h(a, b)
 {
@@ -939,9 +958,9 @@ function _repart_compare_v(a, b)
 {
   return (a.top - b.top);
 }
-function cr_repart_change(e)
+function cr_repart_change(id)
 {
-  if (e.value == "1")
+  if (id == "1")
   {
     //on reordonne la selection en fonction de left
     news = selection.sort(_repart_compare_h);
@@ -955,11 +974,11 @@ function cr_repart_change(e)
     for (let i=1; i<news.length-1; i++)
     {
       news[i].left = parseFloat(news[i-1].left) + parseFloat(news[i-1].width) + espace;
-      rendu_get_superbloc(news[i]).style.left = news[i].left + "px";
+      rendu_get_superbloc(news[i]).style.left = news[i].left*100/443 + "px";
       document.getElementById("cr_tp_l").value = news[i].left;
     }
   }
-  else if (e.value == "2")
+  else if (id == "2")
   {
     //on reordonne la selection en fonction de left
     news = selection.sort(_repart_compare_v);
@@ -973,16 +992,15 @@ function cr_repart_change(e)
     for (let i=1; i<news.length-1; i++)
     {
       news[i].top = parseFloat(news[i-1].top) + parseFloat(news[i-1].height) + espace;
-      rendu_get_superbloc(news[i]).style.top = news[i].top + "px";
+      rendu_get_superbloc(news[i]).style.top = news[i].top*100/631 + "px";
       document.getElementById("cr_tp_t").value = news[i].top;
     }
   }
-  if (e.value >= 0) g_sauver();
-  e.selectedIndex = 0;
+  if (id >= 0) g_sauver();
 }
-function cr_plan_change(e)
+function cr_plans_change(id)
 {
-  switch (e.value)
+  switch (id)
   {
     case "1": //premier plan
       for (let i=0; i<selection.length; i++)
@@ -1030,10 +1048,12 @@ function cr_plan_change(e)
       break;
     case "4": //reculer
       break;
+    default:
+      return;
   }
-  e.selectedIndex = 0;
+  g_sauver();
 }
-function cr_action_change(e)
+function cr_action_change(id)
 {
   if (e.value == "1") //dupliquer
   {
@@ -1048,6 +1068,10 @@ function cr_action_change(e)
       bloc_create_html(nb);
       news.push(nb);
       blocs.push(nb);
+      let option = document.createElement("option");
+      option.text = nb.id + " (" + nb.tpe + ")";
+      option.value = nb.id;
+      document.getElementById("cr_bloc_liste").add(option);
       rendu_add_bloc(nb);
     }
     selection = news;
@@ -1173,143 +1197,53 @@ function cr_bloc_liste_change(e)
   }
   else
   {
-    e.value = "";
+    selection = [];
+    selection_change();
+  }
+}
+function cm_quitte(e)
+{
+  document.removeEventListener("mousedown", cm_quitte);
+  let elems = document.getElementsByClassName("cm");
+  for (let i=0; i<elems.length; i++)
+  {
+    elems[i].style.visibility = "hidden";
   }
 }
 
-function cri_titre_change(e)
+function cm_show_aligne(e)
 {
-  infos.titre = e.value;
-  g_sauver_info();
+  if (selection.length == 0) return;
+  let rect = e.getBoundingClientRect();
+  let cm = document.getElementById("cm_aligne");
+  let rect2 = cm.getBoundingClientRect();
+  cm.style.top = (rect.top + rect.height - rect2.height) + "px";
+  cm.style.left = rect.right+2 + "px";
+  
+  document.addEventListener("mousedown", cm_quitte);
+  cm.style.visibility = "visible";
 }
-function cri_coul_change(e)
+function cm_show_repart(e)
 {
-  infos.coul = e.value;
-  document.getElementById("cr_rendu").style.backgroundColor = infos.coul;
-  g_sauver_info();
+  if (selection.length <= 2) return;
+  let rect = e.getBoundingClientRect();
+  let cm = document.getElementById("cm_repart");
+  let rect2 = cm.getBoundingClientRect();
+  cm.style.top = (rect.top + rect.height - rect2.height) + "px";
+  cm.style.left = rect.right+2 + "px";
+  
+  document.addEventListener("mousedown", cm_quitte);
+  cm.style.visibility = "visible";
 }
-function cri_consigne_change(e)
+function cm_show_plans(e)
 {
-  infos.consigne = e.value;
-  g_sauver_info();
-}
-function cri_total_change(e)
-{
-  infos.total = e.value;
-  g_sauver_info();
-}
-function cri_arrondi_change(e)
-{
-  infos.arrondi = e.value;
-  g_sauver_info();
-}
-function cri_essais_change(e)
-{
-  infos.essais = e.value;
-  g_sauver_info();
-}
-
-function cri_a_min_change(e)
-{
-  nb = parseInt(e.id.substr(0,1));
-  infos.a[nb-1].min = e.value;
-  g_sauver_info();
-}
-function cri_a_coul_change(e)
-{
-  nb = parseInt(e.id.substr(0,1));
-  infos.a[nb-1].coul = e.value;
-  g_sauver_info();
-}
-function cri_a_re_change(e)
-{
-  nb = parseInt(e.id.substr(0,1));
-  if (e.checked) infos.a[nb-1].re = "1";
-  else infos.a[nb-1].re = "0";
-  g_sauver_info();
-}
-function cri_a_txt_change(e)
-{
-  nb = parseInt(e.id.substr(0,1));
-  infos.a[nb-1].txt = e.value;
-  g_sauver_info();
-}
-function cri_show_bilan_change(e)
-{
-  if (e.checked) infos.show_bilan = "1";
-  else infos.show_bilan = "0";
-  g_sauver_info();
-}
-function cri_img_hover_change(e)
-{
-  if (e.checked) infos.image_hover = "1";
-  else infos.image_hover = "0";
-  g_sauver_info();
-}
-function cri_mod_sel_change(e)
-{
-  if (e.value == "****")
-  {
-    //rien à faire
-  }
-  else if (e.value == "####")
-  {
-    //on ouvre le gestionnaire dans une nouvelle fenêtre
-    document.getElementById("cri_mod_gestion").click();
-  }
-  else
-  {
-    //on charge le modèle
-    let xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
-      {
-        // on met les bonnes valeurs aux bons endroits
-        var vals = [];
-        var rep = xhr.responseText;
-        if (rep != "") vals = rep.split("\n");
-        else return;
-        if (vals.length>10)
-        {
-          infos.titre = vals[0];
-          infos.consigne = vals[1];
-          vv = vals[2].split("|");
-          if (vv.length>1)
-          {
-            infos.total = vv[0];
-            infos.arrondi = vv[1];
-          }
-          for (let i=0; i<6; i++)
-          {
-            vv = vals[i+3].split("|");
-            if (vv.length>3)
-            {
-              infos.a[i].min = vv[0];
-              infos.a[i].coul = vv[1];
-              infos.a[i].txt = vv[2].replace(/<br \/>/g, "\n");
-              infos.a[i].re = vv[3];
-            }
-          }
-          infos.essais = vals[9];
-          infos.coul = vals[10];
-          if (vals.length>11) infos.audio_name = vals[11];
-        }
-        infos_change();
-      }
-    };
-    xhr.open("POST", "io.php" , true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.send("io=charge&fic=modeles/" + e.value);
-  }
-  e.selectedIndex = 0;
-}
-function cri_mod_save(e)
-{
-  let txt = prompt("Nom du modèle (sans accents, espaces, etc...)\n\nAttention si il existe déjà, l'ancien sera écrasé !", "");
-  if (!txt | txt == "") return;
-  file_sauve("modeles/" + txt, file_create_infos());
-  var option = document.createElement("option");
-  option.text = txt;
-  option.value = txt;
-  document.getElementById("cri_mod_sel").add(option);
+  if (selection.length == 0) return;
+  let rect = e.getBoundingClientRect();
+  let cm = document.getElementById("cm_plans");
+  let rect2 = cm.getBoundingClientRect();
+  cm.style.top = (rect.top + rect.height - rect2.height) + "px";
+  cm.style.left = rect.right+2 + "px";
+  
+  document.addEventListener("mousedown", cm_quitte);
+  cm.style.visibility = "visible";
 }

@@ -1,5 +1,3 @@
-var infos = {};
-
 var blocs = new Array();  // c'est un tableau qui rescence les données de chaque bloc
 var selection = new Array();  // c'est un tableau avec les indices de blocs sélectionnés
 
@@ -9,13 +7,47 @@ var exo_dos = ""  //chemin vers le dossier de l'exercice
 
 var record = {};  //objet contenant tout ce qu'il faut pour enregistrer
 
+var rendu = {}; //objet contenant la taille actuelle intérieure du rendu
 
 function change(e)
 {
 }
-
+function rendu_autosize(e)
+{
+  let bodystyle = window.getComputedStyle(document.body);
+  let vw = document.documentElement.clientWidth - - parseInt(bodystyle.marginLeft) - parseInt(bodystyle.marginRight);
+  let vh = document.documentElement.clientHeight - parseInt(bodystyle.marginTop) - parseInt(bodystyle.marginBottom);
+  let wmax = vw-60-450-32;
+  let r = document.getElementById("cr_rendu");
+  if (vh > wmax*641/453)
+  {
+    console.log(wmax);
+    r.style.height = wmax*641/453 + "px";
+    r.style.width = wmax + "px";
+  }
+  else
+  {
+    r.style.height = vh + "px";
+    r.style.width = vh*453/641 + "px";
+  }
+  rendu.height = parseFloat(r.style.height);
+  rendu.width = parseFloat(r.style.width);
+  document.getElementById("cr_opt").style.height = (vh-10) + "px";
+  if (document.getElementById("exotice"))
+  {
+    document.getElementById("exotice").style.height = 40*rendu.height/1000 + "px";
+    document.getElementById("user").style.fontSize = 20*rendu.height/1000 + "px";
+  }
+  for (let i=0; i<blocs.length; i++)
+  {
+    rendu_add_bloc(blocs[i]);
+  }
+}
 function start(dos)
 {
+  //on redimmensionne le rendu
+  window.addEventListener("resize", rendu_autosize);
+  rendu_autosize(null);
   //si pas de nom d'exo dans l'url, il faut le rajouter ! (pour refresh...)
   if (window.location.href.substr(-1,1) == "=")
   {
@@ -24,8 +56,7 @@ function start(dos)
   exo_dos = dos;
   _mv_ini();
   g_restaurer(true);
-  g_restaurer_info(false);
-  cr_tab_click(document.getElementById("cr_tab_info"));
+
   document.addEventListener("keydown", cr_keydown);
   
   //enregistrement
@@ -34,6 +65,7 @@ function start(dos)
   record.recorder = null;
   record.promise = null;
   record.blob = null;
+  
 }
 
 function hex2rgb(hex)
@@ -189,26 +221,6 @@ function file_create_css()
   return txt;
 }
 
-function file_create_infos()
-{
-  txt = infos.titre + "\n";
-  txt += infos.consigne.replace(/(?:\r\n|\r|\n)/g, '<br />') + "\n";
-  txt += infos.total + "|" + infos.arrondi + "\n";
-  for(i=0; i<6; i++)
-  {
-    txt += infos.a[i].min + "|" + infos.a[i].coul + "|";
-    txt += infos.a[i].txt.replace(/(?:\r\n|\r|\n)/g, '<br />') + "|";
-    txt += infos.a[i].re;
-    txt += "\n";
-  }
-  txt += infos.essais + "\n";
-  txt += infos.coul + "\n";
-  txt += infos.audio_name + "\n";
-  txt += infos.show_bilan + "\n";
-  txt += infos.image + "|" + infos.image_hover;
-  
-  return txt;
-}
 function file_sauve(fic, txt)
 {
   let xhr = new XMLHttpRequest();
@@ -244,10 +256,7 @@ function g_sauver()
   sessionStorage.setItem(exo_dos + "hist_" + pos, txt);
   sessionStorage.setItem(exo_dos + "hist_pos", pos);
 }
-function g_sauver_info()
-{
-  file_sauve(exo_dos + "/exo.txt", file_create_infos());
-}
+
 function g_restaurer_hist(delta)
 {
   let pos = sessionStorage.getItem(exo_dos + "hist_pos");
@@ -377,30 +386,6 @@ function g_restaurer_info(init)
   xhr.send("io=charge&fic=" + exo_dos + "/exo.txt");
 }
 
-function infos_change()
-{
-  document.getElementById("cri_titre").value = infos.titre;
-  document.getElementById("cri_coul").value = infos.coul;
-  document.getElementById("cr_rendu").style.backgroundColor = infos.coul;
-  document.getElementById("cri_consigne").value = infos.consigne;
-  document.getElementById("cri_total").value = infos.total;
-  document.getElementById("cri_arrondi").value = infos.arrondi;
-  document.getElementById("cri_essais").value = infos.essais;
-  for (let j=0; j<6; j++)
-  {
-    document.getElementById((j+1) + "_cri_a_min").value = infos.a[j].min;
-    document.getElementById((j+1) + "_cri_a_coul").value = infos.a[j].coul;
-    document.getElementById((j+1) + "_cri_a_re").checked = (infos.a[j].re == "1");
-    document.getElementById((j+1) + "_cri_a_txt").value = infos.a[j].txt;
-  }
-  let audio = infos.audio_name;
-  if (audio.length>5) audio = audio.substr(5);
-  document.getElementById("ci_audio_select").value = audio;
-  document.getElementById("cri_show_bilan").checked = (infos.show_bilan == "1");
-  document.getElementById("ci_img_select").value = infos.image;
-  document.getElementById("cri_img_hover").checked = (infos.image_hover == "1");
-}
-
 function g_reinit()
 {
   //on nettoie
@@ -408,10 +393,8 @@ function g_reinit()
   blocs = [];
   selection = [];
   last_id = 0;
-  infos_ini();
   document.getElementById("cr_bloc_liste").options.length = 1;
   selection_change();
-  infos_change();
 }
 
 function bloc_new(tpe, txt)
@@ -581,6 +564,8 @@ function rendu_ini()
   let htm = "<span fs=\"20\" id=\"user\">Prénom : Exemple-Prénom</span>\n";
   htm += "<img id=\"exotice\" src=\"../../exotice.svg\" />";
   document.getElementById("cr_rendu").innerHTML = htm;
+  document.getElementById("exotice").style.height = 40*rendu.height/1000 + "px";
+  document.getElementById("user").style.fontSize = 20*rendu.height/1000 + "px";
 }
 
 // on ajoute un bloc à la zone de rendu
@@ -619,12 +604,12 @@ function rendu_add_bloc(bloc)
   }
   
   //on modifie les styles
-  b = document.getElementById("cr_rendu_" + bloc.id);
-  e = document.getElementById(bloc.id);
-  
+  let b = document.getElementById("cr_rendu_" + bloc.id);
+  let e = document.getElementById(bloc.id);
+
   //police
   e.style.fontFamily = bloc.font_fam;
-  e.style.fontSize = (parseInt(bloc.font_size)*0.641) + "px";
+  e.style.fontSize = (parseFloat(bloc.font_size)*rendu.height/1000) + "px";
   e.style.color = bloc.font_coul;
   if (bloc.font_g == true) e.style.fontWeight = "bold";
   if (bloc.font_i == true) e.style.fontStyle = "italic";
@@ -634,43 +619,43 @@ function rendu_add_bloc(bloc)
   //pour les texte simples, on commence par initialiser les valeurs de tailles au texte
   if (bloc.tpe == "texte_simple" || bloc.tpe == "rect" || bloc.tpe == "ligne")
   {
-    if (bloc.width == 0) bloc.width = Math.max(15, e.offsetWidth + 4);
-    if (bloc.height == 0) bloc.height = Math.max(10, e.offsetHeight);
-    b.style.width = bloc.width + "px";
+    if (bloc.width == 0) bloc.width = Math.max(15, e.offsetWidth + 4)*rendu.width/443;
+    if (bloc.height == 0) bloc.height = Math.max(10, e.offsetHeight)*rendu.height/631;
+    b.style.width = bloc.width*100/443 + "%";
     e.parentNode.style.width = "100%";
-    b.style.height = bloc.height + "px";
+    b.style.height = bloc.height*100/631 + "%";
     e.parentNode.style.height = "100%";
     e.style.width = "100%";
     e.style.height = "100%";
   }
   else if (bloc.tpe == "cercle")
   {
-    e.style.width = bloc.width + "px";
-    e.style.height = bloc.height + "px";
+    e.style.width = bloc.width*100/443 + "%";
+    e.style.height = bloc.height*100/631 + "%";
   }
   else if (bloc.size == "ratio")
   {
-    b.style.width = bloc.width + "px";
+    b.style.width = bloc.width*100/443 + "%";
     e.style.width = "100%";
     // on triche un peu pour éviter les trucs bizarres (on initialise à un carré)
-    if (bloc.height == "0") b.style.height = bloc.width + "px";
-    else b.style.height = bloc.height + "px";
+    if (bloc.height == "0") b.style.height = bloc.width*100/631 + "%";
+    else b.style.height = bloc.height*100/631 + "%";
   }
   else if (bloc.size == "manuel")
   {
-    b.style.width = bloc.width + "px";
+    b.style.width = bloc.width*100/443 + "%";
     e.style.width = "100%";
-    b.style.height = bloc.height + "px";
+    b.style.height = bloc.height*100/631 + "%";
     e.style.height = "100%";
   }
   else
   {
     // le bloc est en ligne, on connait donc ses vraies dimensions
-    bloc.width = e.offsetWidth;
-    bloc.height = e.offsetHeight;
+    bloc.width = e.offsetWidth*443/rendu.width;
+    bloc.height = e.offsetHeight*631/rendu.height;
   }
-  b.style.left = bloc.left + "px";
-  b.style.top = bloc.top + "px";
+  b.style.left = bloc.left*100/443 + "%";
+  b.style.top = bloc.top*100/631 + "%";
   if (bloc.tpe == "ligne") b.style.transformOrigin = "top left";
   if (bloc.rotation != "0") b.style.transform = "rotate(" + bloc.rotation + "deg)";
   if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
@@ -728,8 +713,8 @@ function rendu_select_blocs()
   if (selection.length == 1 && selection[0].tpe == "ligne")
   {
     var b = selection[0];
-    var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left-4) + "px;top: " + (b.top-4) + "px;\"></div>";
-    var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2-4) + "px;top: " + (b.y2-4) + "px;\"></div>";
+    var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left*rendu.width/443-4) + "px;top: " + (b.top*rendu.height/631-4) + "px;\"></div>";
+    var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2*rendu.width/443-4) + "px;top: " + (b.y2*rendu.height/631-4) + "px;\"></div>";
     document.getElementById("cr_rendu").innerHTML += c1 + c2;
   }
 }
@@ -749,16 +734,27 @@ function selection_is_homogene(tpe)
 }
 function selection_change()
 {
-  txt = "";
-  for (let j=0; j<selection.length; j++)
-  {
-    if (j>0) txt += " + ";
-    txt += selection[j].id + "(" + selection[j].tpe + ")";
-  }
   rendu_select_blocs();
-  document.getElementById("cr_selection").innerHTML = txt;
+  
+  // on s'occupe de la liste déroulante
+  for (let j=0; j<document.getElementById("cr_bloc_liste").options.length; j++)
+  {
+    if (document.getElementById("cr_bloc_liste").options[j].value == "#")
+    {
+      document.getElementById("cr_bloc_liste").remove(j);
+      break;
+    }
+  }
   if (selection.length == 1) document.getElementById("cr_bloc_liste").value = selection[0].id;
-  else document.getElementById("cr_bloc_liste").value = "";
+  else if (selection.length == 0) document.getElementById("cr_bloc_liste").value = "";
+  else
+  {
+    let option = document.createElement("option");
+    option.text = "multiple";
+    option.value = "#";
+    document.getElementById("cr_bloc_liste").add(option);
+    document.getElementById("cr_bloc_liste").value = "#";
+  }
 
   selection_update();
 }
@@ -778,11 +774,7 @@ function selection_update()
   document.getElementById("cr_txt_ini_div").style.display = "none";
   document.getElementById("cr_img_get_div").style.display = "none";
   document.getElementById("cr_audio_get_div").style.display = "none";
-  document.getElementById("cr_aligne").disabled = true;
-  document.getElementById("cr_repart").disabled = true;
-  document.getElementById("cr_plan").disabled = true;
-  document.getElementById("cr_action").disabled = true;
-  document.getElementById("cr_expl").innerHTML = "&nbsp;";
+  document.getElementById("cr_expl").innerHTML = "";
   
   if (selection.length == 0)
   {
@@ -859,15 +851,6 @@ function selection_update()
   {
     window[selection[i].tpe + "_sel_update"]();
   }
-  
-  // on s'occupe aussi des controles sous le rendu
-  if (selection.length > 0)
-  {
-    document.getElementById("cr_plan").disabled = false;
-    document.getElementById("cr_action").disabled = false;
-  }
-  if (selection.length > 1) document.getElementById("cr_aligne").disabled = false;
-  if (selection.length > 2) document.getElementById("cr_repart").disabled = false;
 }
 
 function selection_update_interactions()
@@ -1754,6 +1737,8 @@ function _mv_ini()
 
 function _dragMoveListener (event)
 {
+  let dx = event.dx*443/rendu.width;
+  let dy = event.dy*631/rendu.height;
   if ((event.target.id == "extrema_1" || event.target.id == "extrema_2") && selection.length > 0)
   {
     bloc = selection[0];
@@ -1763,17 +1748,17 @@ function _dragMoveListener (event)
     //on modifie la ligne comme il faut
     if (event.target.id == "extrema_1")
     {
-      ligne_calc(bloc, bloc.left + event.dx, bloc.top + event.dy, bloc.x2, bloc.y2);
+      ligne_calc(bloc, bloc.left + dx, bloc.top + dy, bloc.x2, bloc.y2);
     }
     else
     {
-      ligne_calc(bloc, bloc.left, bloc.top, bloc.x2 + event.dx, bloc.y2 + event.dy);
+      ligne_calc(bloc, bloc.left, bloc.top, bloc.x2 + dx, bloc.y2 + dy);
     }
     // on modifie le style de la ligne en conséquence
     var sb = rendu_get_superbloc(bloc);
-    sb.style.left = bloc.left + "px";
-    sb.style.top = bloc.top + "px";
-    sb.style.height = bloc.height + "px";
+    sb.style.left = bloc.left*100/443 + "%";
+    sb.style.top = bloc.top*100/631 + "%";
+    sb.style.height = bloc.height*100/631 + "%";
     sb.style.transform = "rotate(" + bloc.rotation + "deg)";
     ligne_create_html(bloc, "");
   }
@@ -1783,11 +1768,11 @@ function _dragMoveListener (event)
     {
       bloc = selection[i];
       
-      bloc.top = parseFloat(bloc.top) + event.dy;
-      bloc.left = parseFloat(bloc.left) + event.dx;
+      bloc.top = parseFloat(bloc.top) + dy;
+      bloc.left = parseFloat(bloc.left) + dx;
       var sb = rendu_get_superbloc(bloc);
-      sb.style.top = bloc.top + "px";
-      sb.style.left = bloc.left + "px";
+      sb.style.top = bloc.top*100/631 + "%";
+      sb.style.left = bloc.left*100/443 + "%";
       if (i==0) // on affiche juste les valeurs du premier élément
       {
         document.getElementById("cr_tp_l").value = bloc.left;
@@ -1801,8 +1786,8 @@ function _dragMoveListener (event)
           elems[j].style.left = parseFloat(elems[j].style.left) + event.dx + "px";
           elems[j].style.top = parseFloat(elems[j].style.top) + event.dy + "px";
         }
-        bloc.x2 += event.dx;
-        bloc.y2 += event.dy;
+        bloc.x2 += dx;
+        bloc.y2 += dy;
       }
     }
   }
@@ -1818,24 +1803,24 @@ function _drag_rsl_resize(event)
   bloc = bloc_get_from_id(target.id.substr(9));
 
   // update the element's style
-  if (event.rect.width > 15) bloc.width = event.rect.width;
-  if (event.rect.height > 15) bloc.height = event.rect.height;
+  if (event.rect.width > 15) bloc.width = event.rect.width*443/rendu.width;
+  if (event.rect.height > 15) bloc.height = event.rect.height*631/rendu.height;
   if (bloc.tpe == "cercle")
   {
-    document.getElementById(bloc.id).style.width  = bloc.width + 'px';
-    document.getElementById(bloc.id).style.height = bloc.height + 'px';
+    document.getElementById(bloc.id).style.width  = bloc.width*100/443 + '%';
+    document.getElementById(bloc.id).style.height = bloc.height*100/631 + '%';
   }
   else
   {
-    target.style.width  = bloc.width + 'px';
-    target.style.height = bloc.height + 'px';
+    target.style.width  = bloc.width*100/443 + '%';
+    target.style.height = bloc.height*100/631 + '%';
   }
   document.getElementById("cr_tp_w").value = bloc.width;
   document.getElementById("cr_tp_h").value = bloc.height;
   
   // translate when resizing from top or left edges
-  bloc.left += parseFloat(event.deltaRect.left);
-  bloc.top += parseFloat(event.deltaRect.top);
-  target.style.left = bloc.left + "px";
-  target.style.top = bloc.top + "px";
+  bloc.left += parseFloat(event.deltaRect.left)*443/rendu.width;
+  bloc.top += parseFloat(event.deltaRect.top)*631/rendu.height;
+  target.style.left = bloc.left*100/443 + "%";
+  target.style.top = bloc.top*100/631 + "%";
 }

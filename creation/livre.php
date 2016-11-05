@@ -214,7 +214,7 @@ function livre_creation($dos)
         if (count($infos)>10) $ecoul = $infos[10];
         // on écrit le bloc qui correspond
         echo "<tr style=\"background-color:$ecoul;\">\n";
-        echo "<td class=\"td2\"><a class=\"ea\" href=\"crea_exo/exo.php?cat=$cat&livre=$livre&exo=$exo\">";
+        echo "<td class=\"td2\"><a class=\"ea\" href=\"crea_exo/infos.php?cat=$cat&livre=$livre&exo=$exo\">";
         echo "$et ($exos[$i])</a></td>\n";
         echo "<td class=\"td3\"><a href=\"livre.php?cat=$cat&livre=$livre&action=remove&exo=$exo\"><img class=\"eimg\" src=\"../icons/window-close.svg\" title=\"supprimer l'exo\"/></a>\n";
         echo "<a href=\"livre.php?cat=$cat&livre=$livre&action=copie&exo=$exo\"><img class=\"eimg\" src=\"../icons/tab-new.svg\" title=\"copier l'exo\"/></a>\n";
@@ -224,7 +224,7 @@ function livre_creation($dos)
       }
     }
     echo "</table>";
-    echo "<div class=\"enew\"><button onclick=\"window.location.href='crea_exo/exo.php?cat=$cat&livre=$livre&exo='\">nouvel exercice</button>&nbsp;&nbsp;";
+    echo "<div class=\"enew\"><button onclick=\"window.location.href='crea_exo/infos.php?cat=$cat&livre=$livre&exo='\">nouvel exercice</button>&nbsp;&nbsp;";
     echo "<select onchange=\"add_select(this, '$dos')\">";
     echo "<option value=\"\" selected>exercice existant...</option>";
     $it = new RecursiveDirectoryIterator("../livres/");
