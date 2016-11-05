@@ -107,7 +107,7 @@ function page_resize(e)
     document.getElementById("c2").style.marginTop = "1vh";
   }
   intro_img_load();
-  font_resize;
+  font_resize();
 }
 function font_resize()
 {
@@ -123,6 +123,18 @@ function font_resize()
     }
   }
   document.getElementById("exotice").style.height = 40*r + "px";
+  
+  //et aussi les bordures
+  elems = document.getElementById("c1").querySelectorAll("[bs]");
+  r = parseFloat(document.getElementById("c1").offsetWidth)/443;
+  for (let i=0; i<elems.length; i++)
+  {
+    let bs = parseFloat(elems[i].getAttribute("bs"));
+    if (bs > 0)
+    {
+      elems[i].style.borderWidth = bs*r + "px";
+    }
+  }
 }
 
 function page_print()

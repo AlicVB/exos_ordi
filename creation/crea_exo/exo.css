@@ -166,8 +166,9 @@ input[type="number"] {
   vertical-align: top;
 }
 .cr_long {
-  width: 360px;
-  height: 80px;
+  width: 375px;
+  height: 50px;
+  vertical-align: middle;
 }
 #cr_btn_div {
   width: 30px;

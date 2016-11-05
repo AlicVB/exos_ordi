@@ -675,7 +675,8 @@ function cr_bord_size_change(e)
       }
       bloc_create_html(selection[i]);
     }
-    else document.getElementById(selection[i].id).style.borderWidth = v + "px";
+    else document.getElementById(selection[i].id).style.borderWidth = v*rendu.width/443 + "px";
+    bloc_create_html(selection[i]);
   }
   selection_update();
   //on sauvegarde
@@ -1246,4 +1247,9 @@ function cm_show_plans(e)
   
   document.addEventListener("mousedown", cm_quitte);
   cm.style.visibility = "visible";
+}
+
+function cr_txt_ini_keypress(event)
+{
+  if (event.which == 13) event.preventDefault();
 }

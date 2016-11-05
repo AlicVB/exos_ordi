@@ -86,7 +86,7 @@
       <div id="cr_expl">
       </div>
       <div id="cr_txt_ini_div">
-        <input class="cr_long" type="text" id="cr_txt_ini" />
+        <textarea class="cr_long" id="cr_txt_ini" onkeypress="cr_txt_ini_keypress(event)"></textarea>
         <img id="cr_new_txt" src="../../icons/go-next.svg" onclick="cr_new_txt_click(this)" />
       </div>
       <div id="cr_img_get_div">

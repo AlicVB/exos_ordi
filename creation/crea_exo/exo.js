@@ -681,7 +681,7 @@ function rendu_add_bloc(bloc)
   {
     //bordures
     e.style.borderStyle = bloc.bord;
-    e.style.borderWidth = bloc.bord_size + "px";
+    e.style.borderWidth = bloc.bord_size*rendu.width/443 + "px";
     e.style.borderColor = bloc.bord_coul;
     e.style.borderRadius = bloc.bord_rond + "px";
     //fond
@@ -913,7 +913,7 @@ function check_sel_update()
   bloc = selection[0];
   
   document.getElementById("cr_expl").innerHTML = "<b>cases à cocher</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |*des mamifères$des oiseaux*des félins|)";
-  document.getElementById("cr_txt_ini_div").style.display = "inline";
+  document.getElementById("cr_txt_ini_div").style.display = "block";
 }
 function check_create_html(bloc, txt)
 {
@@ -945,7 +945,7 @@ function radiobtn_sel_update()
     bloc = selection[0];
     
     document.getElementById("cr_expl").innerHTML = "<b>boutons choix</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |$des plantes$des oiseaux*des félins|)";
-    document.getElementById("cr_txt_ini_div").style.display = "inline";
+    document.getElementById("cr_txt_ini_div").style.display = "block";
   }
   //on regarde si la sélection est homogène
   if (selection.length>0 && selection_is_homogene("radiobtn"))
@@ -993,7 +993,7 @@ function radio_sel_update()
   bloc = selection[0];
   
   document.getElementById("cr_expl").innerHTML = "<b>choix unique</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |$des plantes$des oiseaux*des félins|)";
-  document.getElementById("cr_txt_ini_div").style.display = "inline";
+  document.getElementById("cr_txt_ini_div").style.display = "block";
 }
 function radio_create_html(bloc, txt)
 {
@@ -1012,7 +1012,7 @@ function radio_create_html(bloc, txt)
     htm += "<style>[id=\"" + bloc.id + "\"] label {background-color: " + bloc.radiobtn_coul1;
     htm += ";} [id=\"" + bloc.id + "\"] input[type=\"radio\"]:checked + label {background-color: " + bloc.radiobtn_coul2 + ";}</style>\n";
   }
-  htm += "<div fs=\"" + bloc.font_size + "\" class=\"item lignef " + cl + "\" tpe=\"" + bloc.tpe + "\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "<div fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef " + cl + "\" tpe=\"" + bloc.tpe + "\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.tpe == "radiobtn") htm += "options=\"" + bloc.radiobtn_coul1 + "|" + bloc.radiobtn_coul2 + "\" ";
   htm += ">\n";
   //on coupe suivant '|'
@@ -1068,7 +1068,7 @@ function combo_new()
 function combo_create_html(bloc, txt)
 {
   htm = "";
-  htm += "<div fs=\"" + bloc.font_size + "\" class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
+  htm += "<div fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
   if (vals.length>0) htm += "  <div>" + vals[0] + "</div>\n";
@@ -1112,7 +1112,7 @@ function combo_sel_update()
   bloc = selection[0];
   
   document.getElementById("cr_expl").innerHTML = "<b>liste déroulante</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |$des arbres$des oiseaux*des félins|)";
-  document.getElementById("cr_txt_ini_div").style.display = "inline";
+  document.getElementById("cr_txt_ini_div").style.display = "block";
 }
 
 function texte_new()
@@ -1139,7 +1139,7 @@ function texte_create_html(bloc, txt)
   if (bloc.texte_corr == "1") corr += "2";
   
   htm = "";
-  htm += "<div fs=\"" + bloc.font_size + "\" class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
+  htm += "<div fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
   htm += comp + "|" + enter + "|" + bloc.texte_corr + "\" >\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
@@ -1181,7 +1181,7 @@ function texte_sel_update()
   {
     bloc = selection[0];
     document.getElementById("cr_expl").innerHTML = "<b>zone de texte</b><br/>Encadrer le texte juste par '|' ('#' = tout est juste)<br/>(La souris|a|peur du chat)";
-    document.getElementById("cr_txt_ini_div").style.display = "inline";
+    document.getElementById("cr_txt_ini_div").style.display = "block";
   }
   if (selection.length > 0 && selection_is_homogene("texte"))
   {
@@ -1211,7 +1211,7 @@ function multi_new()
 function multi_create_html(bloc, txt)
 {
   var htm = "";
-  htm += "<div fs=\"" + bloc.font_size + "\" class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
+  htm += "<div fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
   var opts = "";
   var maj = "";
   var suff = "";
@@ -1281,7 +1281,7 @@ function multi_sel_update()
   {
     bloc = selection[0];
     document.getElementById("cr_expl").innerHTML = "<b>blocs multi-positions</b><br/>Encadrer les blocs par '|' ; Les blocs à colorer commencent par le numéro de la couleur<br/>(1Le chat|2mange|les souris.)";
-    document.getElementById("cr_txt_ini_div").style.display = "inline";
+    document.getElementById("cr_txt_ini_div").style.display = "block";
   }
   
   if (selection.length > 0 && selection_is_homogene("multi"))
@@ -1319,7 +1319,7 @@ function cible_create_html(bloc, txt)
   enter = bloc.texte_e;
   comp = bloc.texte_c;
   
-  htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" fs=\"" + bloc.font_size + "\" class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
+  htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
   htm += "</div>\n";
   
   bloc.html = htm;
@@ -1340,7 +1340,7 @@ function cible_sel_update()
   bloc = selection[0];
   
   document.getElementById("cr_expl").innerHTML = "<b>zone cible</b><br/>Identifiant des objets qui peuvent être posés<br/>séparer les identifiant par '|'";
-  document.getElementById("cr_txt_ini_div").style.display = "inline";
+  document.getElementById("cr_txt_ini_div").style.display = "block";
   //pas de texte...
   document.getElementById("cr_font_fam").disabled = true;
   document.getElementById("cr_font_size").disabled = true;
@@ -1368,7 +1368,7 @@ function image_create_html(bloc, txt)
   htm += ">\n  <img ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
   else htm += "ondragstart=\"return false;\" ";
-  htm += "fs=\"" + bloc.font_size + "\" class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item exo image\" tpe=\"image\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1399,7 +1399,7 @@ function image_sel_update()
     document.getElementById("cr_img_select").value = bloc.img_name;
     
     document.getElementById("cr_expl").innerHTML = "<b>image</b><br/>Sélectionner l'image choisie.";
-    document.getElementById("cr_img_get_div").style.display = "inline";
+    document.getElementById("cr_img_get_div").style.display = "block";
   }
   if (selection.length > 0 && selection_is_homogene("image")) selection_update_interactions();
   //pas de texte...
@@ -1436,7 +1436,7 @@ function texte_simple_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <div ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "fs=\"" + bloc.font_size + "\" class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item lignef texte_simple exo\" tpe=\"texte_simple\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
@@ -1469,7 +1469,7 @@ function texte_simple_sel_update()
   {
     bloc = selection[0];
     document.getElementById("cr_expl").innerHTML = "<b>texte simple</b><br/>Entrer le texte";
-    document.getElementById("cr_txt_ini_div").style.display = "inline";
+    document.getElementById("cr_txt_ini_div").style.display = "block";
   }
   
   if (selection.length > 0 && selection_is_homogene(selection[0].tpe)) selection_update_interactions();
@@ -1504,7 +1504,7 @@ function audio_create_html(bloc, txt)
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <img ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
-  htm += "fs=\"" + bloc.font_size + "\" class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
+  htm += "fs=\"" + bloc.font_size + "\" bs=\"" + bloc.bord_size + "\" class=\"item exo audio\" tpe=\"audio\" item=\"" + bloc.id + "\" points=\"" + bloc.points + "\" ";
   if (bloc.inter == 1)
   {
     htm += "line=\"1\" ";
