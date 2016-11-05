@@ -66,9 +66,9 @@
     <img class="cr_btn" src="../../icons/cercle.svg" onclick="cercle_new()" title="ajouter une éllipse"/>
     <img class="cr_btn" src="../../icons/ligne.svg" onclick="ligne_new()" title="ajouter une ligne"/>
     <div class="sep">&nbsp;</div>
-    <img class="cr_btn" src="../../icons/aligne.svg" onclick="cm_show_aligne(this)" title="ajouter un rectangle"/>
-    <img class="cr_btn" src="../../icons/repartit.svg" onclick="cm_show_repart(this)" title="ajouter une éllipse"/>
-    <img class="cr_btn" src="../../icons/plans.svg" onclick="cm_show_plans(this)" title="ajouter une ligne"/>
+    <img class="cr_btn" src="../../icons/aligne.svg" onclick="cm_show_aligne(this)" title="alignements"/>
+    <img class="cr_btn" src="../../icons/repartit.svg" onclick="cm_show_repart(this)" title="répartitions"/>
+    <img class="cr_btn" src="../../icons/plans.svg" onclick="cm_show_plans(this)" title="positions"/>
   </div>
   
   <div id="cr_rendu" onmousedown="bloc_mousedown(this, event)"></div>
@@ -285,21 +285,21 @@
 </div>
 <div id="cm_aligne" class="cm">
   <img src="../../icons/aligne_v_g.svg" title="aligner les objets à gauche" onmousedown="cr_aligne_change('1')"/>
-  <img src="../../icons/aligne.svg" title="aligner les objets à gauche" onmousedown="cr_aligne_change('2')"/>
-  <img src="../../icons/aligne_v_d.svg" title="aligner les objets à gauche" onmousedown="cr_aligne_change('3')"/><br/>
-  <img src="../../icons/aligne_h_h.svg" title="aligner les objets à gauche" onmousedown="cr_aligne_change('4')"/>
-  <img src="../../icons/aligne_h_c.svg" title="aligner les objets à gauche" onmousedown="cr_aligne_change('5')"/>
-  <img src="../../icons/aligne_h_b.svg" title="aligner les objets à gauche" onmousedown="cr_aligne_change('6')"/>
+  <img src="../../icons/aligne.svg" title="centrer les objets" onmousedown="cr_aligne_change('2')"/>
+  <img src="../../icons/aligne_v_d.svg" title="aligner les objets à droite" onmousedown="cr_aligne_change('3')"/><br/>
+  <img src="../../icons/aligne_h_h.svg" title="aligner les objets en haut" onmousedown="cr_aligne_change('4')"/>
+  <img src="../../icons/aligne_h_c.svg" title="centrer les objets" onmousedown="cr_aligne_change('5')"/>
+  <img src="../../icons/aligne_h_b.svg" title="aligner les objets en bas" onmousedown="cr_aligne_change('6')"/>
 </div>
 <div id="cm_repart" class="cm">
   <img src="../../icons/repartit.svg" title="répartir verticalement" onmousedown="cr_repart_change('1')"/>
   <img src="../../icons/repartit_h.svg" title="répartir horizontalement" onmousedown="cr_repart_change('2')"/>
 </div>
 <div id="cm_plans" class="cm">
-  <img src="../../icons/plans_0.svg" title="aligner les objets à gauche" onmousedown="cr_plans_change('2')"/>
-  <img src="../../icons/plans_1.svg" title="aligner les objets à gauche" onmousedown="cr_plans_change('1')"/>
-  <img src="../../icons/plans_2.svg" title="aligner les objets à gauche" onmousedown="cr_plans_change('3')"/>
-  <img src="../../icons/plans_3.svg" title="aligner les objets à gauche" onmousedown="cr_plans_change('4')"/>
+  <img src="../../icons/plans_0.svg" title="mettre en arrière-plan" onmousedown="cr_plans_change('2')"/>
+  <img src="../../icons/plans_1.svg" title="mettre au premier plan" onmousedown="cr_plans_change('1')"/>
+  <img src="../../icons/plans_2.svg" title="reculer d'un plan" onmousedown="cr_plans_change('3')"/>
+  <img src="../../icons/plans_3.svg" title="avancer d'un plan" onmousedown="cr_plans_change('4')"/>
 </div>
 </body>
 </html>
