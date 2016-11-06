@@ -417,6 +417,8 @@ function bloc_new(tpe, txt)
   option.text = bloc.id + " (" + bloc.tpe + ")";
   option.value = bloc.id;
   document.getElementById("cr_bloc_liste").add(option);
+  
+  g_sauver();
   return bloc;
 }
 // on initialise les valeurs d'options comme il faut
@@ -626,8 +628,8 @@ function rendu_add_bloc(bloc)
   //pour les texte simples, on commence par initialiser les valeurs de tailles au texte
   if (bloc.tpe == "texte_simple" || bloc.tpe == "rect" || bloc.tpe == "ligne")
   {
-    if (bloc.width == 0) bloc.width = Math.max(15, e.offsetWidth + 4)*rendu.width/443;
-    if (bloc.height == 0) bloc.height = Math.max(10, e.offsetHeight)*rendu.height/631;
+    if (bloc.width == 0) bloc.width = Math.max(15, e.offsetWidth + 4)*443/rendu.width;
+    if (bloc.height == 0) bloc.height = Math.max(10, e.offsetHeight)*631/rendu.height;
     b.style.width = bloc.width*100/443 + "%";
     e.parentNode.style.width = "100%";
     b.style.height = bloc.height*100/631 + "%";
