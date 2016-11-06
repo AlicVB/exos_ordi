@@ -126,7 +126,7 @@ function livre_creation($dos)
     livre_creation($dos);
     $titre = $livre;
     $aut = "";
-    $coul = "#ffffff";
+    $coul = "#6D7BCF";
     $details = "";
     $img = "";
     //on essaie de lire le fichier descriptif

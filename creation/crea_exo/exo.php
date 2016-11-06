@@ -26,6 +26,16 @@
   if (!file_exists("$dos_e/sauve.php")) copy("../exo_type/sauve.php", "$dos_e/sauve.php");
   if (!file_exists("$dos_e/exo.css")) copy("../exo_type/exo.css", "$dos_e/exo.css");
   if (!file_exists("$dos_e/exo.js")) copy("../exo_type/exo.js", "$dos_e/exo.js");
+  if (!file_exists("$dos_e/exo.php")) file_put_contents("$dos_e/exo.php", "");
+  if (!file_exists("$dos_e/exo.txt")) file_put_contents("$dos_e/exo.txt", "");
+  
+  //on récupère la couleur de fond du livre et de l'exo
+  $exo_coul = "#EEEFE4";
+  $livre_coul = "#6D7BCF";
+  $vals = explode("\n", file_get_contents("$dos_e/exo.txt"));
+  if (count($vals)>10) $exo_coul = $vals[10];
+  $vals = explode("\n", file_get_contents("$dos_l/livre.txt"));
+  if (count($vals)>1) $livre_coul = $vals[1];
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,7 +52,7 @@
   <script type="text/javascript" src="evt.js"></script>
 </head>
 
-<body onload="start('<?php echo "$dos_e"; ?>')">
+<body onload="start('<?php echo "$dos_e"; ?>')" style="background-color:<?php echo "$livre_coul"; ?>;">
 <div id="main_div">
   <div id="cr_btn_div2">
     <img class="cr_btn" src="../../icons/edit-undo.svg" onclick="window.location.href='../livre.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>'" title="retour au livre"/>
@@ -71,7 +81,7 @@
     <img class="cr_btn" id="btn_plans" src="../../icons/plans.svg" onclick="cm_show_plans(this)" title="positions"/>
   </div>
   
-  <div id="cr_rendu" onmousedown="bloc_mousedown(this, event)"></div>
+  <div id="cr_rendu" onmousedown="bloc_mousedown(this, event)" style="background-color:<?php echo "$exo_coul"; ?>;"></div>
     
   <div id="cr_opt">
     <div class="cr_opt_bloc">

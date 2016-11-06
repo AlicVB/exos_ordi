@@ -330,7 +330,6 @@ function cri_titre_change(e)
 function cri_coul_change(e)
 {
   infos.coul = e.value;
-  document.getElementById("cr_rendu").style.backgroundColor = infos.coul;
   g_sauver_info();
 }
 function cri_consigne_change(e)

@@ -26,6 +26,8 @@
   if (!file_exists("$dos_e/sauve.php")) copy("../exo_type/sauve.php", "$dos_e/sauve.php");
   if (!file_exists("$dos_e/exo.css")) copy("../exo_type/exo.css", "$dos_e/exo.css");
   if (!file_exists("$dos_e/exo.js")) copy("../exo_type/exo.js", "$dos_e/exo.js");
+  if (!file_exists("$dos_e/exo.php")) file_put_contents("$dos_e/exo.php", "");
+  if (!file_exists("$dos_e/exo.txt")) file_put_contents("$dos_e/exo.txt", "");
 ?>
 <!DOCTYPE html>
 <html>
