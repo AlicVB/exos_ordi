@@ -49,6 +49,9 @@ div.extrema {
   vertical-align: middle;
   font-size: inherit;
 }
+.texte textarea {
+  font-size: inherit;
+}
 .radiobtn label {
     display:inline-block;
     box-sizing: border-box;

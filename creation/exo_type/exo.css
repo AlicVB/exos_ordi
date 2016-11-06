@@ -93,6 +93,9 @@ div.texte_corr2 {
   vertical-align: middle;
   font-size: inherit;
 }
+.texte textarea {
+  font-size: inherit;
+}
 .multi span {
   cursor: pointer;
   -moz-user-select: none;

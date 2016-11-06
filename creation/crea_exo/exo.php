@@ -182,9 +182,9 @@
       </div>
       <div id="cr_texte_div">
         Largeur (0=infini) :
-        <input type="text" size="3" id="cr_texte_l" value="5" onchange="cr_texte_change(this)" title="nombre de charactères maxi" />
+        <input type="number" value="5" min="0" max="100" id="cr_texte_l" onchange="cr_texte_change(this)" title="nombre de charactères maxi" />
         <br/>Hauteur :
-        <input type="text" size="3" id="cr_texte_h" value="1" onchange="cr_texte_change(this)" title="nombre de lignes" />
+        <input type="number" value="1" min="1" max="100"  id="cr_texte_h" onchange="cr_texte_change(this)" title="nombre de lignes" />
         <br/>Retour à la ligne :
         <select id="cr_texte_e" onchange="cr_texte_change(this)"><option value="1" selected>autorisé</option><option value="0">interdit</option></select>
         <br/>Comparaison :

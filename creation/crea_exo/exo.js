@@ -1179,6 +1179,7 @@ function texte_create_html(bloc, txt)
     if (h > 1) htm += "   <textarea rows=\"" + h + "\" ";
     else htm += "   <input type=\"text\" ";
     htm += "class=\"exo\" id=\"texte_" + bloc.id + "\" itemid=\"" + bloc.id + "\" onKeyUp=\"change(this)\" ";
+    if (enter==0 && h > 1) htm += "onkeydown=\"texte_stop_enter(event)\" ";
     if (l==0) htm += "style=\"box-sizing: border-box; width:100%;\">";
     else if (h>1) htm += "cols=\"" + l + "\">";
     else htm += "size=\"" + l + "\">";

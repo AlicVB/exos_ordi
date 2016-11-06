@@ -1019,3 +1019,8 @@ function getvalue(e)
   }
   return "";
 }
+
+function texte_stop_enter(event)
+{
+  if (event.which == 13) event.preventDefault();
+}
