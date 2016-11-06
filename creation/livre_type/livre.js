@@ -7,6 +7,32 @@ function affiche_aide(val)
 
 function intro_img_load()
 {
+  //image affichée en permanence
+  let e = document.getElementById("aideimg");
+  let rec1 = document.getElementById("details").getBoundingClientRect();
+  let rec2 = document.getElementById("basdiv").getBoundingClientRect();
+  let reci = e.getBoundingClientRect();
+  let w_max = rec1.width;
+  let h_max = rec2.top - rec1.bottom;
+  if (reci.width/reci.height > w_max/h_max)
+  {
+    e.style.width = w_max*0.9 + "px";
+    e.style.left = (rec1.left + w_max*0.05) + "px";
+    e.style.height = w_max*0.9*reci.height/reci.width + "px";
+    e.style.top = (rec1.bottom + (h_max - parseFloat(e.style.height))/2) + "px"
+  }
+  else
+  {
+    e.style.height = h_max*0.9 + "px";
+    e.style.top = (rec1.bottom + h_max*0.05) + "px";
+    e.style.width = h_max*0.9*reci.width/reci.height + "px";
+    e.style.left = (rec1.left + (w_max - parseFloat(e.style.width))/2) + "px"
+  }
+  e.style.visibility = "visible";
+}
+
+function aide_img_load()
+{
   //Attention, il faut regarder si elle doit être affichée en permanence ou non !
   let ic = document.getElementById("aideimg");
   let e = document.getElementById("aide");
@@ -30,16 +56,16 @@ function intro_img_load()
     let h_max = rec2.top - rec1.bottom;
     if (reci.width/reci.height > w_max/h_max)
     {
-      e.style.width = w_max*0.8 + "px";
-      e.style.left = (rec1.left + w_max*0.1) + "px";
-      e.style.height = w_max*0.8*reci.height/reci.width + "px";
+      e.style.width = w_max*0.9 + "px";
+      e.style.left = (rec1.left + w_max*0.05) + "px";
+      e.style.height = w_max*0.9*reci.height/reci.width + "px";
       e.style.top = (rec1.bottom + (h_max - parseFloat(e.style.height))/2) + "px"
     }
     else
     {
-      e.style.height = h_max*0.8 + "px";
-      e.style.top = (rec1.bottom + h_max*0.1) + "px";
-      e.style.width = h_max*0.8*reci.width/reci.height + "px";
+      e.style.height = h_max*0.9 + "px";
+      e.style.top = (rec1.bottom + h_max*0.05) + "px";
+      e.style.width = h_max*0.9*reci.width/reci.height + "px";
       e.style.left = (rec1.left + (w_max - parseFloat(e.style.width))/2) + "px"
     }
     e.style.visibility = "visible";
@@ -106,7 +132,7 @@ function page_resize(e)
     document.getElementById("c2").style.marginRight = "0.5vw";
     document.getElementById("c2").style.marginTop = "1vh";
   }
-  intro_img_load();
+  aide_img_load();
   font_resize();
 }
 function font_resize()

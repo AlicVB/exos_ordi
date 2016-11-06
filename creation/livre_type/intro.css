@@ -35,19 +35,21 @@ body {
   margin-top: 1vh;
 }
 #aideimg {
-  width: 3vh;
-  margin-top: 1vh;
+  position: absolute;
+  width: 5vh;
+  visibility: hidden;
 }
-#godiv {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+#basdiv {
+  position: absolute;
+  bottom: 2px;
+  left: 0px;
   width: 100%;
-  font-size: 5vh;
-  font-style: italic;
+  text-align: right;
 }
 #gotxt {
+  font-size: 5vh;
   vertical-align: middle;
+  display: inline-block;
 }
 #goimg {
   height: 12vh;
@@ -55,10 +57,6 @@ body {
   vertical-align: middle;
 }
 #bysa {
-  position: absolute;
-  bottom: 2px;
-  left: 0px;
-  width: 100%;
   text-align: center;
 }
 #bysa img {
