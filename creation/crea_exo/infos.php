@@ -46,7 +46,10 @@
     <img id="cri_info" src="../../icons/dialog-information.svg" />
     Informations générales
     <span id="cri_dos_exo"><?php echo "$dos_e"; ?></span>
-    <img id="cri_rendu" src="../../icons/application-x-diagram.svg" onclick="window.location.href='exo.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>&exo=<?php echo $exo ?>'"/>
+    <div id="cri_bandeau_btn">
+      <img src="../../icons/edit-undo.svg" onclick="window.location.href='../livre.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>'"/>
+      <img src="../../icons/application-x-diagram.svg" onclick="window.location.href='exo.php?cat=<?php echo $cat ?>&livre=<?php echo $livre ?>&exo=<?php echo $exo ?>'"/>
+    </div>
   </div>
   <div id="cr_pa_info">
     <p>

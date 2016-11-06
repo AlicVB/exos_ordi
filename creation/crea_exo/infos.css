@@ -69,11 +69,13 @@ input[type="number"] {
   font-weight: normal;
   margin-left: 5px;
 }
-#cri_rendu {
+#cri_bandeau_btn {
   position: absolute;
-  height: 42px;
   right: 2px;
   top: 2px;
+}
+#cri_bandeau_btn img {
+  height: 42px;
 }
 .cr_opt_ligne {
   display: flex;

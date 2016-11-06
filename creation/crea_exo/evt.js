@@ -39,28 +39,28 @@ function cr_keydown(event)
       for (let i=0; i<selection.length; i++)
       {
         selection[i].left = Math.max(0, parseFloat(selection[i].left) - mv);
-        rendu_get_superbloc(selection[i]).style.left = selection[i].left + "px";
+        rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "%";
       }
       break;
     case 38: //flèche haut
       for (let i=0; i<selection.length; i++)
       {
         selection[i].top = Math.max(0, parseFloat(selection[i].top) - mv);
-        rendu_get_superbloc(selection[i]).style.top = selection[i].top + "px";
+        rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "%";
       }
       break;
     case 39: //flèche droite
       for (let i=0; i<selection.length; i++)
       {
-        selection[i].left = Math.min(r.offsetWidth - 10 - selection[i].width, parseFloat(selection[i].left) + mv);
-        rendu_get_superbloc(selection[i]).style.left = selection[i].left + "px";
+        selection[i].left = Math.min(r.offsetWidth*443/rendu.width - 10 - selection[i].width, parseFloat(selection[i].left) + mv);
+        rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "%";
       }
       break;
     case 40: //flèche bas
       for (let i=0; i<selection.length; i++)
       {
-        selection[i].top = Math.min(r.offsetHeight - 10 - selection[i].height, parseFloat(selection[i].top) + mv);
-        rendu_get_superbloc(selection[i]).style.top = selection[i].top + "px";
+        selection[i].top = Math.min(r.offsetHeight*631/rendu.height - 10 - selection[i].height, parseFloat(selection[i].top) + mv);
+        rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "%";
       }
       break;
     case 46: //suppr
