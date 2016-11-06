@@ -1245,3 +1245,15 @@ function cr_txt_ini_keypress(event)
 {
   if (event.which == 13) event.preventDefault();
 }
+function cr_txt_ini_change(e)
+{
+  let v = e.value;
+  for (let i=0; i<selection.length; i++)
+  {
+    selection[i].txt = v;
+    bloc_create_html(selection[i]);
+    rendu_add_bloc(selection[i]);
+    document.getElementById("cr_html").value = bloc.html;
+  }
+  g_sauver();
+}
