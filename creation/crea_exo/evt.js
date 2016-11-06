@@ -38,29 +38,69 @@ function cr_keydown(event)
     case 37: //flèche gauche
       for (let i=0; i<selection.length; i++)
       {
-        selection[i].left = Math.max(0, parseFloat(selection[i].left) - mv);
+        let nmv = Math.max(0, parseFloat(selection[i].left) - mv) - parseFloat(selection[i].left);
+        selection[i].left = parseFloat(selection[i].left) + nmv;
         rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "%";
+        if (selection[i].tpe == "ligne")
+        {
+          var elems = document.getElementsByClassName("extrema");
+          for (let j=0; j<elems.length; j++)
+          {
+            elems[j].style.left = parseFloat(elems[j].style.left) + nmv*rendu.width/443 + "px";
+          }
+          selection[i].x2 += nmv;
+        }
       }
       break;
     case 38: //flèche haut
       for (let i=0; i<selection.length; i++)
       {
-        selection[i].top = Math.max(0, parseFloat(selection[i].top) - mv);
+        let nmv = Math.max(0, parseFloat(selection[i].top) - mv) - parseFloat(selection[i].top);
+        selection[i].top = parseFloat(selection[i].top) + nmv;
         rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "%";
+        if (selection[i].tpe == "ligne")
+        {
+          var elems = document.getElementsByClassName("extrema");
+          for (let j=0; j<elems.length; j++)
+          {
+            elems[j].style.top = parseFloat(elems[j].style.top) + nmv*rendu.height/631 + "px";
+          }
+          selection[i].y2 += nmv;
+        }
       }
       break;
     case 39: //flèche droite
       for (let i=0; i<selection.length; i++)
       {
-        selection[i].left = Math.min(r.offsetWidth*443/rendu.width - 10 - selection[i].width, parseFloat(selection[i].left) + mv);
+        let nmv = Math.min(r.offsetWidth*443/rendu.width - 10 - selection[i].width, parseFloat(selection[i].left) + mv) - parseFloat(selection[i].left);
+        selection[i].left = parseFloat(selection[i].left) + nmv;
         rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "%";
+        if (selection[i].tpe == "ligne")
+        {
+          var elems = document.getElementsByClassName("extrema");
+          for (let j=0; j<elems.length; j++)
+          {
+            elems[j].style.left = parseFloat(elems[j].style.left) + nmv*rendu.width/443 + "px";
+          }
+          selection[i].x2 += nmv;
+        }
       }
       break;
     case 40: //flèche bas
       for (let i=0; i<selection.length; i++)
       {
-        selection[i].top = Math.min(r.offsetHeight*631/rendu.height - 10 - selection[i].height, parseFloat(selection[i].top) + mv);
+        let nmv = Math.min(r.offsetHeight*631/rendu.height - 10 - selection[i].height, parseFloat(selection[i].top) + mv) - parseFloat(selection[i].top);
+        selection[i].top = parseFloat(selection[i].top) + nmv;
         rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "%";
+        if (selection[i].tpe == "ligne")
+        {
+          var elems = document.getElementsByClassName("extrema");
+          for (let j=0; j<elems.length; j++)
+          {
+            elems[j].style.top = parseFloat(elems[j].style.top) + nmv*rendu.height/631 + "px";
+          }
+          selection[i].y2 += nmv;
+        }
       }
       break;
     case 46: //suppr
