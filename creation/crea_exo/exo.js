@@ -863,9 +863,9 @@ function selection_update()
   }
   
   // on regarde aussi les icones d'alignement, ...
-  document.getElementById("btn_aligne").style.filter = "grayscale(100%)";
-  document.getElementById("btn_repart").style.filter = "grayscale(100%)";
-  document.getElementById("btn_plans").style.filter = "grayscale(100%)";
+  document.getElementById("btn_aligne").style.filter = "grayscale(100%) blur(0.5px)";
+  document.getElementById("btn_repart").style.filter = "grayscale(100%) blur(0.5px)";
+  document.getElementById("btn_plans").style.filter = "grayscale(100%) blur(0.5px)";
   if (selection.length > 0)
   {
     document.getElementById("btn_aligne").style.filter = "";
