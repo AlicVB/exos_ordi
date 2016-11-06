@@ -858,6 +858,20 @@ function selection_update()
   {
     window[selection[i].tpe + "_sel_update"]();
   }
+  
+  // on regarde aussi les icones d'alignement, ...
+  document.getElementById("btn_aligne").style.filter = "grayscale(100%)";
+  document.getElementById("btn_repart").style.filter = "grayscale(100%)";
+  document.getElementById("btn_plans").style.filter = "grayscale(100%)";
+  if (selection.length > 0)
+  {
+    document.getElementById("btn_aligne").style.filter = "";
+    document.getElementById("btn_plans").style.filter = "";
+  }
+  if (selection.length > 2)
+  {
+    document.getElementById("btn_repart").style.filter = "";
+  }
 }
 
 function selection_update_interactions()

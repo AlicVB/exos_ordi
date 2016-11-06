@@ -66,9 +66,9 @@
     <img class="cr_btn" src="../../icons/cercle.svg" onclick="cercle_new()" title="ajouter une éllipse"/>
     <img class="cr_btn" src="../../icons/ligne.svg" onclick="ligne_new()" title="ajouter une ligne"/>
     <div class="sep">&nbsp;</div>
-    <img class="cr_btn" src="../../icons/aligne.svg" onclick="cm_show_aligne(this)" title="alignements"/>
-    <img class="cr_btn" src="../../icons/repartit.svg" onclick="cm_show_repart(this)" title="répartitions"/>
-    <img class="cr_btn" src="../../icons/plans.svg" onclick="cm_show_plans(this)" title="positions"/>
+    <img class="cr_btn" id="btn_aligne" src="../../icons/aligne.svg" onclick="cm_show_aligne(this)" title="alignements"/>
+    <img class="cr_btn" id="btn_repart" src="../../icons/repartit.svg" onclick="cm_show_repart(this)" title="répartitions"/>
+    <img class="cr_btn" id="btn_plans" src="../../icons/plans.svg" onclick="cm_show_plans(this)" title="positions"/>
   </div>
   
   <div id="cr_rendu" onmousedown="bloc_mousedown(this, event)"></div>
