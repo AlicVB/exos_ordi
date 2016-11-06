@@ -12,6 +12,11 @@ var rendu = {}; //objet contenant la taille actuelle intérieure du rendu
 function change(e)
 {
 }
+function txt_spaces(txt)
+{
+  return txt.replace(/ /g, "&nbsp;");
+}
+
 function rendu_autosize(e)
 {
   let bodystyle = window.getComputedStyle(document.body);
@@ -1040,7 +1045,7 @@ function radio_create_html(bloc, txt)
   htm += ">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
-  if (vals.length>0) htm += "  <div>" + vals[0] + "</div>\n";
+  if (vals.length>0) htm += "  <div>" + txt_spaces(vals[0]) + "</div>\n";
   item = 0;
   if (vals.length>1)
   {
@@ -1054,22 +1059,22 @@ function radio_create_html(bloc, txt)
         if (k>1) htm += "    <br/>\n";
         htm += "    <input type=\"" + tp + "\" itemid=\"" + bloc.id + "\" class=\"exo\" onclick=\"change(this)\" value=\"1\" id=\"rb" + bloc.id + "_" + item + "\" ";
         if (tp == "radio") htm += "name=\"" + bloc.id + "\"";
-        htm += ">\n";
-        htm += "    <label for=\"rb" + bloc.id + "_" + item + "\">" + v[k].substr(1) + "</label>\n";
+        htm += ">";
+        htm += "<label for=\"rb" + bloc.id + "_" + item + "\">" + txt_spaces(v[k].substr(1)) + "</label>\n";
       }
       else if (v[k].startsWith("$"))
       {
         if (k>1) htm += "   <br/>\n";
         htm += "    <input type=\"" + tp + "\" itemid=\"" + bloc.id + "\" class=\"exo\" onclick=\"change(this)\" value=\"0\" id=\"rb" + bloc.id + "_" + item + "\" ";
         if (tp == "radio") htm += "name=\"" + bloc.id + "\"";
-        htm += ">\n";
-        htm += "    <label for=\"rb" + bloc.id + "_" + item + "\">" + v[k].substr(1) + "</label>\n";
+        htm += ">";
+        htm += "<label for=\"rb" + bloc.id + "_" + item + "\">" + txt_spaces(v[k].substr(1)) + "</label>\n";
       }
       item++;
     }
     htm += "  </form>\n";
   }
-  if (vals.length>2) htm += "  <div>" + vals[2] + "</div>\n";
+  if (vals.length>2) htm += "  <div>" + txt_spaces(vals[2]) + "</div>\n";
   htm += "</div>\n";
   
   bloc.html = htm;
@@ -1094,7 +1099,7 @@ function combo_create_html(bloc, txt)
   htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
   //on coupe suivant '|'
   var vals = txt.split("|");
-  if (vals.length>0) htm += "  <div>" + vals[0] + "</div>\n";
+  if (vals.length>0) htm += "  <div>" + txt_spaces(vals[0]) + "</div>\n";
   if (vals.length>1)
   {
     // le choix
@@ -1107,19 +1112,19 @@ function combo_create_html(bloc, txt)
     {
       if (v[k].startsWith("*"))
       {
-        htm += "      <option value=\"1\">" + v[k].substr(1) + "</option>\n";
-        juste = v[k].substr(1);
+        htm += "      <option value=\"1\">" + txt_spaces(v[k].substr(1)) + "</option>\n";
+        juste = txt_spaces(v[k].substr(1))
       }
       else if (v[k].startsWith("$"))
       {
-        htm += "      <option value=\"0\">" + v[k].substr(1) + "</option>\n";
+        htm += "      <option value=\"0\">" + txt_spaces(v[k].substr(1)) + "</option>\n";
       }
     }
     htm += "    </select>\n";
-    htm += "    <div class=\"combo_corr\">" + juste + "</div>\n";
+    htm += "    <div class=\"combo_corr\">" + txt_spaces(juste) + "</div>\n";
     htm += "  </div>\n";
   }
-  if (vals.length>2) htm += "  <div>" + vals[2] + "</div>\n";
+  if (vals.length>2) htm += "  <div>" + txt_spaces(vals[2]) + "</div>\n";
   htm += "</div>\n";
   
   bloc.html = htm;
@@ -1165,9 +1170,7 @@ function texte_create_html(bloc, txt)
   htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
   htm += comp + "|" + enter + "|" + bloc.texte_corr + "\" >\n";
   //on coupe suivant '|'
-  var vals = txt.split("|");
-  if (vals.length>0 && vals[0].substr(-1) == " ") vals[0] = vals[0].slice(0,-1) + "&nbsp;";
-  if (vals.length>2 && vals[2].substr(0,1) == " ") vals[2] = "&nbsp;" + vals[2].substr(1) ;
+  var vals = txt_spaces(txt).split("|");
   if (l == 0) htm += "  <div style=\"width: 100%;\">\n"
   if (vals.length>0) htm += "  <div>" + vals[0] + "<div class=\"" + corr + "\">&nbsp;</div></div>\n";
   if (vals.length>1)
@@ -1277,8 +1280,8 @@ function multi_create_html(bloc, txt)
         if (bloc.multi_maj[idjuste - 1] == "1") tx2 = tx.substr(0,1).toUpperCase() + tx.substr(1);
         if (bloc.multi_suff[idjuste - 1] != "") tx2 = tx + bloc.multi_suff[idjuste - 1];
       }
-      htm += ">" + tx + "<span class=\"multi_ini\">" + tx +"</span></span>\n";
-      htm2 += ">" + tx2 + "</span>\n";
+      htm += ">" + txt_spaces(tx) + "<span class=\"multi_ini\">" + tx +"</span></span>\n";
+      htm2 += ">" + txt_spaces(tx2) + "</span>\n";
     }
   }
   htm += "  <img class=\"multi_cim\" />\n";
@@ -1467,7 +1470,7 @@ function texte_simple_create_html(bloc, txt)
     if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
-  htm += txt.replace(/(?:\r\n|\r|\n)/g, '<br />');
+  htm += txt_spaces(txt).replace(/(?:\r\n|\r|\n)/g, '<br />');
   htm += "</div>\n</div>\n";
   
   bloc.html = htm;

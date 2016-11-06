@@ -79,6 +79,7 @@ a.pagebilan {
   vertical-align: middle;
   margin-left: 0.5vw;
   margin-top: 1vh;
+  overflow: hidden;
 }
 #c2 {
   height: 98vh;
@@ -188,9 +189,11 @@ a.pagebilan {
 }
 .coin_d {
   position: absolute;
-  right: 0px;
+  right: -5vh;
   bottom: 0px;
   opacity: 0.2;
+  transform-origin: bottom center;
+  transform: rotate(-45deg);
 }
 .coin_d:hover {
   opacity: 1;

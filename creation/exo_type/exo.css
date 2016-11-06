@@ -1,20 +1,6 @@
 textarea {
   resize: none;
 }
-div.ligne {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2vh;/*2vh*/
-  font-size: 2vh;/*2vh*/
-  width: 100%;
-}
-div.ligne2 {
-  text-align: center;
-  margin-top: 2vh;/*2vh*/
-  font-size: 2vh;/*2vh*/
-  width: 100%;
-}
 div.lignef {
   display: flex;
   align-items: center;
@@ -63,16 +49,12 @@ ellipse {
 .radio form {
   text-align: left;
   font-weight: bold;
-  margin-left: 1vh; /*1vh*/
-  margin-right: 1vh;
 }
 .radio input {
   vertical-align: middle;
   margin: 0px;
 }
 .radiobtn form {
-  margin-left: 1vh;/*1vh*/
-  margin-right: 1vh;
 }
 .radiobtn input[type="radio"] {
     display:none; 
@@ -81,13 +63,10 @@ ellipse {
     display:inline-block;
     box-sizing: border-box;
     width: 100%;
-    padding-left: 1vh;/*1vh*/
-    padding-right: 1vh;
     -moz-user-select: none;
 }
 .combo select {
-  margin-left: 1vh;/*1vh*/
-  margin-right: 1vh;
+  font-size: inherit;
 }
 div.combo_corr {
   width: 100%;
