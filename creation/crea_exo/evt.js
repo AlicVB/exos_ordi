@@ -513,6 +513,7 @@ function cr_tp_w_change(e)
     }
   }
   //on sauvegarde
+  selection_update();
   g_sauver();
 }
 function cr_tp_h_change(e)
@@ -534,6 +535,7 @@ function cr_tp_h_change(e)
     }
   }
   //on sauvegarde
+  selection_update();
   g_sauver();
 }
 function cr_tp_t_change(e)

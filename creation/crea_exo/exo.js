@@ -855,10 +855,6 @@ function selection_update()
     document.getElementById("cr_tp_w").disabled = true;
     document.getElementById("cr_tp_h").disabled = true;
   }
-  else if (bloc.size == "ratio")
-  {
-    document.getElementById("cr_tp_h").disabled = true;
-  }
   
   // on fait les réglages spécifiques
   for (let i=0; i<selection.length; i++)
