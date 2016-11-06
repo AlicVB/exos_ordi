@@ -18,7 +18,6 @@ div.ligne2 {
 div.lignef {
   display: flex;
   align-items: center;
-  justify-content: center;
   -moz-user-select: none;
 }
 div.ligne2f {

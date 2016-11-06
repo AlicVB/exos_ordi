@@ -151,8 +151,8 @@ function file_create_css()
     if (b.font_s == "true") txt += "text-decoration: underline; ";
     if (b.font_b == "true") txt += "text-decoration: line-through; ";
     if (b.align == "1") txt += "justify-content: left; ";
-    else if (b.align == "2") txt += "justify-content: center; ";
     else if (b.align == "3") txt += "justify-content: right; ";
+    else txt += "justify-content: center; ";
     //position-taille
     txt += "position: absolute; ";
     txt += "left: " + b.left*100/443 + "%; ";
