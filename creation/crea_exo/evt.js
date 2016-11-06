@@ -729,31 +729,24 @@ function cr_inter_change(e)
     {
       selection[i].inter = "0";
       selection[i].points = "0";
-      // on enlève le lien "relier" sur l'ancienne cible
-      if (selection[i].relie_id != "")
-      {
-        relie_update_cible(bloc_get_from_id(selection[i].relie_id));
-      }
       selection[i].relie_id = "";
       selection[i].relie_cible_de = "";
+      relie_maj_cibles();
     }
     else if (e.checked && e.id == "cr_inter_2")
     {
       selection[i].inter = "2";
       selection[i].points = "0";
-      // on enlève le lien "relier" sur l'ancienne cible
-      if (selection[i].relie_id != "")
-      {
-        relie_update_cible(bloc_get_from_id(selection[i].relie_id));
-      }
       selection[i].relie_id = "";
       selection[i].relie_cible_de = "";
+      relie_maj_cibles();
     }
     else if (e.checked && e.id == "cr_inter_1")
     {
       selection[i].inter = "1";
       if (selection[i].points == "0" && selection[i].relie_id != "") selection[i].points = "1";
       selection[i].relie_cible_de = "";
+      relie_maj_cibles();
     }
     bloc_create_html(selection[i]);
   }
@@ -803,63 +796,57 @@ function cr_relie_id_change(e)
   for (let i=0; i<selection.length; i++)
   {
     bloc = selection[i];
-    let old_elems = bloc.relie_id.split("|");
     bloc.relie_id = v;
     bloc.relie_cible_de = "";
     if (v != "" && bloc.points == "0") bloc.points = "1";
     else if (v == "") bloc.points = "0";
     bloc_create_html(bloc);
-    //on change aussi les cibles
-    for (let j=0; j<elems.length; j++)
-    {
-      relie_update_cible(bloc_get_from_id(elems[j]));
-    }
-    for (let j=0; j<old_elems.length; j++)
-    {
-      relie_update_cible(bloc_get_from_id(old_elems[j]));
-    }
   }
+  relie_maj_cibles();
   selection_update();
   //on sauvegarde
   g_sauver();
 }
-function relie_update_cible(bloc)
+function relie_maj_cibles()
 {
-  console.log("hein");
-  if (!bloc) return;
-  // on parcoure tous les autres blocs pour voir ceux qui citent celui en cours
-  let cible = "";
   for (let i=0; i<blocs.length; i++)
   {
-    if (blocs[i] == bloc) continue;
-    if (blocs[i].inter != "1") continue;
-    let v = blocs[i].relie_id.split("|");
-    for (let j=0; j<v.length; j++)
+    let bloc = blocs[i];
+    let txt = "";
+    for (let j=0; j<blocs.length; j++)
     {
-      if (v[j] == bloc.id)
+      if (blocs[j] == bloc) continue;
+      if (blocs[j].inter != "1" || blocs[j].relie_id == "") continue;
+      let v = blocs[j].relie_id.split("|");
+      for (let k=0; k<v.length; k++)
       {
-        if (cible != "") cible += "|";
-        cible += blocs[i].id;
-        break;
+        if (v[k] == bloc.id)
+        {
+          if (txt != "") txt += "|";
+          txt += blocs[j].id;
+          break;
+        }
       }
     }
-  }
-  console.log(cible);
-  if (cible == "")
-  {
-    bloc.inter = "0";
-    bloc.relie_id = "";
-    bloc.relie_cible_de = "";
-    bloc.points = "0";
-    bloc_create_html(bloc);
-  }
-  else
-  {
-    bloc.inter = "1";
-    bloc.relie_id = "*";
-    bloc.relie_cible_de = cible;
-    bloc.points = "0";
-    bloc_create_html(bloc);
+    if (txt == "")
+    {
+      if (bloc.inter == "1" && bloc.relie_cible_de != "")
+      {
+        bloc.inter = "0";
+        bloc.relie_id = "";
+        bloc.points = "0";
+      }
+      bloc.relie_cible_de = "";
+      bloc_create_html(bloc);
+    }
+    else
+    {
+      bloc.inter = "1";
+      bloc.relie_id = "*";
+      bloc.relie_cible_de = txt;
+      bloc.points = "0";
+      bloc_create_html(bloc);
+    }
   }
 }
 

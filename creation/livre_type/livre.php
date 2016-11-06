@@ -101,7 +101,6 @@
     <link rel="stylesheet" href="livre.css">
     <link rel="stylesheet" href="<?php echo $exos[$exo] ?>/exo.css">
     <link rel="stylesheet" href="livre_print.css" media="print">
-    <link rel="stylesheet" href="<?php echo $exos[$exo] ?>/exo_print.css" media="print">
   </head>
   <body onload="livre_ini('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '<?php echo $root ?>/');" style="background-color: <?php echo $coul_livre ?>;">
     <div id="bysa"><img id="cc_img" src="<?php echo $root ?>/icons/cc.svg" /><span> <?php echo $aut_livre ?></span></div>
