@@ -376,6 +376,7 @@ function cr_texte_change(e)
   {
     bloc = selection[i];
     if (bloc.tpe != "texte") continue;
+    bloc.texte_defaut = document.getElementById("cr_texte_defaut").value;
     bloc.texte_l = document.getElementById("cr_texte_l").value;
     bloc.texte_h = document.getElementById("cr_texte_h").value;
     bloc.texte_e = document.getElementById("cr_texte_e").value;

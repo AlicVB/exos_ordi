@@ -1178,7 +1178,7 @@ function texte_create_html(bloc, txt)
     htm += "  <div>\n";
     if (h > 1) htm += "   <textarea rows=\"" + h + "\" ";
     else htm += "   <input type=\"text\" ";
-    htm += "class=\"exo\" id=\"texte_" + bloc.id + "\" itemid=\"" + bloc.id + "\" onKeyUp=\"change(this)\" ";
+    htm += "class=\"exo\" id=\"texte_" + bloc.id + "\" itemid=\"" + bloc.id + "\" onKeyUp=\"change(this)\" value=\"" + bloc.texte_defaut + "\" ";
     if (enter==0 && h > 1) htm += "onkeydown=\"texte_stop_enter(event)\" ";
     if (l==0) htm += "style=\"box-sizing: border-box; width:100%;\">";
     else if (h>1) htm += "cols=\"" + l + "\">";
@@ -1200,6 +1200,7 @@ function texte_ini(bloc)
   bloc.texte_e = "0";
   bloc.texte_c = "0";
   bloc.texte_corr = "0";
+  bloc.texte_defaut = "";
 }
 function texte_sel_update()
 {
