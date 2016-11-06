@@ -12,6 +12,11 @@ var line_cur = null;
 var line_orig = null;
 var line_orig_id = "";
 
+function txt_spaces(txt)
+{
+  return txt.replace(/ /g, "&nbsp;");
+}
+
 function audio_play(e)
 {
   var id = e.id;
@@ -557,16 +562,20 @@ function texte_score(e, tt)
   {
     switch (cc)
     {
-      case 1: // comparaison sans maj début
+      case "1": // comparaison sans maj début
+        v1 = v1.replace(/ +/g, " ");
+        v1 = txt_spaces(v1);
         v1 = v1.substr(0,1).toLowerCase() + v1.substr(1);
         v2 = v2.substr(0,1).toLowerCase() + v2.substr(1);
         if (v1==v2) s = tt;
         break; 
-      case 2: // case insensitive
+      case "2": // case insensitive
+        v1 = v1.replace(/ +/g, " ");
+        v1 = txt_spaces(v1);
         if (v1.toLowerCase() == v2.toLowerCase()) s = tt;
         break; 
       default: // comparaison stricte
-        if (v1==v2) s = tt;
+        if (txt_spaces(v1)==v2) s = tt;
         break; 
     }
   }
