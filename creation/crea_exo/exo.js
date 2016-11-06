@@ -913,7 +913,7 @@ function selection_update_interactions()
 function check_new()
 {
   //on demande le texte initial
-  txt = prompt("cases à cocher\n\nEncadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $\n(Les chats sont |*des mamifères$des oiseaux*des félins|)", "");
+  txt = prompt("cases à cocher\n\nEncadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $\n(Les chats sont |*des mammifères$des oiseaux*des félins|)", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
@@ -933,7 +933,7 @@ function check_sel_update()
   if (selection.length != 1) return;
   bloc = selection[0];
   
-  document.getElementById("cr_expl").innerHTML = "<b>cases à cocher</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |*des mamifères$des oiseaux*des félins|)";
+  document.getElementById("cr_expl").innerHTML = "<b>cases à cocher</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |*des mammifères$des oiseaux*des félins|)";
   document.getElementById("cr_txt_ini_div").style.display = "block";
 }
 function check_create_html(bloc, txt)
