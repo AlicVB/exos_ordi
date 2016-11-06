@@ -877,58 +877,66 @@ function cr_points_change(e)
 
 function cr_aligne_change(id)
 {
-  
-  l = parseFloat(selection[0].left);
-  ch = l + parseFloat(selection[0].width)/2;
-  t = parseFloat(selection[0].top);
-  cv = t + parseFloat(selection[0].height)/2;
+  if (selection.length == 0) return;
+  // on regrade les extrems
+  let rec = [selection[0].left, selection[0].top, selection[0].left + selection[0].width, selection[0].top + selection[0].height];
+  for (let i=1; i<selection.length; i++)
+  {
+    rec[0] = Math.min(rec[0], selection[i].left);
+    rec[1] = Math.min(rec[1], selection[i].top);
+    rec[2] = Math.max(rec[2], selection[i].left + selection[i].width);
+    rec[3] = Math.max(rec[3], selection[i].top + selection[i].height);
+  }
+
   switch (id)
   {
     case "1": //gauche
-      for (let i=1; i<selection.length; i++)
+      for (let i=0; i<selection.length; i++)
       {
-        selection[i].left = l;
-        rendu_get_superbloc(selection[i]).style.left = l*100/443 + "px";
-        document.getElementById("cr_tp_l").value = l;
+        selection[i].left = rec[0];
+        rendu_get_superbloc(selection[i]).style.left = rec[0]*100/443 + "%";
+        document.getElementById("cr_tp_l").value = rec[0];
       }
       break;
     case "2": //centre h
-      for (let i=1; i<selection.length; i++)
+      let ch = (rec[0] + rec[2]) / 2;
+      for (let i=0; i<selection.length; i++)
       {
         selection[i].left = ch - parseFloat(selection[i].width)/2;
-        rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "px";
+        rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "%";
         document.getElementById("cr_tp_l").value = selection[i].left;
       }
       break;
     case "3": //droite
-      for (let i=1; i<selection.length; i++)
+      for (let i=0; i<selection.length; i++)
       {
-        selection[i].left = l + parseFloat(selection[0].width) - parseFloat(selection[i].width);
-        rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "px";
+        selection[i].left = rec[2] - parseFloat(selection[i].width);
+        rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "%";
         document.getElementById("cr_tp_l").value = selection[i].left;
       }
       break;
     case "4": //haut
-      for (let i=1; i<selection.length; i++)
+      for (let i=0; i<selection.length; i++)
       {
-        selection[i].top = t;
-        rendu_get_superbloc(selection[i]).style.top = t*100/631 + "px";
-        document.getElementById("cr_tp_t").value = t;
+        selection[i].top = rec[1];
+        rendu_get_superbloc(selection[i]).style.top = rec[1]*100/631 + "%";
+        document.getElementById("cr_tp_t").value = rec[1];
       }
       break;
     case "5": //centre v
-      for (let i=1; i<selection.length; i++)
+      let cv = (rec[1] + rec[3]) / 2;
+      for (let i=0; i<selection.length; i++)
       {
         selection[i].top = cv - parseFloat(selection[i].height)/2;
-        rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "px";
+        rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "%";
         document.getElementById("cr_tp_t").value = selection[i].top;
       }
       break;
     case "6": //bas
-      for (let i=1; i<selection.length; i++)
+      for (let i=0; i<selection.length; i++)
       {
-        selection[i].top = t + parseFloat(selection[0].height) - parseFloat(selection[i].height);
-        rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "px";
+        selection[i].top = rec[3] - parseFloat(selection[i].height);
+        rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "%";
         document.getElementById("cr_tp_t").value = selection[i].top;
       }
       break;
@@ -959,7 +967,7 @@ function cr_repart_change(id)
     for (let i=1; i<news.length-1; i++)
     {
       news[i].left = parseFloat(news[i-1].left) + parseFloat(news[i-1].width) + espace;
-      rendu_get_superbloc(news[i]).style.left = news[i].left*100/443 + "px";
+      rendu_get_superbloc(news[i]).style.left = news[i].left*100/443 + "%";
       document.getElementById("cr_tp_l").value = news[i].left;
     }
   }
@@ -977,7 +985,7 @@ function cr_repart_change(id)
     for (let i=1; i<news.length-1; i++)
     {
       news[i].top = parseFloat(news[i-1].top) + parseFloat(news[i-1].height) + espace;
-      rendu_get_superbloc(news[i]).style.top = news[i].top*100/631 + "px";
+      rendu_get_superbloc(news[i]).style.top = news[i].top*100/631 + "%";
       document.getElementById("cr_tp_t").value = news[i].top;
     }
   }
