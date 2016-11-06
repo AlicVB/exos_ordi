@@ -1,0 +1,135 @@
+textarea {
+  resize: none;
+}
+div.lignef {
+  display: flex;
+  align-items: center;
+  -moz-user-select: none;
+}
+div.ligne2f {
+  text-align: center;
+  -moz-user-select: none;
+}
+.image {
+  box-sizing: border-box;
+  -moz-user-select: none;
+}
+.cible {
+  box-sizing: border-box;
+  padding: 4px;
+}
+.texte_simple {
+  cursor: pointer;
+  overflow: hidden;
+  -moz-user-select: none;
+}
+.line {
+  position: absolute;
+  transform-origin: top left;
+  stroke-width: 3px;
+  stroke: #0700A3;
+  stroke-linecap: round;
+  width: 3px;
+  height: 1px;
+}
+.line line {
+  cursor: pointer;
+}
+.line polygon {
+  stroke-width: 0;
+  fill: red;
+  display: none;
+}
+ellipse {
+  stroke-linecap: round;
+}
+[tpe="ligne"] line {
+  stroke-linecap: round;
+}
+.radio form {
+  text-align: left;
+  font-weight: bold;
+}
+.radio input {
+  vertical-align: middle;
+  margin: 0px;
+}
+.radiobtn form {
+}
+.radiobtn input[type="radio"] {
+    display:none; 
+}
+.radiobtn label {
+    display:inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    -moz-user-select: none;
+}
+.combo select {
+  font-size: inherit;
+}
+div.combo_corr {
+  width: 100%;
+  text-align: center;
+  display: none;
+  color: red;
+  font-weight: bold;
+}
+div.texte_corr {
+  width: 100%;
+  text-align: center;
+  display: none;
+  color: red;
+  font-weight: bold;
+}
+div.texte_corr2 {
+  width: 100%;
+  text-align: center;
+  visibility: hidden;
+  color: red;
+  font-weight: bold;
+}
+.texte input {
+  vertical-align: middle;
+  font-size: inherit;
+}
+.texte textarea {
+  font-size: inherit;
+}
+.multi span {
+  cursor: pointer;
+  -moz-user-select: none;
+}
+.multi span:hover {
+  border: 1px solid grey;
+}
+span.multi_corr {
+  border: 1px dashed red;
+  font-style: italic;
+  visibility: hidden;
+  margin-right: 2.5vh; /*2.5vh*/
+}
+img.multi_cim {
+  width: 2.5vh; /*2.5vh*/
+  vertical-align: bottom;
+}
+.line_barre {
+  color: red;
+  font-weight: bold;
+  font-size: 4vh;
+  position: absolute;
+  font-family: "sans-serif";
+}
+.audio {
+  box-sizing: border-box;
+  -moz-user-select: none;
+}
+.audio_src {
+  display: none;
+}
+.multi_ini {
+  display: none;
+}
+svg {
+  overflow: visible;
+}

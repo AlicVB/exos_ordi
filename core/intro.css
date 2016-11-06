@@ -1,0 +1,80 @@
+@font-face {
+  font-family: StayPuft
+  src: url(../StayPuft.ttf)
+}
+@font-face {
+  font-family: handfont
+  src: url(../handfont.ttf)
+}
+body {
+  text-align: center;
+}
+#c1 {
+  margin-left: auto;
+  margin-right: auto;
+  width: 68vh;
+  height: 94vh;
+  border: 5px solid grey;
+  border-radius: 10px;
+  background-color: #EEEFE4;
+  font-size: 1.8vh;
+  padding: 2px;
+  position: relative;
+}
+#titrelivre {
+  font-family: StayPuft;
+  font-weight: bold;
+  font-size: 7vh;
+  width: 100%
+}
+#details {
+  font-family: handfont;
+  font-size: 3vh;
+  color: blue;
+  width: 100%;
+  margin-top: 1vh;
+}
+#aideimg {
+  position: absolute;
+  width: 5vh;
+  visibility: hidden;
+}
+#basdiv {
+  position: absolute;
+  bottom: 2px;
+  left: 0px;
+  width: 100%;
+  text-align: right;
+}
+#gotxt {
+  font-size: 5vh;
+  vertical-align: middle;
+  display: inline-block;
+}
+#goimg {
+  height: 12vh;
+  padding-left: 1vh;
+  vertical-align: middle;
+}
+#bysa {
+  text-align: center;
+}
+#bysa img {
+  height: 3vh;
+  vertical-align: middle;
+}
+#gpl {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  font-size: 1.6vh;
+  text-align: center;
+}
+#gplimg {
+  height: 4.5vh;
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+#exotice {
+  height: 6vh;
+}
