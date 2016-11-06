@@ -80,6 +80,7 @@ a.pagebilan {
   margin-left: 0.5vw;
   margin-top: 1vh;
   overflow: hidden;
+  box-shadow: 5px 5px 5px grey;
 }
 #c2 {
   height: 98vh;
@@ -95,6 +96,7 @@ a.pagebilan {
   margin-right: 0.5vw;
   margin-top: 1vh;
   padding-top: 5px;
+  box-shadow: 5px 5px 5px grey;
 }
 #titrelivre {
   font-family: StayPuft;

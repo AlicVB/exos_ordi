@@ -1152,6 +1152,15 @@ function texte_new()
   //on crée le nouveau bloc
   bloc = bloc_new("texte", txt);
   
+  //on détecte la taille de base du texte à rentrer
+  let v = txt.split("|");
+  if (v.length>1 && v[1] != "#")
+  {
+    bloc.texte_l = v[1].length + 1;
+    bloc_create_html(bloc);
+    rendu_add_bloc(bloc);
+  }
+  
   //on le sélectionne
   selection = [bloc];
   selection_change();
@@ -1214,6 +1223,7 @@ function texte_sel_update()
   if (selection.length > 0 && selection_is_homogene("texte"))
   {
     bloc = selection[0];
+    document.getElementById("cr_texte_defaut").value = bloc.texte_defaut;
     document.getElementById("cr_texte_l").value = bloc.texte_l;
     document.getElementById("cr_texte_h").value = bloc.texte_h;
     document.getElementById("cr_texte_e").value = bloc.texte_e;
@@ -1231,6 +1241,19 @@ function multi_new()
   
   //on crée le nouveau bloc
   bloc = bloc_new("multi", txt);
+  //on règle le nombre de couleurs par défaut
+  let v = txt.split("|");
+  let nb = 0;
+  for (let i=0; i<v.length; i++)
+  {
+    let n = parseInt(v[i].substr(0,1));
+    if (!isNaN(n)) nb = Math.max(nb, n);
+  }
+  nb = Math.max(Math.min(5, nb), 2); // doit être en 2 et 5
+  bloc.multi_coul.length = nb;
+  bloc.multi_maj.length = nb;
+  bloc.multi_barre.length = nb;
+  bloc.multi_suff.length = nb;
   
   //on le sélectionne
   selection = [bloc];
@@ -1297,10 +1320,10 @@ function multi_create_html(bloc, txt)
 }
 function multi_ini(bloc)
 {
-  bloc.multi_coul = ["#00ff00", "#ff0000"];
-  bloc.multi_maj = ["0", "0"];
-  bloc.multi_suff = ["", ""];
-  bloc.multi_barre = ["0", "0"];
+  bloc.multi_coul = ["#00ff00", "#ff0000", "#0000ff", "#ffff00", "#00ffff"];
+  bloc.multi_maj = ["0", "0", "0", "0", "0"];
+  bloc.multi_suff = ["", "", "", "", ""];
+  bloc.multi_barre = ["0", "0", "0", "0", "0"];
 }
 function multi_sel_update()
 {

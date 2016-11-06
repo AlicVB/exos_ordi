@@ -181,10 +181,10 @@
         <input type="text" size="3" id="cr_coul5_suff_txt" onchange="cr_coul_change(this)" disabled/>
       </div>
       <div id="cr_texte_div">
-        par défaut <input type="text" size="50" id="cr_texte_defaut" onchange="cr_texte_change(this)"/><br/>
+        Défaut <input type="text" size="49" id="cr_texte_defaut" onchange="cr_texte_change(this)"/><br/>
         Largeur (0=infini) :
         <input type="number" value="5" min="0" max="100" id="cr_texte_l" onchange="cr_texte_change(this)" title="nombre de charactères maxi" />
-        <br/>Hauteur :
+        Hauteur :
         <input type="number" value="1" min="1" max="100"  id="cr_texte_h" onchange="cr_texte_change(this)" title="nombre de lignes" />
         <br/>Retour à la ligne :
         <select id="cr_texte_e" onchange="cr_texte_change(this)"><option value="1" selected>autorisé</option><option value="0">interdit</option></select>
