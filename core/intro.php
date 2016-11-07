@@ -1,4 +1,5 @@
 <?php
+  include("../../../core/maj.php");
   $user = (isset($_GET["user"])) ? $_GET["user"] : "";
 
   // infos sur le livre
@@ -47,7 +48,7 @@
       </div>
     </div>
     <img id="aideimg" src="<?php echo $img ?>" onload="intro_img_load()"/>
-    <div id="gpl"><img id="exotice" src="../../../exotice.svg" /><br/><img id="gplimg" src="../../../icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016</div>
+    <div id="gpl"><img id="exotice" src="../../../exotice.svg" /><br/><img id="gplimg" src="../../../icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016<br/>v <?php echo VERSION() ?></div>
   </body>
 </html>
 
