@@ -1,4 +1,5 @@
 <?php
+  include("../core/maj.php");
   // on ajoute la catégorie si besoin
    if (isset($_GET['add']))
    {
@@ -53,7 +54,7 @@
     ?>
     <div class="cat_ligne"><a class="acat" href="#" style="color:orange;" onclick="add_new()">+ nouvelle catégorie...</a></div>
   </div>
-  <img class="exotice" src="../exotice.svg" />
+  <div class="exotice"><img src="../exotice.svg" /> <span>v <?php echo VERSION() ?></span></div>
   <div class="copyright"><img src="../icons/gpl-v3-logo-nb.svg" /> © A. RENAUDIN 2016</div> 
 </body>
 </html>

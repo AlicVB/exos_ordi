@@ -20,7 +20,13 @@ img.bimg {
   position: absolute;
   left: 2%;
   top: 0%;
+}
+.exotice img {
   height: 8vh;
+}
+.exotice span {
+  padding-bottom: 1vh;
+  vertical-align: middle;
 }
 .copyright {
   position: absolute;

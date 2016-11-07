@@ -1,4 +1,5 @@
 <?php
+  include("core/maj.php");
   $fic = "utilisateurs.txt";
   if (!file_exists($fic)) file_put_contents($fic, "__TEST__|XX|grey");
 ?>
@@ -42,7 +43,7 @@
       </form>
     </div>
   </div>
-  <img class="exotice" src="exotice.svg" />
+  <div class="exotice"><img src="exotice.svg" /> <span>v <?php echo VERSION() ?></span></div>
   <div class="copyright"><img src="icons/gpl-v3-logo-nb.svg" /> © A. RENAUDIN 2016</div> 
 </body>
 </html>

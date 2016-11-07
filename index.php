@@ -1,3 +1,7 @@
+<?php
+  include("core/maj.php");
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,6 +58,6 @@
     }
     echo "</div>\n";
   ?>
-  <div id="gpl"><img id="exotice" src="exotice.svg" /><br/><img id="gplimg" src="icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016</div>
+  <div id="gpl"><img id="exotice" src="exotice.svg" /><br/><img id="gplimg" src="icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016<br/>v <?php echo VERSION() ?></div>
 </body>
 </html>

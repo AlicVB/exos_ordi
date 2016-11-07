@@ -1,4 +1,6 @@
 <?php
+  include("../core/maj.php");
+  
 function recursiveRemoveDirectory($directory)
 {
     foreach(glob("{$directory}/*") as $file)
@@ -245,7 +247,7 @@ function livre_creation($dos)
     echo "</div>";
     echo "</div>\n";
 ?>
-  <img class="exotice" src="../exotice.svg" />
+  <div class="exotice"><img src="../exotice.svg" /> <span>v <?php echo VERSION() ?></span></div>
   <div class="copyright"><img src="../icons/gpl-v3-logo-nb.svg" /> © A. RENAUDIN 2016</div> 
 </body>
 </html>
