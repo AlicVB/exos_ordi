@@ -27,19 +27,16 @@
     <a href="../admin.php"><img class="bimg" src="../icons/edit-find-replace.svg" title="logs des exercices"/></a>
   </div>
   <div id="logs">
-    <div class="cat">Catégorie : 
+    <div class="cat">Catégories : 
       <?php
       if (isset($_GET['cat']))
       {
         $cat = $_GET['cat'];
-        if ($cat == "") echo " Livres sans catégories";
-        else echo " $cat";
+        echo " $cat";
         echo "</div>";
         $cat = $_GET['cat'];
         // on parcoure tous les livres de la categorie
-        $tx = "../livres";
-        if ($cat != "") $tx .= "/$cat";
-        $livres = glob("$tx/*" , GLOB_ONLYDIR);
+        $livres = glob("../livres/$cat/*" , GLOB_ONLYDIR);
         for ($i=0; $i<count($livres); $i++)
         {
           //on regarde si le fichier du livre existe

@@ -39,7 +39,6 @@
   </div>
   <div id="logs">
     <div class="cat">catégories</div>
-    <div class="cat_ligne"><a class="acat" href="view_cat.php?cat=" style="color:black;">Livres sans categorie</a></div>
     <?php
       // on parcoure toutes les categories
       $cats = glob("../livres/*" , GLOB_ONLYDIR);
