@@ -215,9 +215,9 @@ div.coin_g:hover {
 #bysa {
   position: absolute;
   transform:rotate(-90deg);
-  transform-origin: top left;
-  left: 0px;
-  bottom: 0px;
+  transform-origin: bottom left;
+  left: 16px;
+  bottom: 1px;
   font-size: 10px;
 }
 #bysa img {
@@ -229,4 +229,17 @@ div.coin_g:hover {
   position: absolute;
   top: 0;
   right: 2px;
+}
+#version2 {
+  position: absolute;
+  transform:rotate(180deg);
+  right: 1px;
+  bottom: 1px;
+}
+#version {
+  position: absolute;
+  transform:rotate(90deg);
+  transform-origin: bottom left;
+  font-size: 10px;
+  white-space: nowrap;
 }

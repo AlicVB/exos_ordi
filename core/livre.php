@@ -1,4 +1,6 @@
 <?php 
+  include("../../../core/maj.php");
+  
   // infos sur le chemin du livre
   $livreid = basename(dirname($_SERVER['PHP_SELF']));
   
@@ -96,8 +98,8 @@
     <link rel="stylesheet" href="../../../core/livre_print.css" media="print">
   </head>
   <body onload="livre_ini('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '../../../');" style="background-color: <?php echo $coul_livre ?>;">
-    <div id="bysa"><img id="cc_img" src="../../../icons/cc.svg" /><span> <?php echo $aut_livre ?></span></div>
     <div id="c2" style="background-color: <?php echo $exo_coul ?>;">
+      <span id="version2" ><span id="version">version&nbsp;&nbsp;<?php echo VERSION() ?></span></span>
       <span id="titrelivre"><?php echo $titre_livre ?></span>
       <br/><span id="titreexo"><?php echo $titre_exo ?></span>
       <br/><div id="consigne">
@@ -157,6 +159,7 @@
         }
       ?>
       <img id="exotice" src="../../../exotice.svg" />
+      <div id="bysa"><img id="cc_img" src="../../../icons/cc.svg" /><span> <?php echo $aut_livre ?></span></div>
     </div>
   </body>
 </html>
