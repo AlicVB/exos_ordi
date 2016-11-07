@@ -99,7 +99,7 @@ function record_ini(e)
   document.getElementById(pre + "_record_delete").style.display = "none";
   document.getElementById(pre + "_record_start").setAttribute("etat", "0");
   document.getElementById(pre + "_record_start").style.backgroundColor = "#D8D8D8";
-  document.getElementById(pre + "_record_start").src = "icons/media-record.svg";
+  document.getElementById(pre + "_record_start").src = "../../icons/media-record.svg";
   document.getElementById(pre + "_record_div").style.display = "inline-block";
 
   if (record.promise) return; //on a déjà initialiser !
@@ -113,7 +113,7 @@ function record_start(el)
   var pre = el.id.substr(0,2);
   document.getElementById(pre + "_record_start").setAttribute("etat", "1");
   document.getElementById(pre + "_record_start").style.backgroundColor = "red";
-  document.getElementById(pre + "_record_start").src = "icons/media-playback-stop.svg";
+  document.getElementById(pre + "_record_start").src = "../../icons/media-playback-stop.svg";
   record.recorder = new MediaRecorder(record.stream);
   record.recorder.ondataavailable = function(e) {record.chunks.push(e.data);};
   record.recorder.onstop = function(e) {record_fin(e, el);};
@@ -128,7 +128,7 @@ function record_stop(e)
   console.log("recorder stopped " + record.recorder.state);
   document.getElementById(pre + "_record_start").setAttribute("etat", "2");
   document.getElementById(pre + "_record_start").style.backgroundColor = "#D8D8D8";
-  document.getElementById(pre + "_record_start").src = "icons/media-playback-start.svg";
+  document.getElementById(pre + "_record_start").src = "../../icons/media-playback-start.svg";
   document.getElementById(pre + "_record_save").style.display = "inline";
   document.getElementById(pre + "_record_delete").style.display = "inline";
 }
