@@ -1,4 +1,5 @@
 <?php
+  include("../../core/maj.php");
   // on récupère les paramètres
   if (!isset($_GET['exo']) || !isset($_GET['cat']) || !isset($_GET['livre']))
   {
@@ -290,7 +291,7 @@
     
     <div class="sep">&nbsp;</div>
     
-    <div id="gpl"><img id="exotice2" src="../../exotice.svg" /><br/><img id="gplimg" src="../../icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016</div>
+    <div id="gpl"><img id="exotice2" src="../../exotice.svg" /><br/><img id="gplimg" src="../../icons/gpl-v3-logo-nb.svg" /><br/>© A. RENAUDIN 2016<br />v <?php echo VERSION() ?></div>
   </div>
 </div>
 <div id="cm_aligne" class="cm">
