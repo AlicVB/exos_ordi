@@ -99,7 +99,7 @@
   </head>
   <body onload="livre_ini('<?php echo $user ?>', '<?php echo $livreid ?>', '<?php echo $exos[$exo] ?>', '<?php echo $txt ?>', '../../../');" style="background-color: <?php echo $coul_livre ?>;">
     <div id="c2" style="background-color: <?php echo $exo_coul ?>;">
-      <span id="version2" ><span id="version">version&nbsp;&nbsp;<?php echo VERSION() ?></span></span>
+      <span id="version2" ><span id="version">v&nbsp;&nbsp;<?php echo VERSION() ?></span></span>
       <span id="titrelivre"><?php echo $titre_livre ?></span>
       <br/><span id="titreexo"><?php echo $titre_exo ?></span>
       <br/><div id="consigne">

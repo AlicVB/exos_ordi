@@ -6,9 +6,11 @@
 # commit à partir duquel compter le nb de révision pour la dernière partie de la numérotation
 ini="cf79d6299ee1d385eff83dce34bd97ac86f11db5"
 
-v=`cat VERSION`
+v=$(head -n 1 VERSION)
 let "a=v/1000"
 let "b=a*1000"
 nb=`git rev-list --count $ini..HEAD`
+rev=`git rev-parse --short HEAD`
 let "v=b+nb"
 echo $v > VERSION
+echo $rev >> VERSION

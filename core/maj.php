@@ -19,11 +19,12 @@
     $f = _V_get_fic();
     if ($f == "") return "??????";
 
-    $v = $v2 = file_get_contents("$f");
-    $v1 = (int)($v/100000);
-    $v2 = (int)(($v%100000)/1000);
-    $v3 = (int)(($v%100000)%1000);
-    return $v1.".".$v2.".".$v3;
+    $v = explode("\n", file_get_contents("$f"));
+    $v1 = (int)($v[0]/100000);
+    $v2 = (int)(($v[0]%100000)/1000);
+    $v3 = (int)(($v[0]%100000)%1000);
+    if (count($v)>1) return $v1.".".$v2.".".$v3."_".$v[1];
+    else return $v1.".".$v2.".".$v3;
   }
 
   function MAJ($dos)
@@ -35,8 +36,8 @@
     if ($FV == "") return;
     
     // on récupère les versions
-    $v1 = file_get_contents("$dos/version");
-    $v2 = file_get_contents("$FV");
+    $v1 = explode("\n", file_get_contents("$dos/version"))[0];
+    $v2 = explode("\n", file_get_contents("$FV"))[0];
     if ($v1 >= $v2) return;
     
     // on regarde si c'est un livre ou un exo
