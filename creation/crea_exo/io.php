@@ -74,6 +74,8 @@ function free_path($fic)
     {
       $v = $_POST["v"];
       file_put_contents($fic, $v);
+      //on met à jour la version
+      copy("../../VERSION", dirname($fic)."/version");
     }
   }
   echo $ret;

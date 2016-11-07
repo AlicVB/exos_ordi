@@ -79,5 +79,7 @@ function wd_remove_accents($str, $charset='utf-8')
     $fic = $_POST["fic"];
     $v = $_POST["v"];
     file_put_contents($fic, $v);
+    //on met à jour le fichier de version
+    copy("../VERSION", dirname($fic)."/version");
   }
 ?>

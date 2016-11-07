@@ -23,12 +23,11 @@
   
   //on crée les fichier qu'il faut si besoin
   if (!file_exists($dos_e)) mkdir("$dos_e", 0777, true);
-  if (!file_exists("$dos_e/charge.php")) copy("../exo_type/charge.php", "$dos_e/charge.php");
-  if (!file_exists("$dos_e/sauve.php")) copy("../exo_type/sauve.php", "$dos_e/sauve.php");
-  if (!file_exists("$dos_e/exo.css")) copy("../exo_type/exo.css", "$dos_e/exo.css");
-  if (!file_exists("$dos_e/exo.js")) copy("../exo_type/exo.js", "$dos_e/exo.js");
+  if (!file_exists("$dos_e/charge.php")) file_put_contents("$dos_e/charge.php", "<?php include(\"../../../core/charge.php\"); ?>");
+  if (!file_exists("$dos_e/sauve.php")) file_put_contents("$dos_e/sauve.php", "<?php include(\"../../../core/sauve.php\"); ?>");
   if (!file_exists("$dos_e/exo.php")) file_put_contents("$dos_e/exo.php", "");
   if (!file_exists("$dos_e/exo.txt")) file_put_contents("$dos_e/exo.txt", "");
+  if (!file_exists("$dos_e/version")) copy("../../VERSION", "$dos_e/version");
 ?>
 <!DOCTYPE html>
 <html>

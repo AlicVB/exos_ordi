@@ -47,13 +47,11 @@ function livre_creation($dos)
   if (!file_exists("$dos/exos")) mkdir("$dos/exos", 0777, true);
   if (!file_exists("$dos/img")) mkdir("$dos/img", 0777, true);
   if (!file_exists("$dos/sons")) mkdir("$dos/sons", 0777, true);
-  if (!file_exists("$dos/livre.php")) copy("livre_type/livre.php", "$dos/livre.php");
-  if (!file_exists("$dos/livre.css")) copy("livre_type/livre.css", "$dos/livre.css");
-  if (!file_exists("$dos/livre.js")) copy("livre_type/livre.js", "$dos/livre.js");
-  if (!file_exists("$dos/bilan.php")) copy("livre_type/bilan.php", "$dos/bilan.php");
-  if (!file_exists("$dos/compteur.php")) copy("livre_type/compteur.php", "$dos/compteur.php");
-  if (!file_exists("$dos/intro.php")) copy("livre_type/intro.php", "$dos/intro.php");
-  if (!file_exists("$dos/intro.css")) copy("livre_type/intro.css", "$dos/intro.css");
+  if (!file_exists("$dos/livre.php")) file_put_contents("$dos/livre.php", "<?php include(\"../../../core/livre.php\"); ?>");
+  if (!file_exists("$dos/bilan.php")) file_put_contents("$dos/bilan.php", "<?php include(\"../../../core/bilan.php\"); ?>");
+  if (!file_exists("$dos/compteur.php")) file_put_contents("$dos/compteur.php", "<?php include(\"../../../core/compteur.php\"); ?>");
+  if (!file_exists("$dos/intro.php")) file_put_contents("$dos/intro.php", "<?php include(\"../../../core/intro.php\"); ?>");
+  if (!file_exists("$dos/version")) copy("../VERSION", "$dos/version");
 }
   
   //on traite d'abord des actions à faire
@@ -61,7 +59,7 @@ function livre_creation($dos)
   {
     $dos = "../livres";
     $cat = $_GET['cat'];
-    if ($cat != "") $dos .= "/$cat";
+    $dos .= "/$cat";
     $dos1 = "$dos/{$_GET['livre']}";
     $dos .= "/{$_GET['livre']}/exos";
     $dos2 = "$dos/{$_GET['exo']}";
@@ -122,9 +120,7 @@ function livre_creation($dos)
   {
     $cat = $_GET['cat'];
     $livre = $_GET['livre'];
-    $dos = "../livres";
-    if ($cat != "") $dos .= "/$cat";
-    $dos .= "/$livre";
+    $dos = "../livres/$cat/$livre";
     livre_creation($dos);
     $titre = $livre;
     $aut = "";
