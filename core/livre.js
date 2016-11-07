@@ -80,7 +80,7 @@ function consigne_play()
 function copy_set_style()
 {
   //on récupère la couleur de fond et on décompose
-  c = document.body.style.backgroundColor;
+  c = document.getElementById("c1").style.backgroundColor;
   var rgb = c.match(/\d+/g);
   if (rgb.length>2)
   {
@@ -94,11 +94,11 @@ function copy_set_style()
 
 function livre_ini(_user, _livreid, _exoid, txt_exo, _root)
 {
-  copy_set_style();
   //on règle les tailles si besoin, histoire que tout passe bien
   window.addEventListener("resize", page_resize);
   page_resize(null);
   charge(_user, _livreid, _exoid, txt_exo, _root);
+  copy_set_style();
 }
 
 function page_resize(e)
@@ -177,6 +177,7 @@ function font_resize()
     }
   }
   document.getElementById("exotice").style.height = 40*rf + "px";
+  document.getElementById("cc_img").style.height = 20*rf + "px";
 }
 
 function page_print()

@@ -261,3 +261,24 @@ input[type="number"] {
 #exotice2 {
   height: 40px;
 }
+#bysa {
+  position: absolute;
+  transform:rotate(-90deg);
+  transform-origin: top left;
+  left: 2px;
+  bottom: -1%;
+  font-size: 10px;
+}
+#bysa img {
+  height: 15px;
+  vertical-align: middle;
+}
+#coin_img {
+  position: absolute;
+  right: -7%;
+  bottom: 0px;
+  opacity: 0.2;
+  transform-origin: bottom center;
+  transform: rotate(-45deg);
+  width: 14%;
+}

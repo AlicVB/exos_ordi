@@ -149,7 +149,7 @@
     </div>
     <?php if ($exo_image_hover != "0") echo "<img id=\"aide\" src=\"$exo_image\"/>"; ?>
     <div id="c1" style="background-color: <?php echo $exo_coul ?>;">
-      <span fs="20" id="user">Prénom : <?php echo $user ?></span>
+      <span sss="20" id="user">Prénom : <?php echo $user ?></span>
       <?php include "$exos[$exo]/exo.php" ?>
       <?php
         // coins page
@@ -159,7 +159,7 @@
         }
       ?>
       <img id="exotice" src="../../../exotice.svg" />
-      <div id="bysa"><img id="cc_img" src="../../../icons/cc.svg" /><span> <?php echo $aut_livre ?></span></div>
+      <div sss="15" id="bysa"><img id="cc_img" src="../../../icons/cc.svg" /><span> <?php echo $aut_livre ?></span></div>
     </div>
   </body>
 </html>

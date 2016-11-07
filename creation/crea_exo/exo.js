@@ -42,6 +42,8 @@ function rendu_autosize(e)
   {
     document.getElementById("exotice").style.height = 40*rendu.height/1000 + "px";
     document.getElementById("user").style.fontSize = 20*rendu.height/1000 + "px";
+    document.getElementById("bysa").style.fontSize = 15*rendu.height/1000 + "px";
+    document.getElementById("cc_img").style.height = 20*rendu.height/1000 + "px";
   }
   for (let i=0; i<blocs.length; i++)
   {
@@ -572,8 +574,10 @@ function infos_ini()
 //on initialise la zone de rendu (uniquement le prénom)
 function rendu_ini()
 {
-  let htm = "<span fs=\"20\" id=\"user\">Prénom : Exemple-Prénom</span>\n";
+  let htm = "<span sss=\"20\" id=\"user\">Prénom : Exemple-Prénom</span>\n";
   htm += "<img id=\"exotice\" src=\"../../exotice.svg\" />";
+  htm += "<div sss=\"15\" id=\"bysa\"><img id=\"cc_img\" src=\"../../icons/cc.svg\" /><span> Nom de l'Auteur</span></div>";
+  htm += "<img id=\"coin_img\" src=\"../../icons/go-next_coin.svg\" />";
   document.getElementById("cr_rendu").innerHTML = htm;
   document.getElementById("exotice").style.height = 40*rendu.height/1000 + "px";
   document.getElementById("user").style.fontSize = 20*rendu.height/1000 + "px";

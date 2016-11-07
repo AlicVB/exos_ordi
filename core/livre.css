@@ -191,7 +191,7 @@ a.pagebilan {
 }
 .coin_d {
   position: absolute;
-  right: -5vh;
+  right: -7%;
   bottom: 0px;
   opacity: 0.2;
   transform-origin: bottom center;
@@ -210,14 +210,14 @@ div.coin_g:hover {
   opacity: 1;
 }
 #coinimg {
-  width: 10vh;
+  width: 14%;
 }
 #bysa {
   position: absolute;
   transform:rotate(-90deg);
-  transform-origin: bottom left;
-  left: 16px;
-  bottom: 1px;
+  transform-origin: top left;
+  left: 2px;
+  bottom: -1%;
   font-size: 10px;
 }
 #bysa img {
