@@ -1,4 +1,5 @@
 <?php
+  include("../../core/maj.php");
   // on récupère les paramètres
   if (!isset($_GET['exo']) || !isset($_GET['cat']) || !isset($_GET['livre']))
   {
@@ -239,6 +240,6 @@
       <a id="cri_mod_gestion" href="modeles.php" target="_blank"></a>
     </p>
   </div>
-  <div id="gpl"><img id="exotice" src="../../exotice.svg" /><br/><img id="gplimg" src="../../icons/gpl-v3-logo-nb.svg" /> © A. RENAUDIN 2016</div>
+  <div id="gpl"><img id="exotice" src="../../exotice.svg" /><br/><img id="gplimg" src="../../icons/gpl-v3-logo-nb.svg" /> <span>© A. RENAUDIN 2016<br />v <?php echo VERSION() ?></span></div>
 </body>
 </html>
