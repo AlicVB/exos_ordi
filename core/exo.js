@@ -1,18 +1,18 @@
 "use strict";
 
-var msgs;
-var livreid;
-var exoid;
-var user;
-var essai_max;
-var essai_cur = 0;
-var actif = true;
-var root;
-var total;
+let msgs;
+let livreid;
+let exoid;
+let user;
+let essai_max;
+let essai_cur = 0;
+let actif = true;
+let root;
+let total;
 
-var line_cur = null;
-var line_orig = null;
-var line_orig_id = "";
+let line_cur = null;
+let line_orig = null;
+let line_orig_id = "";
 
 function txt_spaces(txt)
 {
@@ -710,7 +710,7 @@ function sauve()
 
 function read_details(txt_exo)
 {
-  let msgs = new Array(6);
+  msgs = new Array(6);
   // on sépare par lignes
   let vals = txt_exo.split("§");
   
@@ -788,7 +788,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
       // on met les bonnes valeurs aux bons endroits
       let elems = document.getElementsByClassName('exo');
       let sav = null;
-      sav = JSON.parse(xhr.responseText);
+      if (xhr.responseText.trim() != "") sav = JSON.parse(xhr.responseText);
       if (sav)
       {
         for (let i=0; i<elems.length; i++)
@@ -931,8 +931,8 @@ function affiche_score(sauve)
   {
     if (np>=msgs[i].min)
     {
+      let btn = "";
       if (msgs[i].re == "1") btn = "<br/><a href=\"javascript:window.location.reload(true)\" id=\"rea\">Réessayer</a>";
-      else btn = "";
       etxt.innerHTML = msgs[i].txt + btn;
       etxt.style.borderColor = msgs[i].coul;
       eflagimg.src = msgs[i].icon;

@@ -140,7 +140,7 @@
           if ($lien_next != "") echo "<a href=\"$lien_next\"><img style=\"height: 3vh; vertical-align: bottom;\" src=\"../../../icons/go-next.svg\" /></a>\n";
         ?>
       </div>
-      <?php if ($exo_image_hover == "0") echo "<img id=\"aide\" src=\"$exo_image\"  onload=\"intro_img_load(this)\"/>"; ?>
+      <?php if ($exo_image_hover == "0") echo "<img id=\"aide\" src=\"$exo_image\"/>"; ?>
       <div id="exitdiv">
         <a href="../../../sommaire.php?user=<?php echo $user ?>"><img id="exitimg" src="../../../icons/edit-undo.svg" /></a>
         <img onclick="page_print()" id="exitimg" src="../../../icons/printer.svg" />
