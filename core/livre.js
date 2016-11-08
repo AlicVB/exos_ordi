@@ -141,8 +141,8 @@ function font_resize()
 {
   //et on met les tailles de la partie de droite comme il faut
   let elems = document.getElementById("c1").querySelectorAll("[sss]");
-  let rf = parseFloat(document.getElementById("c1").offsetHeight)/1000;
-  let rw = parseFloat(document.getElementById("c1").offsetWidth)/443;
+  let rf = (parseFloat(document.getElementById("c1").offsetHeight)-10)/1000;
+  let rw = (parseFloat(document.getElementById("c1").offsetWidth)-10)/443;
   for (let i=0; i<elems.length; i++)
   {
     let vv = elems[i].getAttribute("sss").split("|");

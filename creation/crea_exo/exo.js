@@ -37,8 +37,8 @@ function rendu_autosize(e)
     r.style.height = vh + "px";
     r.style.width = vh*453/641 + "px";
   }
-  rendu.height = parseFloat(r.style.height);
-  rendu.width = parseFloat(r.style.width);
+  rendu.height = parseFloat(r.style.height)-10;
+  rendu.width = parseFloat(r.style.width)-10;
   document.getElementById("cr_opt").style.height = (vh-10) + "px";
   if (document.getElementById("exotice"))
   {
@@ -181,7 +181,7 @@ function file_create_css()
     }
     if (b.tpe == "ligne")
     {
-      txt += "transform-origin: top left; ";
+      txt += "transform-origin: top center; ";
       txt += "width: 3px; ";
       txt += "height: " + b.height*100/631 + "%; ";
     }
@@ -678,7 +678,7 @@ function rendu_add_bloc(bloc)
   }
   b.style.left = bloc.left*100/443 + "%";
   b.style.top = bloc.top*100/631 + "%";
-  if (bloc.tpe == "ligne") b.style.transformOrigin = "top left";
+  if (bloc.tpe == "ligne") b.style.transformOrigin = "top center";
   if (bloc.rotation != "0") b.style.transform = "rotate(" + bloc.rotation + "deg)";
   if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
   {
@@ -735,8 +735,8 @@ function rendu_select_blocs()
   if (selection.length == 1 && selection[0].tpe == "ligne")
   {
     let b = selection[0];
-    c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left*rendu.width/443-4) + "px;top: " + (b.top*rendu.height/631-4) + "px;\"></div>";
-    c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2*rendu.width/443-4) + "px;top: " + (b.y2*rendu.height/631-4) + "px;\"></div>";
+    c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + ((parseFloat(b.left)+1.5)*rendu.width/443-4) + "px;top: " + (b.top*rendu.height/631-4) + "px;\"></div>";
+    c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + ((b.x2+1.5)*rendu.width/443-4) + "px;top: " + (b.y2*rendu.height/631-4) + "px;\"></div>";
     document.getElementById("cr_rendu").innerHTML += c1 + c2;
   }
 }
