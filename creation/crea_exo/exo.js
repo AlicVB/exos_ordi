@@ -1,13 +1,15 @@
-var blocs = new Array();  // c'est un tableau qui rescence les données de chaque bloc
-var selection = new Array();  // c'est un tableau avec les indices de blocs sélectionnés
+"use strict";
 
-var last_id = 0;    // dernier id utilisé
+let  blocs = new Array();  // c'est un tableau qui rescence les données de chaque bloc
+let  selection = new Array();  // c'est un tableau avec les indices de blocs sélectionnés
 
-var exo_dos = ""  //chemin vers le dossier de l'exercice
+let  last_id = 0;    // dernier id utilisé
 
-var record = {};  //objet contenant tout ce qu'il faut pour enregistrer
+let  exo_dos = ""  //chemin vers le dossier de l'exercice
 
-var rendu = {}; //objet contenant la taille actuelle intérieure du rendu
+let  record = {};  //objet contenant tout ce qu'il faut pour enregistrer
+
+let  rendu = {}; //objet contenant la taille actuelle intérieure du rendu
 
 function change(e)
 {
@@ -77,24 +79,24 @@ function start(dos)
 
 function hex2rgb(hex)
 {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  var r = parseInt(result[1], 16);
-  var g = parseInt(result[2], 16);
-  var b = parseInt(result[3], 16);
+  let  result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  let  r = parseInt(result[1], 16);
+  let  g = parseInt(result[2], 16);
+  let  b = parseInt(result[3], 16);
   return "rgb(" + r + ", " + g + ", " + b + ")";
 }
 function hex2rgba(hex, alpha)
 {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  var r = parseInt(result[1], 16);
-  var g = parseInt(result[2], 16);
-  var b = parseInt(result[3], 16);
+  let  result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  let  r = parseInt(result[1], 16);
+  let  g = parseInt(result[2], 16);
+  let  b = parseInt(result[3], 16);
   return "rgba(" + r + ", " + g + ", " + b + ", " + (alpha/100) + ")";
 }
 
 function record_ini(e)
 {
-  var pre = e.id.substr(0,2);
+  let  pre = e.id.substr(0,2);
   //on gère l'affichage
   document.getElementById(pre + "_record_start").style.display = "inline";
   document.getElementById(pre + "_record_save").style.display = "none";
@@ -112,7 +114,7 @@ function record_ini(e)
 }
 function record_start(el)
 {
-  var pre = el.id.substr(0,2);
+  let  pre = el.id.substr(0,2);
   document.getElementById(pre + "_record_start").setAttribute("etat", "1");
   document.getElementById(pre + "_record_start").style.backgroundColor = "red";
   document.getElementById(pre + "_record_start").src = "../../icons/media-playback-stop.svg";
@@ -125,7 +127,7 @@ function record_start(el)
 }
 function record_stop(e)
 {
-  var pre = e.id.substr(0,2);
+  let  pre = e.id.substr(0,2);
   record.recorder.stop();
   console.log("recorder stopped " + record.recorder.state);
   document.getElementById(pre + "_record_start").setAttribute("etat", "2");
@@ -136,18 +138,18 @@ function record_stop(e)
 }
 function record_fin(e, el)
 {
-  var pre = el.id.substr(0,2);
+  let  pre = el.id.substr(0,2);
   record.blob = new Blob(record.chunks, { 'type' : 'audio/ogg; codecs=opus' });
-  var audioURL = window.URL.createObjectURL(record.blob);
+  let  audioURL = window.URL.createObjectURL(record.blob);
   document.getElementById(pre + "_record_audio").src = audioURL;
 }
 
 function file_create_css()
 {
-  txt = "";
+  let txt = "";
   for (let i=0; i<blocs.length; i++)
   {
-    b = blocs[i];
+    let b = blocs[i];
     txt += "[id=\"" + b.id + "\"] {";
     //police
     txt += "font-family: \"" + b.font_fam + "\"; ";
@@ -231,7 +233,7 @@ function file_create_css()
 function file_sauve(fic, txt)
 {
   let xhr = new XMLHttpRequest();
-  ligne = "io=sauve&fic=" + fic + "&v=" + encodeURIComponent(txt);
+  let ligne = "io=sauve&fic=" + fic + "&v=" + encodeURIComponent(txt);
   xhr.open("POST", "io.php" , true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(ligne);
@@ -239,7 +241,7 @@ function file_sauve(fic, txt)
 function g_exporter()
 {
   // on commence le décodage
-  txt = "<style>\n" + file_create_css() + "</style>\n\n";
+  let txt = "<style>\n" + file_create_css() + "</style>\n\n";
   for (let i=0; i<blocs.length; i++)
   {
     txt += blocs[i].html + "\n";
@@ -280,7 +282,7 @@ function g_restaurer_hist(delta)
   last_id = 0;
   selection_change();
   // on met les bonnes valeurs aux bons endroits
-  var b = null;
+  let  b = null;
   b = JSON.parse(txt);
   if (b) blocs = b;
   for (let i=0; i<blocs.length; i++)
@@ -306,8 +308,8 @@ function g_restaurer(init)
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
       // on met les bonnes valeurs aux bons endroits
-      var rep = xhr.responseText;
-      var b = null;
+      let  rep = xhr.responseText;
+      let  b = null;
       if (rep != "") b = JSON.parse(rep);
       if (b) blocs = b;
       last_id = 0;
@@ -339,8 +341,8 @@ function g_restaurer_info(init)
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
       // on met les bonnes valeurs aux bons endroits
-      var vals = [];
-      var rep = xhr.responseText;
+      let  vals = [];
+      let  rep = xhr.responseText;
       let tosave = false;
       if (rep.length > 3 && rep.substr(0,4) == "****")
       {
@@ -353,7 +355,7 @@ function g_restaurer_info(init)
       {
         infos.titre = vals[0];
         infos.consigne = vals[1];
-        vv = vals[2].split("|");
+        let vv = vals[2].split("|");
         if (vv.length>1)
         {
           infos.total = vv[0];
@@ -361,7 +363,7 @@ function g_restaurer_info(init)
         }
         for (let i=0; i<6; i++)
         {
-          let vv = vals[i+3].split("|");
+          vv = vals[i+3].split("|");
           if (vv.length>3)
           {
             infos.a[i].min = vv[0];
@@ -376,7 +378,7 @@ function g_restaurer_info(init)
         if (vals.length>12) infos.show_bilan = vals[12];
         if (vals.length>13)
         {
-          let vv = vals[13].split("|");
+          vv = vals[13].split("|");
           if (vv.length>1)
           {
             infos.image = vv[0];
@@ -483,10 +485,10 @@ function bloc_mousedown(elem, event)
   if (elem.id == "cr_rendu") return;
   
   // on récupère le bloc correspondant
-  bloc = bloc_get_from_id(elem.id.substr(9));
+  let bloc = bloc_get_from_id(elem.id.substr(9));
   
   //on regarde si il est déjà sélectionné
-  deja = -1;
+  let deja = -1;
   for (let i=0; i<selection.length; i++)
   {
     if (selection[i].id == bloc.id)
@@ -589,13 +591,13 @@ function rendu_add_bloc(bloc)
   // 2 cas : soit le bloc est déjà dans le rendu (modif) soit il faut l'ajouter
   if (document.getElementById("cr_rendu_" + bloc.id))
   {
-    var htm = bloc.html + "\n<div class=\"couverture\"></div>";
+    let  htm = bloc.html + "\n<div class=\"couverture\"></div>";
     document.getElementById("cr_rendu_" + bloc.id).innerHTML = htm;
   }
   else
   {
     // on crée le bloc
-    var htm = "<div class=\"cr_rendu_bloc ";
+    let  htm = "<div class=\"cr_rendu_bloc ";
     if (bloc.size == "ratio") htm += "mv_rs\" ";
     else if (bloc.size == "manuel") htm += "mv_rsl\" ";
     else htm += "mv\" ";
@@ -678,7 +680,7 @@ function rendu_add_bloc(bloc)
   if (bloc.rotation != "0") b.style.transform = "rotate(" + bloc.rotation + "deg)";
   if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
   {
-    var svg = document.getElementById("svg_" + bloc.id);
+    let  svg = document.getElementById("svg_" + bloc.id);
     svg.style.fill = hex2rgba(bloc.fond_coul, bloc.fond_alpha);
     switch (bloc.bord)
     {
@@ -712,7 +714,7 @@ function rendu_add_bloc(bloc)
 function rendu_select_blocs()
 {
   // on enlève toutes les bordures
-  var elems = document.getElementsByClassName('cr_rendu_bloc');
+  let  elems = document.getElementsByClassName('cr_rendu_bloc');
   for (let i=0; i<elems.length; i++)
   {
     elems[i].style.border = "hidden";
@@ -724,15 +726,15 @@ function rendu_select_blocs()
   }
   //et les carrés pour la ligne
   //on enlève les carrés existants
-  var c1 = document.getElementById("extrema_1");
-  var c2 = document.getElementById("extrema_2");
+  let  c1 = document.getElementById("extrema_1");
+  let  c2 = document.getElementById("extrema_2");
   if (c1) c1.parentNode.removeChild(c1);
   if (c2) c2.parentNode.removeChild(c2);
   if (selection.length == 1 && selection[0].tpe == "ligne")
   {
-    var b = selection[0];
-    var c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left*rendu.width/443-4) + "px;top: " + (b.top*rendu.height/631-4) + "px;\"></div>";
-    var c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2*rendu.width/443-4) + "px;top: " + (b.y2*rendu.height/631-4) + "px;\"></div>";
+    let  b = selection[0];
+    let  c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left*rendu.width/443-4) + "px;top: " + (b.top*rendu.height/631-4) + "px;\"></div>";
+    let  c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2*rendu.width/443-4) + "px;top: " + (b.y2*rendu.height/631-4) + "px;\"></div>";
     document.getElementById("cr_rendu").innerHTML += c1 + c2;
   }
 }
@@ -782,7 +784,7 @@ function selection_update()
 {
   // désactivations gloables
   // on masque toutes les options
-  var elems = document.getElementsByClassName('cr_coul');
+  let  elems = document.getElementsByClassName('cr_coul');
   for (let i=0; i<elems.length; i++)
   {
     elems[i].style.display = 'none';
@@ -794,6 +796,7 @@ function selection_update()
   document.getElementById("cr_audio_get_div").style.display = "none";
   document.getElementById("cr_expl").innerHTML = "";
   
+  let bloc = null;
   if (selection.length == 0)
   {
     bloc = {};
@@ -849,7 +852,7 @@ function selection_update()
   document.getElementById("cr_points").value = bloc.points;
 
   //on enabled tous les éléments classiques. Charge aux code specifiques de les désactiver
-  var elems = document.getElementsByClassName('cr_');
+  let  elems = document.getElementsByClassName('cr_');
   for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = false;
@@ -884,7 +887,7 @@ function selection_update()
 function selection_update_interactions()
 {
   if (selection.length == 0) return;
-  bloc = selection[0];
+  let bloc = selection[0];
   //interactions
   document.getElementById("cr_inter_0").disabled = false;
   document.getElementById("cr_inter_1").disabled = false;
@@ -920,11 +923,11 @@ function selection_update_interactions()
 function check_new()
 {
   //on demande le texte initial
-  txt = prompt("cases à cocher\n\nEncadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $\n(Les chats sont |*des mammifères$des oiseaux*des félins|)", "");
+  let txt = prompt("cases à cocher\n\nEncadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $\n(Les chats sont |*des mammifères$des oiseaux*des félins|)", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc = bloc_new("check", txt);
+  let bloc = bloc_new("check", txt);
   
   //on le sélectionne
   selection = [bloc];
@@ -938,7 +941,7 @@ function check_sel_update()
 {
   // on récupère le bloc sélectionné
   if (selection.length != 1) return;
-  bloc = selection[0];
+  let bloc = selection[0];
   
   document.getElementById("cr_expl").innerHTML = "<b>cases à cocher</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |*des mammifères$des oiseaux*des félins|)";
   document.getElementById("cr_txt_ini_div").style.display = "block";
@@ -950,11 +953,11 @@ function check_create_html(bloc, txt)
 function radiobtn_new()
 {
   //on demande le texte initial
-  txt = prompt("boutons choix\n\nEncadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $\n(Les chats sont |$des plantes$des oiseaux*des félins|)", "");
+  let txt = prompt("boutons choix\n\nEncadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $\n(Les chats sont |$des plantes$des oiseaux*des félins|)", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc = bloc_new("radiobtn", txt);
+  let bloc = bloc_new("radiobtn", txt);
   
   //on le sélectionne
   selection = [bloc];
@@ -970,7 +973,7 @@ function radiobtn_sel_update()
   // on affiche le texte de création
   if (selection.length == 1)
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     
     document.getElementById("cr_expl").innerHTML = "<b>boutons choix</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |$des plantes$des oiseaux*des félins|)";
     document.getElementById("cr_txt_ini_div").style.display = "block";
@@ -978,7 +981,7 @@ function radiobtn_sel_update()
   //on regarde si la sélection est homogène
   if (selection.length>0 && selection_is_homogene("radiobtn"))
   {
-    var elems = document.getElementsByClassName('cr_coul');
+    let  elems = document.getElementsByClassName('cr_coul');
     elems[1].style.display = "block";
     elems[2].style.display = "block";
     document.getElementById("cr_coul1_barre").style.display = "none";
@@ -1000,11 +1003,11 @@ function radiobtn_create_html(bloc, txt)
 function radio_new()
 {
   //on demande le texte initial
-  txt = prompt("choix uniques\n\nEncadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $\n(Les chats sont |$des plantes$des oiseaux*des félins|)", "");
+  let txt = prompt("choix uniques\n\nEncadrer les choix par '|' ; Le texte à cocher commence par * Les autres par $\n(Les chats sont |$des plantes$des oiseaux*des félins|)", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc = bloc_new("radio", txt);
+  let bloc = bloc_new("radio", txt);
   
   //on le sélectionne
   selection = [bloc];
@@ -1018,7 +1021,7 @@ function radio_sel_update()
 {
   // on récupère le bloc sélectionné
   if (selection.length != 1) return;
-  bloc = selection[0];
+  let bloc = selection[0];
   
   document.getElementById("cr_expl").innerHTML = "<b>choix unique</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |$des plantes$des oiseaux*des félins|)";
   document.getElementById("cr_txt_ini_div").style.display = "block";
@@ -1026,15 +1029,15 @@ function radio_sel_update()
 function radio_create_html(bloc, txt)
 {
   // ça marche aussi pour les radiobtn et les check
-  tp = "radio";
-  cl = bloc.tpe;
+  let tp = "radio";
+  let cl = bloc.tpe;
   if (bloc.tpe == "check")
   {
     tp = "checkbox";
     cl = "radio";
   }
 
-  htm = "";
+  let htm = "";
   if (bloc.tpe == "radiobtn")
   {
     htm += "<style>[id=\"" + bloc.id + "\"] label {background-color: " + bloc.radiobtn_coul1;
@@ -1044,14 +1047,14 @@ function radio_create_html(bloc, txt)
   if (bloc.tpe == "radiobtn") htm += "options=\"" + bloc.radiobtn_coul1 + "|" + bloc.radiobtn_coul2 + "\" ";
   htm += ">\n";
   //on coupe suivant '|'
-  var vals = txt.split("|");
+  let  vals = txt.split("|");
   if (vals.length>0) htm += "  <div>" + txt_spaces(vals[0]) + "</div>\n";
-  item = 0;
+  let item = 0;
   if (vals.length>1)
   {
     // le choix
     htm += "  <form>\n";
-    v = vals[1].replace(/\*/g,"|*").replace(/\$/g,"|$").split("|");
+    let v = vals[1].replace(/\*/g,"|*").replace(/\$/g,"|$").split("|");
     for (let k=0; k<v.length; k++)
     {
       if (v[k].startsWith("*"))
@@ -1083,11 +1086,11 @@ function radio_create_html(bloc, txt)
 function combo_new()
 {
   //on demande le texte initial
-  txt = prompt("liste déroulante\n\nEncadrer les choix par '|' ; Le texte juste commence par * Les autres par $\n(Les chats sont |$des arbres$des oiseaux*des félins|)", "");
+  let txt = prompt("liste déroulante\n\nEncadrer les choix par '|' ; Le texte juste commence par * Les autres par $\n(Les chats sont |$des arbres$des oiseaux*des félins|)", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc = bloc_new("combo", txt);
+  let bloc = bloc_new("combo", txt);
   
   //on le sélectionne
   selection = [bloc];
@@ -1095,10 +1098,10 @@ function combo_new()
 }
 function combo_create_html(bloc, txt)
 {
-  htm = "";
+  let htm = "";
   htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
   //on coupe suivant '|'
-  var vals = txt.split("|");
+  let  vals = txt.split("|");
   if (vals.length>0) htm += "  <div>" + txt_spaces(vals[0]) + "</div>\n";
   if (vals.length>1)
   {
@@ -1106,8 +1109,8 @@ function combo_create_html(bloc, txt)
     htm += "  <div>\n";
     htm += "    <select id=\"combo_" + bloc.id + "\" itemid=\"" + bloc.id + "\" class=\"exo\" onchange=\"change(this)\">\n";
     htm += "      <option value=\"0\">--</option>\n";
-    v = vals[1].replace(/\*/g,"|*").replace(/\$/g,"|$").split("|");
-    juste = "";
+    let v = vals[1].replace(/\*/g,"|*").replace(/\$/g,"|$").split("|");
+    let juste = "";
     for (let k=0; k<v.length; k++)
     {
       if (v[k].startsWith("*"))
@@ -1137,7 +1140,7 @@ function combo_sel_update()
 {
   // on récupère le bloc sélectionné
   if (selection.length != 1) return;
-  bloc = selection[0];
+  let bloc = selection[0];
   
   document.getElementById("cr_expl").innerHTML = "<b>liste déroulante</b><br/>Encadrer les choix par '|' ; Le texte juste commence par * Les autres par $<br/>(Les chats sont |$des arbres$des oiseaux*des félins|)";
   document.getElementById("cr_txt_ini_div").style.display = "block";
@@ -1146,11 +1149,11 @@ function combo_sel_update()
 function texte_new()
 {
   //on demande le texte initial
-  txt = prompt("zone de texte\n\nEncadrer le texte juste par '|' ('#' = tout est juste)\n(La souris|a|peur du chat)", "");
+  let txt = prompt("zone de texte\n\nEncadrer le texte juste par '|' ('#' = tout est juste)\n(La souris|a|peur du chat)", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc = bloc_new("texte", txt);
+  let bloc = bloc_new("texte", txt);
   
   //on détecte la taille de base du texte à rentrer
   let v = txt.split("|");
@@ -1168,18 +1171,18 @@ function texte_new()
 function texte_create_html(bloc, txt)
 {
   // on récupère les infos de la zone de texte
-  l = bloc.texte_l;
-  h = bloc.texte_h;
-  enter = bloc.texte_e;
-  comp = bloc.texte_c;
+  let l = bloc.texte_l;
+  let h = bloc.texte_h;
+  let enter = bloc.texte_e;
+  let comp = bloc.texte_c;
   let corr = "texte_corr";
   if (bloc.texte_corr == "1") corr += "2";
   
-  htm = "";
+  let htm = "";
   htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
   htm += comp + "|" + enter + "|" + bloc.texte_corr + "\" >\n";
   //on coupe suivant '|'
-  var vals = txt_spaces(txt).split("|");
+  let  vals = txt_spaces(txt).split("|");
   if (l == 0) htm += "  <div style=\"width: 100%;\">\n"
   if (vals.length>0) htm += "  <div>" + vals[0] + "<div class=\"" + corr + "\">&nbsp;</div></div>\n";
   if (vals.length>1)
@@ -1216,13 +1219,13 @@ function texte_sel_update()
   // on récupère le bloc sélectionné
   if (selection.length == 1)
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     document.getElementById("cr_expl").innerHTML = "<b>zone de texte</b><br/>Encadrer le texte juste par '|' ('#' = tout est juste)<br/>(La souris|a|peur du chat)";
     document.getElementById("cr_txt_ini_div").style.display = "block";
   }
   if (selection.length > 0 && selection_is_homogene("texte"))
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     document.getElementById("cr_texte_defaut").value = bloc.texte_defaut;
     document.getElementById("cr_texte_l").value = bloc.texte_l;
     document.getElementById("cr_texte_h").value = bloc.texte_h;
@@ -1236,11 +1239,11 @@ function texte_sel_update()
 function multi_new()
 {
   //on demande le texte initial
-  txt = prompt("blocs multi-positions\n\nEncadrer les blocs par '|' ; Les blocs à colorer commencent par le numéro de la couleur\n(1Le chat|2mange|les souris.)", "");
+  let txt = prompt("blocs multi-positions\n\nEncadrer les blocs par '|' ; Les blocs à colorer commencent par le numéro de la couleur\n(1Le chat|2mange|les souris.)", "");
   if (!txt) return;
   
   //on crée le nouveau bloc
-  bloc = bloc_new("multi", txt);
+  let bloc = bloc_new("multi", txt);
   //on règle le nombre de couleurs par défaut
   let v = txt.split("|");
   let nb = 0;
@@ -1261,12 +1264,12 @@ function multi_new()
 }
 function multi_create_html(bloc, txt)
 {
-  var htm = "";
+  let  htm = "";
   htm += "<div " + bloc_get_size_part(bloc) + " class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
-  var opts = "";
-  var maj = "";
-  var suff = "";
-  var barre = "";
+  let  opts = "";
+  let  maj = "";
+  let  suff = "";
+  let  barre = "";
   for (let i=0; i<bloc.multi_coul.length; i++)
   {
     if (i>0)
@@ -1283,13 +1286,13 @@ function multi_create_html(bloc, txt)
   }
   htm += " options=\"" + opts + "\" maj=\"" + maj + "\" suff=\"" + suff + "\" barre=\"" + barre + "\">\n";
   //on coupe suivant '|'
-  var vals = txt.split("|");
-  htm2 = "";
+  let vals = txt.split("|");
+  let htm2 = "";
   for (let i=0; i<vals.length; i++)
   {
     if (vals[i].length>0)
     {
-      tx = vals[i];
+      let tx = vals[i];
       htm += "  <span id=\"multi_" + bloc.id + "_" + i + "\" class=\"exo\" itemid=\"" + bloc.id + "\" onclick=\"change(this)\" ";
       htm2 += "    <span ";
       let idjuste = parseInt(tx.substr(0,1));
@@ -1330,18 +1333,18 @@ function multi_sel_update()
   // on récupère le bloc sélectionné
   if (selection.length == 1)
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     document.getElementById("cr_expl").innerHTML = "<b>blocs multi-positions</b><br/>Encadrer les blocs par '|' ; Les blocs à colorer commencent par le numéro de la couleur<br/>(1Le chat|2mange|les souris.)";
     document.getElementById("cr_txt_ini_div").style.display = "block";
   }
   
   if (selection.length > 0 && selection_is_homogene("multi"))
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     document.getElementById("cr_coul_nb").value = bloc.multi_coul.length;
     for (let i=0; i<bloc.multi_coul.length; i++)
     {
-      tx = "cr_coul" + (i+1);
+      let tx = "cr_coul" + (i+1);
       document.getElementById(tx).jscolor.fromString(bloc.multi_coul[i]);
       document.getElementById(tx + "_barre").checked = (bloc.multi_barre[i] == "1");
       document.getElementById(tx + "_maj").checked = (bloc.multi_maj[i] == "1");
@@ -1356,7 +1359,7 @@ function multi_sel_update()
 function cible_new()
 {
   //on crée le nouveau bloc
-  bloc = bloc_new("cible", "");
+  let bloc = bloc_new("cible", "");
   
   //on le sélectionne
   selection = [bloc];
@@ -1365,12 +1368,12 @@ function cible_new()
 function cible_create_html(bloc, txt)
 {
   // on récupère les infos de la zone de texte
-  l = bloc.texte_l;
-  h = bloc.texte_h;
-  enter = bloc.texte_e;
-  comp = bloc.texte_c;
+  let l = bloc.texte_l;
+  let h = bloc.texte_h;
+  let enter = bloc.texte_e;
+  let comp = bloc.texte_c;
   
-  htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" " + bloc_get_size_part(bloc);
+  let htm = "<div ondragover=\"drag_over(event)\" ondrop=\"drag_drop(event)\" " + bloc_get_size_part(bloc);
   htm += " class=\"item lignef cible exo\" tpe=\"cible\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" juste=\"" + txt + "\" points=\"" + bloc.points + "\">\n";
   htm += "</div>\n";
   
@@ -1389,7 +1392,7 @@ function cible_sel_update()
 {
   // on récupère le bloc sélectionné
   if (selection.length != 1) return;
-  bloc = selection[0];
+  let bloc = selection[0];
   
   document.getElementById("cr_expl").innerHTML = "<b>zone cible</b><br/>Identifiant des objets qui peuvent être posés<br/>séparer les identifiant par '|'";
   document.getElementById("cr_txt_ini_div").style.display = "block";
@@ -1406,7 +1409,7 @@ function cible_sel_update()
 function image_new()
 {
   //on crée le nouveau bloc
-  bloc = bloc_new("image", "");
+  let bloc = bloc_new("image", "");
   
   //on le sélectionne
   selection = [bloc];
@@ -1414,7 +1417,7 @@ function image_new()
 }
 function image_create_html(bloc, txt)
 {
-  htm = "";
+  let htm = "";
   htm += "<div";
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <img ";
@@ -1446,7 +1449,7 @@ function image_sel_update()
   // on récupère le bloc sélectionné
   if (selection.length == 1)
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     
     document.getElementById("cr_img_select").value = bloc.img_name;
     
@@ -1467,7 +1470,7 @@ function image_sel_update()
 function texte_simple_new(vide)
 {
   //on demande le texte initial
-  var txt = "";
+  let  txt = "";
   if (!vide) txt = prompt("texte\n\nTexte à insérer", "");
   if (!txt )
   {
@@ -1476,6 +1479,7 @@ function texte_simple_new(vide)
   }
   
   //on crée le nouveau bloc
+  let bloc = null;
   if (vide) bloc = bloc_new("rect", txt);
   else bloc = bloc_new("texte_simple", txt);
   //on le sélectionne
@@ -1484,7 +1488,7 @@ function texte_simple_new(vide)
 }
 function texte_simple_create_html(bloc, txt)
 {
-  htm = "<div";
+  let htm = "<div";
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <div ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
@@ -1519,7 +1523,7 @@ function texte_simple_sel_update()
   // on récupère le bloc sélectionné
   if (selection.length == 1)
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     document.getElementById("cr_expl").innerHTML = "<b>texte simple</b><br/>Entrer le texte";
     document.getElementById("cr_txt_ini_div").style.display = "block";
   }
@@ -1543,7 +1547,7 @@ function rect_sel_update()
 function audio_new()
 {
   //on crée le nouveau bloc
-  bloc = bloc_new("audio", "");
+  let bloc = bloc_new("audio", "");
   
   //on le sélectionne
   selection = [bloc];
@@ -1551,7 +1555,7 @@ function audio_new()
 }
 function audio_create_html(bloc, txt)
 {
-  htm = "";
+  let htm = "";
   htm += "<div";
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <img ";
@@ -1582,7 +1586,7 @@ function audio_sel_update()
   // on récupère le bloc sélectionné
   if (selection.length == 1)
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     
     document.getElementById("cr_audio_select").value = bloc.audio_name.substr(5);
     
@@ -1603,7 +1607,7 @@ function audio_sel_update()
 function cercle_new()
 {
   //on crée le nouveau bloc
-  bloc = bloc_new("cercle", "");
+  let bloc = bloc_new("cercle", "");
   
   //on le sélectionne
   selection = [bloc];
@@ -1612,8 +1616,7 @@ function cercle_new()
 function cercle_create_html(bloc, txt)
 {
   //on calcule tous les paramètres
-  
-  htm = "<div";
+  let htm = "<div";
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <svg ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
@@ -1624,7 +1627,7 @@ function cercle_create_html(bloc, txt)
     if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
-  var rr = 50
+  let  rr = 50
   if (bloc.bord != "hidden") rr -= parseFloat(bloc.bord_size)/2;
   htm += "<ellipse vector-effect=\"non-scaling-stroke\" cx=\"50\" cy=\"50\" rx=\"" + rr + "\" ry=\"" + rr + "\" id=\"svg_" + bloc.id + "\" />";
   htm += "</svg>\n</div>\n";
@@ -1660,7 +1663,7 @@ function cercle_sel_update()
 function ligne_new()
 {
   //on crée le nouveau bloc
-  bloc = bloc_new("ligne", "");
+  let bloc = bloc_new("ligne", "");
   
   //on le sélectionne
   selection = [bloc];
@@ -1674,14 +1677,14 @@ function ligne_calc(bloc, x1, y1, x2, y2)
   bloc.y2 = y2;
   bloc.height = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     
-  var angle = 180 / 3.1415 * Math.acos((y2 - y1) / bloc.height);
+  let  angle = 180 / 3.1415 * Math.acos((y2 - y1) / bloc.height);
   if(x2 > x1) angle *= -1;
   bloc.rotation = angle;
 }
 function ligne_create_html(bloc, txt)
 {
   //on calcule tous les paramètres
-  htm = "<div";
+  let htm = "<div";
   if (bloc.inter == 2) htm += " id=\"cible_" + bloc.id + "\"";
   htm += ">\n  <svg ";
   if (bloc.inter == 2) htm += "draggable=true ondragstart=\"drag_start(event)\" ";
@@ -1732,7 +1735,7 @@ function ligne_sel_update()
 
 function _mv_ini()
 {
-  inter = interact('.mv_rs');
+  let inter = interact('.mv_rs');
   inter.draggable({
     onmove: _dragMoveListener,
     onend: _drag_rs_end,
@@ -1752,7 +1755,7 @@ function _mv_ini()
   });
   inter.on('resizemove', _drag_rsl_resize);
   
-  inter2 = interact('.mv');
+  let inter2 = interact('.mv');
   inter2.draggable({
     onmove: _dragMoveListener,
     onend: _drag_rs_end,
@@ -1765,7 +1768,7 @@ function _mv_ini()
       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }}
   });
   
-  inter3 = interact('.mv_rsl');
+  let inter3 = interact('.mv_rsl');
   inter3.draggable({
     onmove: _dragMoveListener,
     onend: _drag_rs_end,
@@ -1793,7 +1796,7 @@ function _dragMoveListener (event)
   let dy = event.dy*631/rendu.height;
   if ((event.target.id == "extrema_1" || event.target.id == "extrema_2") && selection.length > 0)
   {
-    bloc = selection[0];
+    let bloc = selection[0];
     //on déplace l'extrema
     event.target.style.top = parseFloat(event.target.style.top) + event.dy + "px";
     event.target.style.left = parseFloat(event.target.style.left) + event.dx + "px";
@@ -1807,7 +1810,7 @@ function _dragMoveListener (event)
       ligne_calc(bloc, bloc.left, bloc.top, bloc.x2 + dx, bloc.y2 + dy);
     }
     // on modifie le style de la ligne en conséquence
-    var sb = rendu_get_superbloc(bloc);
+    let  sb = rendu_get_superbloc(bloc);
     sb.style.left = bloc.left*100/443 + "%";
     sb.style.top = bloc.top*100/631 + "%";
     sb.style.height = bloc.height*100/631 + "%";
@@ -1818,11 +1821,11 @@ function _dragMoveListener (event)
   {
     for (let i=0; i<selection.length; i++)
     {
-      bloc = selection[i];
+      let bloc = selection[i];
       
       bloc.top = parseFloat(bloc.top) + dy;
       bloc.left = parseFloat(bloc.left) + dx;
-      var sb = rendu_get_superbloc(bloc);
+      let  sb = rendu_get_superbloc(bloc);
       sb.style.top = bloc.top*100/631 + "%";
       sb.style.left = bloc.left*100/443 + "%";
       if (i==0) // on affiche juste les valeurs du premier élément
@@ -1832,7 +1835,7 @@ function _dragMoveListener (event)
       }
       if (i==0 && bloc.tpe == "ligne")
       {
-        var elems = document.getElementsByClassName("extrema");
+        let  elems = document.getElementsByClassName("extrema");
         for (let j=0; j<elems.length; j++)
         {
           elems[j].style.left = parseFloat(elems[j].style.left) + event.dx + "px";
@@ -1851,8 +1854,8 @@ function _drag_rs_end(event)
 }
 function _drag_rsl_resize(event)
 {
-  var target = event.target;
-  bloc = bloc_get_from_id(target.id.substr(9));
+  let target = event.target;
+  let bloc = bloc_get_from_id(target.id.substr(9));
 
   // update the element's style
   if (event.rect.width > 15) bloc.width = event.rect.width*443/rendu.width;

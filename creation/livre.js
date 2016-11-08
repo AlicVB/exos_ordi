@@ -1,8 +1,10 @@
+"use strict";
+
 function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
+	let nameEQ = name + "=";
+	let ca = document.cookie.split(';');
+	for(let i=0;i < ca.length;i++) {
+		let c = ca[i];
 		while (c.charAt(0)==' ') c = c.substring(1,c.length);
 		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
 	}
@@ -24,7 +26,7 @@ function infos_img_change(e)
 function infos_change(fic)
 {
   //on construit la chaine totale à mettre dans le fichier livre.txt
-  txt = document.getElementById("ititre").value;
+  let txt = document.getElementById("ititre").value;
   txt += "\n" + document.getElementById("icoul").value;
   txt += "\n" + document.getElementById("iaut").value;
   if (document.getElementById("iimg")) txt += "\n" + document.getElementById("iimg").src;
@@ -32,8 +34,8 @@ function infos_change(fic)
   txt += "\n\n\n\n\n\n\n\n";
   txt += document.getElementById("idetails").value;
   
-  var xhr = new XMLHttpRequest();
-  ligne = "fic=" + fic + "&v=" + txt;
+  let xhr = new XMLHttpRequest();
+  let ligne = "fic=" + fic + "&v=" + txt;
   xhr.open("POST", "livre_sauve.php" , true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(ligne);
@@ -63,7 +65,7 @@ function add_select(e, dos)
         window.location.reload(true);
       }
     };
-    ligne = "copy=&dest=" + dos + "&src=" + e.value;
+    let ligne = "copy=&dest=" + dos + "&src=" + e.value;
     xhr.open("POST", "livre_sauve.php" , true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.send(ligne);
