@@ -1,6 +1,8 @@
+"use strict";
+
 function affiche_aide(val)
 {
-  e = document.getElementById("aide");
+  let e = document.getElementById("aide");
   if (val) e.style.visibility = "visible";
   else e.style.visibility = "hidden";
 }
@@ -80,8 +82,8 @@ function consigne_play()
 function copy_set_style()
 {
   //on récupère la couleur de fond et on décompose
-  c = document.getElementById("c1").style.backgroundColor;
-  var rgb = c.match(/\d+/g);
+  let c = document.getElementById("c1").style.backgroundColor;
+  let rgb = c.match(/\d+/g);
   if (rgb.length>2)
   {
     if (0.213 * rgb[0] + 0.715 * rgb[1] + 0.072 * rgb[2] < 255 / 2)
@@ -103,15 +105,15 @@ function livre_ini(_user, _livreid, _exoid, txt_exo, _root)
 
 function page_resize(e)
 {
-  var vw = document.documentElement.clientWidth;
-  var vh = document.documentElement.clientHeight;
+  let vw = document.documentElement.clientWidth;
+  let vh = document.documentElement.clientHeight;
   if (vh > vw*685/995)
   {
     //il faut faire quelque chose ! la hauteur est trop grande par rapport à la largeur !
-    nvh = vw*685/995;
-    nvw = nvh*693/980;
-    marginw = vw*10/995/2;
-    marginh = (vh-nvh)/2 - 1;
+    let nvh = vw*685/995;
+    let nvw = nvh*693/980;
+    let marginw = vw*10/995/2;
+    let marginh = (vh-nvh)/2 - 1;
     document.getElementById("c1").style.width = nvw + "px";
     document.getElementById("c1").style.height = nvh + "px";
     document.getElementById("c1").style.marginLeft = marginw + "px";

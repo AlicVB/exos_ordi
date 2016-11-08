@@ -1,3 +1,5 @@
+"use strict";
+
 var msgs;
 var livreid;
 var exoid;
@@ -19,8 +21,8 @@ function txt_spaces(txt)
 
 function audio_play(e)
 {
-  var id = e.id;
-  var audio = document.getElementById("audio_" + id);
+  let id = e.id;
+  let audio = document.getElementById("audio_" + id);
   audio.play();
 }
 
@@ -31,17 +33,17 @@ function line_new(corr)
   if (corr) txt += "<polygon points=\"-300 97, 50 100, 400 97\"/>";
   txt += "</svg>";
   document.body.insertAdjacentHTML('beforeend', txt);
-  var elems = document.getElementsByClassName("line");
+  let elems = document.getElementsByClassName("line");
   return elems[elems.length - 1];
 }
 
 function line_start(e)
 {
   //on récupère le point de départ
-  var rect = e.currentTarget.getBoundingClientRect();
+  let rect = e.currentTarget.getBoundingClientRect();
 
   //on crée la ligne
-  li = line_new(false);
+  let li = line_new(false);
   li.style.top = (rect.top + rect.height/2) + "px";
   li.style.left = (rect.left + rect.width/2) + "px";
   document.body.addEventListener('mouseup',line_leave,true);
@@ -55,16 +57,16 @@ function line_start(e)
 function line_move(event)
 {
   if (!line_cur) return;
-  var rect = line_orig.getBoundingClientRect();
-  x1 = rect.left + (rect.width/2);
-  y1 = rect.top + (rect.height/2);
+  let rect = line_orig.getBoundingClientRect();
+  let x1 = rect.left + (rect.width/2);
+  let y1 = rect.top + (rect.height/2);
   
-  x2 = event.pageX;
-  y2 = event.pageY;
+  let x2 = event.pageX;
+  let y2 = event.pageY;
   
-  var length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+  let length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     
-  var angle = 180 / 3.1415 * Math.acos((y2 - y1) / length);
+  let angle = 180 / 3.1415 * Math.acos((y2 - y1) / length);
   if(x2 > x1) angle *= -1;
   
   line_cur.style.height = length + "px";
@@ -73,15 +75,15 @@ function line_move(event)
 function line_remove(event)
 {
   let line = event.target.parentNode;
-  e1 = document.getElementById(line.getAttribute("l1"));
-  e2 = document.getElementById(line.getAttribute("l2"));
+  let e1 = document.getElementById(line.getAttribute("l1"));
+  let e2 = document.getElementById(line.getAttribute("l2"));
   document.body.removeChild(line);
   
   //on enlève le truc de sauvegarde
   if (e1.hasAttribute("linkedto"))
   {
-    var ids = e1.getAttribute("linkedto").split("$");
-    nids = "";
+    let ids = e1.getAttribute("linkedto").split("$");
+    let nids = "";
     for (let i=0; i<ids.length; i++)
     {
       if (ids[i] != e2.id)
@@ -94,8 +96,8 @@ function line_remove(event)
   }
   else if (e2.hasAttribute("linkedto"))
   {
-    var ids = e2.getAttribute("linkedto").split("$");
-    nids = "";
+    let ids = e2.getAttribute("linkedto").split("$");
+    let nids = "";
     for (let i=0; i<ids.length; i++)
     {
       if (ids[i] != e1.id)
@@ -110,8 +112,8 @@ function line_remove(event)
   //on enlève l'attribut pour le calcul
   if (e1.hasAttribute("lineto"))
   {
-    var ids = e1.getAttribute("lineto").split("|");
-    nids = "";
+    let ids = e1.getAttribute("lineto").split("|");
+    let nids = "";
     for (let i=0; i<ids.length; i++)
     {
       if (ids[i] != e2.id)
@@ -124,8 +126,8 @@ function line_remove(event)
   }
   else if (e2.hasAttribute("lineto"))
   {
-    var ids = e2.getAttribute("lineto").split("|");
-    nids = "";
+    let ids = e2.getAttribute("lineto").split("|");
+    let nids = "";
     for (let i=0; i<ids.length; i++)
     {
       if (ids[i] != e1.id)
@@ -141,7 +143,7 @@ function line_remove(event)
 }
 function line_charge(e, v)
 {
-  var ids = v.split("$");
+  let ids = v.split("$");
   for (let i=0; i<ids.length; i++)
   {
     line_relie(e, document.getElementById(ids[i]), null, false);
@@ -153,14 +155,14 @@ function line_relie(e1, e2, line, corr)
   if (!line) line = line_new(corr);
 
   //on détecte quels côtés on utilise
-  var rect1 = e1.getBoundingClientRect();
-  var rect2 = e2.getBoundingClientRect();
-  x1 = rect1.left + (rect1.width/2);
-  y1 = rect1.top + (rect1.height/2);
-  x2 = rect2.left + (rect2.width/2);
-  y2 = rect2.top + (rect2.height/2);
-  var length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-  var angle = 180 / 3.1415 * Math.acos((y2 - y1) / length);
+  let rect1 = e1.getBoundingClientRect();
+  let rect2 = e2.getBoundingClientRect();
+  let x1 = rect1.left + (rect1.width/2);
+  let y1 = rect1.top + (rect1.height/2);
+  let x2 = rect2.left + (rect2.width/2);
+  let y2 = rect2.top + (rect2.height/2);
+  let length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+  let angle = 180 / 3.1415 * Math.acos((y2 - y1) / length);
   if(x2 > x1) angle *= -1;
   
   //on ajuste les points pour ere du bon côté
@@ -203,7 +205,7 @@ function line_relie(e1, e2, line, corr)
     // on enregistre la valeur
     if (e2.hasAttribute("lineok"))
     {
-      ids = "";
+      let ids = "";
       if (e2.hasAttribute("lineto")) ids = e2.getAttribute("lineto");
       if (ids != "") ids += "|";
       ids += e1.id;
@@ -211,13 +213,13 @@ function line_relie(e1, e2, line, corr)
     }
     else if (e1.hasAttribute("lineok"))
     {
-      ids = "";
+      let ids = "";
       if (e1.hasAttribute("lineto")) ids = e1.getAttribute("lineto");
       if (ids != "") ids += "|";
       ids += e2.id;
       e1.setAttribute("lineto", ids);
     }
-    ids = "";
+    let ids = "";
     if (e1.hasAttribute("linkedto")) ids = e1.getAttribute("linkedto");
     if (ids != "") ids += "$";
     ids += e2.id;
@@ -230,28 +232,28 @@ function line_relie(e1, e2, line, corr)
 function line_leave(event)
 {
   if (!line_cur) return;
-  ex = event.clientX;
-  ey = event.clientY;
-  var elems = document.querySelectorAll("[line]");
-  var e = null;
+  let ex = event.clientX;
+  let ey = event.clientY;
+  let elems = document.querySelectorAll("[line]");
+  let e = null;
   for (let i=0; i<elems.length; i++)
   {
-    el = elems[i];
-    rect = el.getBoundingClientRect();
+    let el = elems[i];
+    let rect = el.getBoundingClientRect();
     if (ex >= rect.left && ex <= (rect.left + rect.width) && ey >= rect.top && ey <= (rect.top + rect.height))
     {
       e = el;
       break;
     }
   }
-  id = "";
+  let id = "";
   if (e && e.hasAttribute('line') && e.hasAttribute('itemid')) id = e.getAttribute('itemid')
-  ok = false;
+  let ok = false;
   if (e && e.hasAttribute('line') && e.id != line_orig.id && (e.hasAttribute("lineok") != line_orig.hasAttribute("lineok")))
   {
     // on regarde si il y a pas déjà une ligne comme ça
-    var el = null;
-    var src = null;
+    let el = null;
+    let src = null;
     if (e.hasAttribute("lineok"))
     {
       el = e;
@@ -267,7 +269,7 @@ function line_leave(event)
       ok = true;
       if (el.hasAttribute("lineto"))
       {
-        var ids = el.getAttribute("lineto").split("|");
+        let ids = el.getAttribute("lineto").split("|");
         for (let i=0; i<ids.length; i++)
         {
           if (ids[i] == src.id)
@@ -297,9 +299,9 @@ function line_leave(event)
 
 function drag_remove(event)
 {
-  el = event.target;
+  let el = event.target;
   if (!el) return;
-  parent = document.getElementById("cible_" + el.id);
+  let parent = document.getElementById("cible_" + el.id);
   if (!parent) return;
   el.parentNode.removeAttribute("contains");
   change(el.parentNode);
@@ -311,9 +313,9 @@ function drag_remove(event)
 
 function drag_deplace(e, id)
 {
-  el = document.getElementById(id);
+  let el = document.getElementById(id);
   if (!el) return;
-  var rect = el.getBoundingClientRect();
+  let rect = el.getBoundingClientRect();
   el.parentNode.removeChild(el);
   e.setAttribute("contains", el.id);
   el.style.position = "static";
@@ -337,9 +339,9 @@ function drag_over(ev)
 function drag_drop(ev)
 {
   ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  var el = document.getElementById(data);
-  var rect = el.getBoundingClientRect();
+  let data = ev.dataTransfer.getData("text");
+  let el = document.getElementById(data);
+  let rect = el.getBoundingClientRect();
   el.style.width = rect.width + "px";
   el.style.height = rect.height + "px";
   el.style.position = "static";
@@ -353,18 +355,18 @@ function drag_drop(ev)
 function multi_change(elem, clic)
 {
   // on récupère les options
-  r = getrootitem(elem);
+  let r = getrootitem(elem);
   if (!r.hasAttribute('options')) return;
-  var opts = r.getAttribute('options').split("|");
-  var maj = [];
-  var suff = [];
-  var barre = [];
+  let opts = r.getAttribute('options').split("|");
+  let maj = [];
+  let suff = [];
+  let barre = [];
   if (r.hasAttribute("maj")) maj = r.getAttribute('maj').split("|");
   if (r.hasAttribute("suff")) suff = r.getAttribute('suff').split("|");
   if (r.hasAttribute("barre")) barre = r.getAttribute('barre').split("|");
   //on fait les changements de couleur
-  var ncoul = opts[0];
-  var nid = 0;
+  let ncoul = opts[0];
+  let nid = 0;
   for (let i=0; i<opts.length; i++)
   {
     if (elem.style.backgroundColor == opts[i])
@@ -395,11 +397,11 @@ function multi_change(elem, clic)
   if (nid < 0 || nid >= barre.length || barre[nid] != "1") elem.style.textDecoration = "none";
   else elem.style.textDecoration = "line-through";
   //majuscules et suffixes
-  var inis = elem.getElementsByClassName("multi_ini");
+  let inis = elem.getElementsByClassName("multi_ini");
   if (inis && inis.length>0)
   {
-    var tx = inis[0].childNodes[0].nodeValue;
-    var ntx = tx;
+    let tx = inis[0].childNodes[0].nodeValue;
+    let ntx = tx;
     if (nid>=0 && nid<maj.length && maj[nid] == "1") ntx = tx.substr(0,1).toUpperCase() + tx.substr(1);
     if (nid>=0 && nid<suff.length && suff[nid] != "") ntx = tx + suff[nid];
     elem.childNodes[0].nodeValue = ntx
@@ -410,12 +412,12 @@ function multi_score(e, tt)
 {
   // on récupère les options
   if (!e.hasAttribute('options')) return 0;
-  var opts = e.getAttribute('options').split("|");
+  let opts = e.getAttribute('options').split("|");
   
   // on initialise un tableau de score
-  var scores = new Array(opts.length);
-  var nbjuste = new Array(opts.length);
-  var nbjuste_total = 0;
+  let scores = new Array(opts.length);
+  let nbjuste = new Array(opts.length);
+  let nbjuste_total = 0;
   for (let i=0; i<scores.length; i++)
   {
     scores[i] = 1;
@@ -423,14 +425,14 @@ function multi_score(e, tt)
   }
   
   // we look at all the subitems
-  var elems = getexos(e);
+  let elems = getexos(e);
   for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = true;
     // on récupère la valeur juste
-    var juste = "transparent";
-    var juste_id = -1;
-    var coul = elems[i].style.backgroundColor;
+    let juste = "transparent";
+    let juste_id = -1;
+    let coul = elems[i].style.backgroundColor;
     if (!coul || coul == "") coul = "transparent";
     if (elems[i].hasAttribute('juste'))
     {
@@ -454,8 +456,8 @@ function multi_score(e, tt)
   }
   
   //we computes all scores
-  var s = 0;
-  var tot = 0;
+  let s = 0;
+  let tot = 0;
   for (let i=0; i<scores.length; i++)
   {
     if (nbjuste[i] > 0 || nbjuste_total == 0)
@@ -491,9 +493,9 @@ function multi_score(e, tt)
 
 function radio_score(e, tt)
 {
-  s = tt;
+  let s = tt;
   // we look at all the subitems to search for error
-  var elems = getexos(e);
+  let elems = getexos(e);
   for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = true;
@@ -510,7 +512,7 @@ function radio_score(e, tt)
     {
       if (elems[i].value == 1)
       {
-        ee = elems[i].nextElementSibling;
+        let ee = elems[i].nextElementSibling;
         ee.style.border = "2px solid red";
         ee.style.borderRadius = "1vh";
       }
@@ -521,13 +523,13 @@ function radio_score(e, tt)
 
 function combo_score(e, tt)
 {
-  var elems = getexos(e);
+  let elems = getexos(e);
   if (elems.length>0)
   {
     elems[0].disabled = true;
     if (elems[0].value == 0)
     {
-      ee = elems[0].nextElementSibling;
+      let ee = elems[0].nextElementSibling;
       ee.style.display = "block";
     }
     return tt*parseInt(elems[0].value);
@@ -542,21 +544,21 @@ function texte_score(e, tt)
   let corr = "0";
   if (e.hasAttribute('options'))
   {
-    var opts = e.getAttribute('options').split("|");
+    let opts = e.getAttribute('options').split("|");
     if (opts.length>0) cc = opts[0];
     if (opts.length>2) corr = opts[2];
   }
   
   // on récupère les valeurs
-  var elems = getexos(e);
+  let elems = getexos(e);
   if (elems.length<1) return 0;
   elems[0].disabled = true;
-  v1 = elems[0].value.trim();
-  ee = elems[0].nextElementSibling;
-  v2 = ee.innerHTML.trim();
+  let v1 = elems[0].value.trim();
+  let ee = elems[0].nextElementSibling;
+  let v2 = ee.innerHTML.trim();
 
   //on compare
-  s=0;
+  let s=0;
   if (v2=="#") s = tt;
   else
   {
@@ -599,14 +601,14 @@ function cible_score(e, tt)
 {
   if (e.hasAttribute("juste"))
   {
-    el = e.firstElementChild;
+    let el = e.firstElementChild;
     if ( el && el.id == e.getAttribute("juste")) return tt;
     else if (tt>0)
     {
       //on affiche la correction
       e.style.border = "2px solid red";
       e.style.borderRadius = "2vh";
-      el2 = document.getElementById(e.getAttribute("juste"));
+      let el2 = document.getElementById(e.getAttribute("juste"));
       if (el2)
       {
         let svg = line_relie(el2, e, null, true);
@@ -667,13 +669,13 @@ function getrootitem(e)
   //if it's not an subitem
   if (!e.hasAttribute('itemid')) return null;
   
-  sel = "[item=\"" + e.getAttribute('itemid') + "\"]";
+  let sel = "[item=\"" + e.getAttribute('itemid') + "\"]";
   return document.querySelector(sel);
 }
 // get the type of item of an element
 function gettype(e)
 {
-  r = getrootitem(e);
+  let r = getrootitem(e);
   if (r)
   {
     if (r.hasAttribute('tpe')) return r.getAttribute('tpe');
@@ -683,24 +685,24 @@ function gettype(e)
 // get the exo elemes of a root item
 function getexos(e)
 {
-  r = getrootitem(e);
-  sel = ".exo[itemid=\"" + r.getAttribute('item') + "\"]";
+  let r = getrootitem(e);
+  let sel = ".exo[itemid=\"" + r.getAttribute('item') + "\"]";
   return r.querySelectorAll(sel);
 }
 
 function sauve()
 {
   // on construit le fichier de sauvegarde (on commence par créer un objet adhoc
-  var sav = {};
-  var elems = document.getElementsByClassName('exo');
+  let sav = {};
+  let elems = document.getElementsByClassName('exo');
   for (let i=0; i<elems.length; i++)
   {
     sav[elems[i].id] = encodeURIComponent(getvalue(elems[i]));
   }
 
   // et on le sauvegarde
-  var xhr = new XMLHttpRequest();
-  ligne = "user=" + user +"&exoid=" + exoid + "&v=" + JSON.stringify(sav);
+  let xhr = new XMLHttpRequest();
+  let ligne = "user=" + user +"&exoid=" + exoid + "&v=" + JSON.stringify(sav);
   xhr.open("POST", exoid + "/sauve.php" , true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(ligne);
@@ -708,15 +710,15 @@ function sauve()
 
 function read_details(txt_exo)
 {
-  msgs = new Array(6);
+  let msgs = new Array(6);
   // on sépare par lignes
-  var vals = txt_exo.split("§");
+  let vals = txt_exo.split("§");
   
   // on récupère celles qui nous interresse
   for (let i=0; i<6; i++)
   {
     msgs[i] = {}; // min;max;flag;couleur;texte;retry
-    var v = vals[i+3].split("|");
+    let v = vals[i+3].split("|");
     msgs[i].min = v[0];
     msgs[i].txt = v[2];
     msgs[i].re = v[3];
@@ -766,7 +768,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   read_details(txt_exo);
   
   //on initialise les lignes à relier
-  elems = document.querySelectorAll("[line]");
+  let elems = document.querySelectorAll("[line]");
   for (let i=0;i<elems.length;i++)
   {
     elems[i].addEventListener('mousedown',line_start,true);
@@ -779,13 +781,13 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   }
   
   // on initialise les items
-  xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
       // on met les bonnes valeurs aux bons endroits
-      var elems = document.getElementsByClassName('exo');
-      var sav = null;
+      let elems = document.getElementsByClassName('exo');
+      let sav = null;
       sav = JSON.parse(xhr.responseText);
       if (sav)
       {
@@ -801,7 +803,7 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   xhr.send(null);
   
   // on regarde les histoires de compteurs
-  xhr2 = new XMLHttpRequest();
+  let xhr2 = new XMLHttpRequest();
   xhr2.onreadystatechange = function() {
     if (xhr2.readyState == 4 && (xhr2.status == 200 || xhr2.status == 0))
     {
@@ -839,22 +841,22 @@ function affiche_score(sauve)
   if (actif==false) return;
   actif=false;
   // on récupère les éléments de score :
-  eflag = document.getElementById("cflag");
-  eflagimg= document.getElementById("cflagimg");
-  etxt = document.getElementById("ctxt");
-  escore = document.getElementById("cscore");
+  let eflag = document.getElementById("cflag");
+  let eflagimg= document.getElementById("cflagimg");
+  let etxt = document.getElementById("ctxt");
+  let escore = document.getElementById("cscore");
   
   // on calcule le score et on affiche les corrections
-  s = 0;
-  t = 0;
-  var elems = document.getElementsByClassName('item');
+  let s = 0;
+  let t = 0;
+  let elems = document.getElementsByClassName('item');
   for (let i=0; i<elems.length; i++)
   {
-    e = elems[i];
+    let e = elems[i];
     if (e.hasAttribute('tpe'))
     {
       //on augmente le total des points
-      tt = 1;
+      let tt = 1;
       if (e.hasAttribute('points')) tt = parseFloat(e.getAttribute('points'));
       t += tt;
       //on augmente le score
@@ -902,9 +904,9 @@ function affiche_score(sauve)
   }
 
   //on ajuste le score par rapport au total
-  vals = total.split("|");
-  ns = s;
-  nt = t;
+  let vals = total.split("|");
+  let ns = s;
+  let nt = t;
   if (vals[0] != "-1") nt = parseInt(vals[0]);
   ns = s*nt/t;
   switch (vals[1])
@@ -923,7 +925,7 @@ function affiche_score(sauve)
       break;
   }
   escore.innerHTML = "score : " + ns + "/" + nt;
-  np = ns/nt*100;
+  let np = ns/nt*100;
   // on définit le drapeau, etc...
   for (let i=5; i>=0; i--)
   {
@@ -946,13 +948,13 @@ function affiche_score(sauve)
   if (sauve)
   {
     // on enregistre le sore dans la base générale
-    var xhr = new XMLHttpRequest();
-    ligne = root + "log_exo.php?user=" + user +"&exoid=" + exoid + "&livreid=" + livreid + "&score=" + ns + "&tot=" + nt;
+    let xhr = new XMLHttpRequest();
+    let ligne = root + "log_exo.php?user=" + user +"&exoid=" + exoid + "&livreid=" + livreid + "&score=" + ns + "&tot=" + nt;
     xhr.open("GET", ligne , true);
     xhr.send(null);
     
     // et on augmente le compteur d'essais
-    var xhr2 = new XMLHttpRequest();
+    let xhr2 = new XMLHttpRequest();
     ligne = "compteur.php?user=" + user +"&exoid=" + exoid + "&livreid=" + livreid + "&action=plus";
     xhr2.open("GET", ligne , true);
     xhr2.send(null);
