@@ -315,6 +315,8 @@ function g_restaurer(init)
       last_id = 0;
       for (let i=0; i<blocs.length; i++)
       {
+        // ancienne version
+        if (blocs[i].tpe == "texte" && (typeof blocs[i].texte_defaut === "undefined")) blocs[i].texte_defaut = "";
         // on ajoute le bloc à la liste déroulante
         let option = document.createElement("option");
         option.text = blocs[i].id + " (" + blocs[i].tpe + ")";
