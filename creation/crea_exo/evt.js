@@ -1,9 +1,12 @@
+"use strict";
+
 function cr_tab_click(e)
 {
   //si déjà sélectionné, on sort
   if (e.style.backgroundColor == "#6D7BCF") return;
   
   //on s'occuppe des boutons
+  let f = null;
   if (e.id == "cr_tab_info") f = document.getElementById("cr_tab_create");
   else f = document.getElementById("cr_tab_info");
   
@@ -30,8 +33,8 @@ function cr_keydown(event)
 {
   if (event.target != document.body) return;
   //console.log(event.keyCode);
-  var r = document.getElementById("cr_rendu")
-  var mv = 5;
+  let  r = document.getElementById("cr_rendu")
+  let  mv = 5;
   if (event.ctrlKey || event.shiftKey) mv = 20;
   switch (event.keyCode)
   {
@@ -43,7 +46,7 @@ function cr_keydown(event)
         rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "%";
         if (selection[i].tpe == "ligne")
         {
-          var elems = document.getElementsByClassName("extrema");
+          let elems = document.getElementsByClassName("extrema");
           for (let j=0; j<elems.length; j++)
           {
             elems[j].style.left = parseFloat(elems[j].style.left) + nmv*rendu.width/443 + "px";
@@ -60,7 +63,7 @@ function cr_keydown(event)
         rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "%";
         if (selection[i].tpe == "ligne")
         {
-          var elems = document.getElementsByClassName("extrema");
+          let elems = document.getElementsByClassName("extrema");
           for (let j=0; j<elems.length; j++)
           {
             elems[j].style.top = parseFloat(elems[j].style.top) + nmv*rendu.height/631 + "px";
@@ -77,7 +80,7 @@ function cr_keydown(event)
         rendu_get_superbloc(selection[i]).style.left = selection[i].left*100/443 + "%";
         if (selection[i].tpe == "ligne")
         {
-          var elems = document.getElementsByClassName("extrema");
+          let elems = document.getElementsByClassName("extrema");
           for (let j=0; j<elems.length; j++)
           {
             elems[j].style.left = parseFloat(elems[j].style.left) + nmv*rendu.width/443 + "px";
@@ -94,7 +97,7 @@ function cr_keydown(event)
         rendu_get_superbloc(selection[i]).style.top = selection[i].top*100/631 + "%";
         if (selection[i].tpe == "ligne")
         {
-          var elems = document.getElementsByClassName("extrema");
+          let elems = document.getElementsByClassName("extrema");
           for (let j=0; j<elems.length; j++)
           {
             elems[j].style.top = parseFloat(elems[j].style.top) + nmv*rendu.height/631 + "px";
@@ -105,12 +108,12 @@ function cr_keydown(event)
       break;
     case 46: //suppr
     case 8:  //retour arrière
-      var e = {};
+      let e = {};
       e.value = "2";
       cr_action_change(e);
       break;
     case 67: //C
-      var e = {};
+      let e = {};
       e.value = "1";
       cr_action_change(e);
       break;
@@ -131,8 +134,8 @@ function cr_keydown(event)
 
 function cr_coul_nb_change(e, modif)
 {
-  var elems = document.getElementsByClassName('cr_coul');
-  nb = e.value;
+  let elems = document.getElementsByClassName('cr_coul');
+  let nb = e.value;
   elems[0].style.display = 'block';
   for (let i=1; i<elems.length; i++)
   {
@@ -156,10 +159,10 @@ function cr_coul_nb_change(e, modif)
 
 function cr_img_get_change(e)
 {
-  var pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   //on sauvegarde l'image sélectionnée
-  var xhr = new XMLHttpRequest();
-  var fd  = new FormData(e.form);
+  let xhr = new XMLHttpRequest();
+  let fd  = new FormData(e.form);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
@@ -173,7 +176,7 @@ function cr_img_get_change(e)
       }
       
       // et la liste des images
-      var option = document.createElement("option");
+      let  option = document.createElement("option");
       option.text = img_name;
       option.value = img_name;
       document.getElementById(pre + "_img_select").add(option);
@@ -186,8 +189,8 @@ function cr_img_get_change(e)
         bloc = selection[0];
         if (bloc.tpe != "image") return;
         //on récupère les chemins
-        rpath = "img/" + img_name;
-        vpath = exo_dos + "/../../" + rpath;
+        let rpath = "img/" + img_name;
+        let vpath = exo_dos + "/../../" + rpath;
         
         bloc.img_rpath = rpath;
         bloc.img_vpath = vpath;
@@ -197,7 +200,7 @@ function cr_img_get_change(e)
         document.getElementById("cr_html").value = bloc.html;
         document.getElementById(bloc.id).onload = function () {
           //on met à jour les infos de hauteur
-          var h = document.getElementById(bloc.id).getBoundingClientRect().height;
+          let  h = document.getElementById(bloc.id).getBoundingClientRect().height;
           rendu_get_superbloc(bloc).style.height = h + "px";
           bloc.height = h;
           document.getElementById("cr_tp_h").value = h;
@@ -220,9 +223,9 @@ function cr_img_get_change(e)
 }
 function cr_img_select_change(e)
 {
-  var pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   
-  var v = e.value;
+  let v = e.value;
   if (!v) return;
   if (v == "****")
   {
@@ -231,11 +234,11 @@ function cr_img_select_change(e)
   else if (pre == "cr")
   {
     if (selection.length < 1) return;
-    bloc = selection[0];
+    let bloc = selection[0];
     if (bloc.tpe != "image") return;
     //on récupère les chemins
-    rpath = "img/" + v;
-    vpath = exo_dos + "/../../" + rpath;
+    let rpath = "img/" + v;
+    let vpath = exo_dos + "/../../" + rpath;
     
     bloc.img_rpath = rpath;
     bloc.img_vpath = vpath;
@@ -245,7 +248,7 @@ function cr_img_select_change(e)
     document.getElementById("cr_html").value = bloc.html;
     document.getElementById(bloc.id).onload = function () {
       //on met à jour les infos de hauteur
-      var h = document.getElementById(bloc.id).getBoundingClientRect().height;
+      let  h = document.getElementById(bloc.id).getBoundingClientRect().height;
       rendu_get_superbloc(bloc).style.height = h*100/rendu.height + "%";
       bloc.height = h/rendu.height*631;
       document.getElementById("cr_tp_h").value = h/rendu.height*631;       
@@ -263,10 +266,10 @@ function cr_img_select_change(e)
 
 function cr_audio_get_change(e)
 {
-  var pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   //on sauvegarde l'image sélectionnée
-  var xhr = new XMLHttpRequest();
-  var fd  = new FormData(e.form);
+  let xhr = new XMLHttpRequest();
+  let fd  = new FormData(e.form);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
@@ -279,7 +282,7 @@ function cr_audio_get_change(e)
         return;
       }
       // et la liste des images
-      var option = document.createElement("option");
+      let  option = document.createElement("option");
       option.text = audio_name;
       option.value = audio_name;
       document.getElementById(pre + "_audio_select").add(option);
@@ -288,7 +291,7 @@ function cr_audio_get_change(e)
       {
         // on récupère le bloc sélectionné
         if (selection.length < 1) return;
-        bloc = selection[0];
+        let bloc = selection[0];
         if (bloc.tpe != "audio") return;
         //on récupère les chemins
         bloc.audio_name = "sons/" + audio_name;
@@ -311,8 +314,8 @@ function cr_audio_get_change(e)
 }
 function cr_audio_select_change(e)
 {
-  var pre = e.id.substr(0,2);
-  var v = e.value;
+  let pre = e.id.substr(0,2);
+  let v = e.value;
   document.getElementById(pre + "_record_div").style.display = "none";
   if (!v) v = "";
   if (v == "******") //enregistrer
@@ -326,7 +329,7 @@ function cr_audio_select_change(e)
   else if (pre == "cr")
   {
     if (selection.length < 1) return;
-    bloc = selection[0];
+    let bloc = selection[0];
     if (bloc.tpe != "audio") return;
     //on récupère les chemins
     if (v != "") bloc.audio_name = "sons/" + v;
@@ -348,7 +351,7 @@ function cr_new_txt_click(e)
 {
   // on récupère le bloc sélectionné
   if (selection.length < 1) return;
-  bloc = selection[0];
+  let bloc = selection[0];
   bloc.txt = document.getElementById("cr_txt_ini").value;
   
   // on modifie le code html
@@ -365,7 +368,7 @@ function cr_coul_change(e)
 {
   for (let i=0; i<selection.length; i++)
   {
-    bloc = selection[i];
+    let bloc = selection[i];
     switch (bloc.tpe)
     {
       case "radiobtn":
@@ -414,7 +417,7 @@ function cr_texte_change(e)
 {
   for (let i=0; i<selection.length; i++)
   {
-    bloc = selection[i];
+    let bloc = selection[i];
     if (bloc.tpe != "texte") continue;
     bloc.texte_defaut = document.getElementById("cr_texte_defaut").value;
     bloc.texte_l = document.getElementById("cr_texte_l").value;
@@ -435,7 +438,7 @@ function cr_texte_change(e)
 
 function cr_font_fam_change(e)
 {
-  f = e.value;
+  let f = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_fam = f;
@@ -446,8 +449,8 @@ function cr_font_fam_change(e)
 }
 function cr_font_size_change(e)
 {
-  s1 = e.value;
-  s2 = s1*rendu.height/1000;
+  let s1 = e.value;
+  let s2 = s1*rendu.height/1000;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_size = s1;
@@ -460,7 +463,7 @@ function cr_font_size_change(e)
 }
 function cr_font_coul_change(jscolor)
 {
-  v = "#" + jscolor;
+  let v = "#" + jscolor;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_coul = v;
@@ -471,7 +474,7 @@ function cr_font_coul_change(jscolor)
 }
 function cr_font_g_change(e)
 {
-  v = e.checked;
+  let v = e.checked;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_g = v;
@@ -483,7 +486,7 @@ function cr_font_g_change(e)
 }
 function cr_font_i_change(e)
 {
-  v = e.checked;
+  let v = e.checked;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_i = v;
@@ -495,7 +498,7 @@ function cr_font_i_change(e)
 }
 function cr_font_s_change(e)
 {
-  v = e.checked;
+  let v = e.checked;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_s = v;
@@ -507,7 +510,7 @@ function cr_font_s_change(e)
 }
 function cr_font_b_change(e)
 {
-  v = e.checked;
+  let v = e.checked;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].font_b = v;
@@ -536,7 +539,7 @@ function cr_align_change(e)
 
 function cr_tp_w_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     if (bloc.size == "ratio")
@@ -558,7 +561,7 @@ function cr_tp_w_change(e)
 }
 function cr_tp_h_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     if (bloc.size == "ratio")
@@ -580,7 +583,7 @@ function cr_tp_h_change(e)
 }
 function cr_tp_t_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].top = v;
@@ -591,7 +594,7 @@ function cr_tp_t_change(e)
 }
 function cr_tp_l_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].left = v;
@@ -602,7 +605,7 @@ function cr_tp_l_change(e)
 }
 function cr_tp_r_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].rotation = v;
@@ -614,7 +617,7 @@ function cr_tp_r_change(e)
 
 function cr_bord_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
@@ -625,7 +628,7 @@ function cr_bord_change(e)
         selection_update();
         return;
       }
-      svg = document.getElementById("svg_" + selection[i].id);
+      let svg = document.getElementById("svg_" + selection[i].id);
       svg.style.stroke = selection[i].bord_coul;
       svg.style.removeProperty("stroke-dasharray");
       switch (v)
@@ -643,7 +646,7 @@ function cr_bord_change(e)
       if (bloc.tpe == "cercle")
       {
         //on modifie le rayon pour prendre en compte la bordure
-        var w = 0;
+        let  w = 0;
         if (selection[i].bord != "hidden") w = selection[i].bord_size;
         svg.setAttribute("rx", 50 - parseFloat(w)/2);
         svg.setAttribute("ry", 50 - parseFloat(w)/2);
@@ -659,13 +662,13 @@ function cr_bord_change(e)
 }
 function cr_bord_coul_change(jscolor)
 {
-  v = "#" + jscolor;
+  let v = "#" + jscolor;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_coul = v;
     if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
     {
-      svg = document.getElementById("svg_" + selection[i].id);
+      let svg = document.getElementById("svg_" + selection[i].id);
       if (selection[i].bord != "hidden") svg.style.stroke = v;
     }
     else document.getElementById(selection[i].id).style.borderColor = v;
@@ -675,18 +678,18 @@ function cr_bord_coul_change(jscolor)
 }
 function cr_bord_size_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_size = v;
     if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
     {
-      svg = document.getElementById("svg_" + selection[i].id);
+      let svg = document.getElementById("svg_" + selection[i].id);
       svg.style.strokeWidth = v*rendu.width/443 + "px";
       if (bloc.tpe == "cercle")
       {
         //on modifie le rayon pour prendre en compte la bordure
-        var w = 0;
+        let  w = 0;
         if (selection[i].bord != "hidden") w = selection[i].bord_size;
         svg.setAttribute("rx", 50 - parseFloat(w)/2);
         svg.setAttribute("ry", 50 - parseFloat(w)/2);
@@ -710,7 +713,7 @@ function cr_bord_size_change(e)
 }
 function cr_bord_rond_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_rond = v;
@@ -723,7 +726,7 @@ function cr_bord_rond_change(e)
 
 function cr_fond_coul_change(jscolor)
 {
-  v = "#" + jscolor;
+  let v = "#" + jscolor;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].fond_coul = v;
@@ -738,7 +741,7 @@ function cr_fond_coul_change(jscolor)
 }
 function cr_fond_alpha_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].fond_alpha = v;
@@ -754,7 +757,7 @@ function cr_fond_alpha_change(e)
 
 function cr_marges_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].marges = v;
@@ -838,7 +841,7 @@ function cr_relie_id_change(e)
   }
   for (let i=0; i<selection.length; i++)
   {
-    bloc = selection[i];
+    let bloc = selection[i];
     bloc.relie_id = v;
     bloc.relie_cible_de = "";
     if (v != "" && bloc.points == "0") bloc.points = "1";
@@ -895,7 +898,7 @@ function relie_maj_cibles()
 
 function cr_points_change(e)
 {
-  v = e.value;
+  let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
     selection[i].points = v;
@@ -986,9 +989,9 @@ function cr_repart_change(id)
   if (id == "1")
   {
     //on reordonne la selection en fonction de left
-    news = selection.sort(_repart_compare_h);
+    let news = selection.sort(_repart_compare_h);
     //on calcule l'espace moyen entre les blocs
-    espaces = 0;
+    let espaces = 0;
     for (let i=0; i<news.length-1; i++)
     {
       espaces += parseFloat(news[i+1].left) - (parseFloat(news[i].left) + parseFloat(news[i].width));
@@ -1004,9 +1007,9 @@ function cr_repart_change(id)
   else if (id == "2")
   {
     //on reordonne la selection en fonction de left
-    news = selection.sort(_repart_compare_v);
+    let news = selection.sort(_repart_compare_v);
     //on calcule l'espace moyen entre les blocs
-    espaces = 0;
+    let espaces = 0;
     for (let i=0; i<news.length-1; i++)
     {
       espaces += parseFloat(news[i+1].top) - (parseFloat(news[i].top) + parseFloat(news[i].height));
@@ -1029,7 +1032,7 @@ function cr_plans_change(id)
       for (let i=0; i<selection.length; i++)
       {
         //on met en ordre la liste des blocs
-        b = selection[i];
+        let b = selection[i];
         for (let j=0; j<blocs.length; j++)
         {
           if (b.id == blocs[j].id)
@@ -1040,8 +1043,8 @@ function cr_plans_change(id)
         }
         blocs.push(b);
         //on modifie le rendu
-        sb = rendu_get_superbloc(b);
-        rd = sb.parentNode;
+        let sb = rendu_get_superbloc(b);
+        let rd = sb.parentNode;
         rd.removeChild(sb);
         rd.appendChild(sb);
       }
@@ -1050,7 +1053,7 @@ function cr_plans_change(id)
       for (let i=0; i<selection.length; i++)
       {
         //on met en ordre la liste des blocs
-        b = selection[i];
+        let b = selection[i];
         for (let j=0; j<blocs.length; j++)
         {
           if (b.id == blocs[j].id)
@@ -1061,8 +1064,8 @@ function cr_plans_change(id)
         }
         blocs.unshift(b);
         //on modifie le rendu
-        sb = rendu_get_superbloc(b);
-        rd = sb.parentNode;
+        let sb = rendu_get_superbloc(b);
+        let rd = sb.parentNode;
         rd.removeChild(sb);
         rd.insertBefore(sb, rd.childNodes[1]);
       }
@@ -1080,10 +1083,10 @@ function cr_action_change(e)
 {
   if (e.value == "1") //dupliquer
   {
-    news = [];
+    let news = [];
     for (let i=0; i<selection.length; i++)
     {
-      nb = JSON.parse(JSON.stringify(selection[i]));
+      let nb = JSON.parse(JSON.stringify(selection[i]));
       nb.left += 15;
       nb.top += 15;
       last_id++;
@@ -1105,7 +1108,7 @@ function cr_action_change(e)
     for (let i=0; i<selection.length; i++)
     {
       //on suprime les blocs du rendu
-      sb = rendu_get_superbloc(selection[i]);
+      let sb = rendu_get_superbloc(selection[i]);
       sb.parentNode.removeChild(sb);
       // et de la liste déroulante
       for (let j=0; j<document.getElementById("cr_bloc_liste").options.length; j++)
@@ -1135,7 +1138,7 @@ function cr_action_change(e)
 
 function cr_record_start(e)
 {
-  var pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   switch (e.getAttribute("etat"))
   {
     case "0":
@@ -1151,9 +1154,9 @@ function cr_record_start(e)
 }
 function cr_record_save(e)
 {
-  var pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   //on sauvegarde le son enregistré
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
@@ -1166,7 +1169,7 @@ function cr_record_save(e)
         return;
       }
       // et la liste des images
-      var option = document.createElement("option");
+      let  option = document.createElement("option");
       option.text = audio_name;
       option.value = audio_name;
       document.getElementById(pre + "_audio_select").add(option);
@@ -1175,7 +1178,7 @@ function cr_record_save(e)
       {
         // on récupère le bloc sélectionné
         if (selection.length < 1) return;
-        bloc = selection[0];
+        let bloc = selection[0];
         if (bloc.tpe != "audio") return;
         //on récupère les chemins
         bloc.audio_name = "sons/" + audio_name;

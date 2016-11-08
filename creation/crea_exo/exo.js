@@ -1,15 +1,15 @@
 "use strict";
 
-let  blocs = new Array();  // c'est un tableau qui rescence les données de chaque bloc
-let  selection = new Array();  // c'est un tableau avec les indices de blocs sélectionnés
+let blocs = new Array();  // c'est un tableau qui rescence les données de chaque bloc
+let selection = new Array();  // c'est un tableau avec les indices de blocs sélectionnés
 
-let  last_id = 0;    // dernier id utilisé
+let last_id = 0;    // dernier id utilisé
 
-let  exo_dos = ""  //chemin vers le dossier de l'exercice
+let exo_dos = ""  //chemin vers le dossier de l'exercice
 
-let  record = {};  //objet contenant tout ce qu'il faut pour enregistrer
+let record = {};  //objet contenant tout ce qu'il faut pour enregistrer
 
-let  rendu = {}; //objet contenant la taille actuelle intérieure du rendu
+let rendu = {}; //objet contenant la taille actuelle intérieure du rendu
 
 function change(e)
 {
