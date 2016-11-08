@@ -79,24 +79,24 @@ function start(dos)
 
 function hex2rgb(hex)
 {
-  let  result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  let  r = parseInt(result[1], 16);
-  let  g = parseInt(result[2], 16);
-  let  b = parseInt(result[3], 16);
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  let r = parseInt(result[1], 16);
+  let g = parseInt(result[2], 16);
+  let b = parseInt(result[3], 16);
   return "rgb(" + r + ", " + g + ", " + b + ")";
 }
 function hex2rgba(hex, alpha)
 {
-  let  result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  let  r = parseInt(result[1], 16);
-  let  g = parseInt(result[2], 16);
-  let  b = parseInt(result[3], 16);
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  let r = parseInt(result[1], 16);
+  let g = parseInt(result[2], 16);
+  let b = parseInt(result[3], 16);
   return "rgba(" + r + ", " + g + ", " + b + ", " + (alpha/100) + ")";
 }
 
 function record_ini(e)
 {
-  let  pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   //on gère l'affichage
   document.getElementById(pre + "_record_start").style.display = "inline";
   document.getElementById(pre + "_record_save").style.display = "none";
@@ -114,7 +114,7 @@ function record_ini(e)
 }
 function record_start(el)
 {
-  let  pre = el.id.substr(0,2);
+  let pre = el.id.substr(0,2);
   document.getElementById(pre + "_record_start").setAttribute("etat", "1");
   document.getElementById(pre + "_record_start").style.backgroundColor = "red";
   document.getElementById(pre + "_record_start").src = "../../icons/media-playback-stop.svg";
@@ -127,7 +127,7 @@ function record_start(el)
 }
 function record_stop(e)
 {
-  let  pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   record.recorder.stop();
   console.log("recorder stopped " + record.recorder.state);
   document.getElementById(pre + "_record_start").setAttribute("etat", "2");
@@ -138,9 +138,9 @@ function record_stop(e)
 }
 function record_fin(e, el)
 {
-  let  pre = el.id.substr(0,2);
+  let pre = el.id.substr(0,2);
   record.blob = new Blob(record.chunks, { 'type' : 'audio/ogg; codecs=opus' });
-  let  audioURL = window.URL.createObjectURL(record.blob);
+  let audioURL = window.URL.createObjectURL(record.blob);
   document.getElementById(pre + "_record_audio").src = audioURL;
 }
 
@@ -282,7 +282,7 @@ function g_restaurer_hist(delta)
   last_id = 0;
   selection_change();
   // on met les bonnes valeurs aux bons endroits
-  let  b = null;
+  let b = null;
   b = JSON.parse(txt);
   if (b) blocs = b;
   for (let i=0; i<blocs.length; i++)
@@ -308,8 +308,8 @@ function g_restaurer(init)
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
       // on met les bonnes valeurs aux bons endroits
-      let  rep = xhr.responseText;
-      let  b = null;
+      let rep = xhr.responseText;
+      let b = null;
       if (rep != "") b = JSON.parse(rep);
       if (b) blocs = b;
       last_id = 0;
@@ -341,8 +341,8 @@ function g_restaurer_info(init)
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
       // on met les bonnes valeurs aux bons endroits
-      let  vals = [];
-      let  rep = xhr.responseText;
+      let vals = [];
+      let rep = xhr.responseText;
       let tosave = false;
       if (rep.length > 3 && rep.substr(0,4) == "****")
       {
@@ -408,7 +408,7 @@ function g_reinit()
 
 function bloc_new(tpe, txt)
 {
-  bloc = {};
+  let bloc = {};
   last_id++;
   bloc.id = last_id;
   bloc.tpe = tpe;
@@ -591,13 +591,13 @@ function rendu_add_bloc(bloc)
   // 2 cas : soit le bloc est déjà dans le rendu (modif) soit il faut l'ajouter
   if (document.getElementById("cr_rendu_" + bloc.id))
   {
-    let  htm = bloc.html + "\n<div class=\"couverture\"></div>";
+    let htm = bloc.html + "\n<div class=\"couverture\"></div>";
     document.getElementById("cr_rendu_" + bloc.id).innerHTML = htm;
   }
   else
   {
     // on crée le bloc
-    let  htm = "<div class=\"cr_rendu_bloc ";
+    let htm = "<div class=\"cr_rendu_bloc ";
     if (bloc.size == "ratio") htm += "mv_rs\" ";
     else if (bloc.size == "manuel") htm += "mv_rsl\" ";
     else htm += "mv\" ";
@@ -680,7 +680,7 @@ function rendu_add_bloc(bloc)
   if (bloc.rotation != "0") b.style.transform = "rotate(" + bloc.rotation + "deg)";
   if (bloc.tpe == "cercle" || bloc.tpe == "ligne")
   {
-    let  svg = document.getElementById("svg_" + bloc.id);
+    let svg = document.getElementById("svg_" + bloc.id);
     svg.style.fill = hex2rgba(bloc.fond_coul, bloc.fond_alpha);
     switch (bloc.bord)
     {
@@ -714,7 +714,7 @@ function rendu_add_bloc(bloc)
 function rendu_select_blocs()
 {
   // on enlève toutes les bordures
-  let  elems = document.getElementsByClassName('cr_rendu_bloc');
+  let elems = document.getElementsByClassName('cr_rendu_bloc');
   for (let i=0; i<elems.length; i++)
   {
     elems[i].style.border = "hidden";
@@ -726,15 +726,15 @@ function rendu_select_blocs()
   }
   //et les carrés pour la ligne
   //on enlève les carrés existants
-  let  c1 = document.getElementById("extrema_1");
-  let  c2 = document.getElementById("extrema_2");
+  let c1 = document.getElementById("extrema_1");
+  let c2 = document.getElementById("extrema_2");
   if (c1) c1.parentNode.removeChild(c1);
   if (c2) c2.parentNode.removeChild(c2);
   if (selection.length == 1 && selection[0].tpe == "ligne")
   {
-    let  b = selection[0];
-    let  c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left*rendu.width/443-4) + "px;top: " + (b.top*rendu.height/631-4) + "px;\"></div>";
-    let  c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2*rendu.width/443-4) + "px;top: " + (b.y2*rendu.height/631-4) + "px;\"></div>";
+    let b = selection[0];
+    c1 = "<div class=\"extrema mv\" id=\"extrema_1\" extrema=\"1\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.left*rendu.width/443-4) + "px;top: " + (b.top*rendu.height/631-4) + "px;\"></div>";
+    c2 = "<div class=\"extrema mv\" id=\"extrema_2\" extrema=\"2\" ligne_id=\"" + b.id + "\" style=\"left: " + (b.x2*rendu.width/443-4) + "px;top: " + (b.y2*rendu.height/631-4) + "px;\"></div>";
     document.getElementById("cr_rendu").innerHTML += c1 + c2;
   }
 }
@@ -784,7 +784,7 @@ function selection_update()
 {
   // désactivations gloables
   // on masque toutes les options
-  let  elems = document.getElementsByClassName('cr_coul');
+  let elems = document.getElementsByClassName('cr_coul');
   for (let i=0; i<elems.length; i++)
   {
     elems[i].style.display = 'none';
@@ -852,7 +852,7 @@ function selection_update()
   document.getElementById("cr_points").value = bloc.points;
 
   //on enabled tous les éléments classiques. Charge aux code specifiques de les désactiver
-  let  elems = document.getElementsByClassName('cr_');
+  elems = document.getElementsByClassName('cr_');
   for (let i=0; i<elems.length; i++)
   {
     elems[i].disabled = false;
@@ -981,7 +981,7 @@ function radiobtn_sel_update()
   //on regarde si la sélection est homogène
   if (selection.length>0 && selection_is_homogene("radiobtn"))
   {
-    let  elems = document.getElementsByClassName('cr_coul');
+    let elems = document.getElementsByClassName('cr_coul');
     elems[1].style.display = "block";
     elems[2].style.display = "block";
     document.getElementById("cr_coul1_barre").style.display = "none";
@@ -1047,7 +1047,7 @@ function radio_create_html(bloc, txt)
   if (bloc.tpe == "radiobtn") htm += "options=\"" + bloc.radiobtn_coul1 + "|" + bloc.radiobtn_coul2 + "\" ";
   htm += ">\n";
   //on coupe suivant '|'
-  let  vals = txt.split("|");
+  let vals = txt.split("|");
   if (vals.length>0) htm += "  <div>" + txt_spaces(vals[0]) + "</div>\n";
   let item = 0;
   if (vals.length>1)
@@ -1101,7 +1101,7 @@ function combo_create_html(bloc, txt)
   let htm = "";
   htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef combo\" tpe=\"combo\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\">\n";
   //on coupe suivant '|'
-  let  vals = txt.split("|");
+  let vals = txt.split("|");
   if (vals.length>0) htm += "  <div>" + txt_spaces(vals[0]) + "</div>\n";
   if (vals.length>1)
   {
@@ -1182,7 +1182,7 @@ function texte_create_html(bloc, txt)
   htm += "<div " + bloc_get_size_part(bloc) + " class=\"item lignef texte\" tpe=\"texte\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\" options=\"";
   htm += comp + "|" + enter + "|" + bloc.texte_corr + "\" >\n";
   //on coupe suivant '|'
-  let  vals = txt_spaces(txt).split("|");
+  let vals = txt_spaces(txt).split("|");
   if (l == 0) htm += "  <div style=\"width: 100%;\">\n"
   if (vals.length>0) htm += "  <div>" + vals[0] + "<div class=\"" + corr + "\">&nbsp;</div></div>\n";
   if (vals.length>1)
@@ -1264,12 +1264,12 @@ function multi_new()
 }
 function multi_create_html(bloc, txt)
 {
-  let  htm = "";
+  let htm = "";
   htm += "<div " + bloc_get_size_part(bloc) + " class=\"item ligne2f multi\" tpe=\"multi\" item=\"" + bloc.id + "\" id=\"" + bloc.id + "\" points=\"" + bloc.points + "\"";
-  let  opts = "";
-  let  maj = "";
-  let  suff = "";
-  let  barre = "";
+  let opts = "";
+  let maj = "";
+  let suff = "";
+  let barre = "";
   for (let i=0; i<bloc.multi_coul.length; i++)
   {
     if (i>0)
@@ -1470,7 +1470,7 @@ function image_sel_update()
 function texte_simple_new(vide)
 {
   //on demande le texte initial
-  let  txt = "";
+  let txt = "";
   if (!vide) txt = prompt("texte\n\nTexte à insérer", "");
   if (!txt )
   {
@@ -1627,7 +1627,7 @@ function cercle_create_html(bloc, txt)
     if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
   htm += ">\n";
-  let  rr = 50
+  let rr = 50
   if (bloc.bord != "hidden") rr -= parseFloat(bloc.bord_size)/2;
   htm += "<ellipse vector-effect=\"non-scaling-stroke\" cx=\"50\" cy=\"50\" rx=\"" + rr + "\" ry=\"" + rr + "\" id=\"svg_" + bloc.id + "\" />";
   htm += "</svg>\n</div>\n";
@@ -1677,7 +1677,7 @@ function ligne_calc(bloc, x1, y1, x2, y2)
   bloc.y2 = y2;
   bloc.height = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     
-  let  angle = 180 / 3.1415 * Math.acos((y2 - y1) / bloc.height);
+  let angle = 180 / 3.1415 * Math.acos((y2 - y1) / bloc.height);
   if(x2 > x1) angle *= -1;
   bloc.rotation = angle;
 }
@@ -1810,7 +1810,7 @@ function _dragMoveListener (event)
       ligne_calc(bloc, bloc.left, bloc.top, bloc.x2 + dx, bloc.y2 + dy);
     }
     // on modifie le style de la ligne en conséquence
-    let  sb = rendu_get_superbloc(bloc);
+    let sb = rendu_get_superbloc(bloc);
     sb.style.left = bloc.left*100/443 + "%";
     sb.style.top = bloc.top*100/631 + "%";
     sb.style.height = bloc.height*100/631 + "%";
@@ -1825,7 +1825,7 @@ function _dragMoveListener (event)
       
       bloc.top = parseFloat(bloc.top) + dy;
       bloc.left = parseFloat(bloc.left) + dx;
-      let  sb = rendu_get_superbloc(bloc);
+      let sb = rendu_get_superbloc(bloc);
       sb.style.top = bloc.top*100/631 + "%";
       sb.style.left = bloc.left*100/443 + "%";
       if (i==0) // on affiche juste les valeurs du premier élément
@@ -1835,7 +1835,7 @@ function _dragMoveListener (event)
       }
       if (i==0 && bloc.tpe == "ligne")
       {
-        let  elems = document.getElementsByClassName("extrema");
+        let elems = document.getElementsByClassName("extrema");
         for (let j=0; j<elems.length; j++)
         {
           elems[j].style.left = parseFloat(elems[j].style.left) + event.dx + "px";

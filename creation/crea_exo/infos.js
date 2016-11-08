@@ -1,10 +1,10 @@
 "use strict";
 
-let  infos = {};
+let infos = {};
 
-let  exo_dos = ""  //chemin vers le dossier de l'exercice
+let exo_dos = ""  //chemin vers le dossier de l'exercice
 
-let  record = {};  //objet contenant tout ce qu'il faut pour enregistrer
+let record = {};  //objet contenant tout ce qu'il faut pour enregistrer
 
 
 function change(e)
@@ -31,24 +31,24 @@ function start(dos)
 
 function hex2rgb(hex)
 {
-  let  result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  let  r = parseInt(result[1], 16);
-  let  g = parseInt(result[2], 16);
-  let  b = parseInt(result[3], 16);
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  let r = parseInt(result[1], 16);
+  let g = parseInt(result[2], 16);
+  let b = parseInt(result[3], 16);
   return "rgb(" + r + ", " + g + ", " + b + ")";
 }
 function hex2rgba(hex, alpha)
 {
-  let  result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  let  r = parseInt(result[1], 16);
-  let  g = parseInt(result[2], 16);
-  let  b = parseInt(result[3], 16);
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  let r = parseInt(result[1], 16);
+  let g = parseInt(result[2], 16);
+  let b = parseInt(result[3], 16);
   return "rgba(" + r + ", " + g + ", " + b + ", " + (alpha/100) + ")";
 }
 
 function record_ini(e)
 {
-  let  pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   //on gère l'affichage
   document.getElementById(pre + "_record_start").style.display = "inline";
   document.getElementById(pre + "_record_save").style.display = "none";
@@ -66,7 +66,7 @@ function record_ini(e)
 }
 function record_start(el)
 {
-  let  pre = el.id.substr(0,2);
+  let pre = el.id.substr(0,2);
   document.getElementById(pre + "_record_start").setAttribute("etat", "1");
   document.getElementById(pre + "_record_start").style.backgroundColor = "red";
   document.getElementById(pre + "_record_start").src = "../../icons/media-playback-stop.svg";
@@ -79,7 +79,7 @@ function record_start(el)
 }
 function record_stop(e)
 {
-  let  pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   record.recorder.stop();
   console.log("recorder stopped " + record.recorder.state);
   document.getElementById(pre + "_record_start").setAttribute("etat", "2");
@@ -91,12 +91,12 @@ function record_stop(e)
 function record_fin(e, el)
 {
   record.blob = new Blob(record.chunks, { 'type' : 'audio/ogg; codecs=opus' });
-  let  audioURL = window.URL.createObjectURL(record.blob);
+  let audioURL = window.URL.createObjectURL(record.blob);
   document.getElementById("ci_record_audio").src = audioURL;
 }
 function cr_record_start(e)
 {
-  let  pre = e.id.substr(0,2);
+  let pre = e.id.substr(0,2);
   switch (e.getAttribute("etat"))
   {
     case "0":
@@ -113,7 +113,7 @@ function cr_record_start(e)
 function cr_record_save(e)
 {
   //on sauvegarde le son enregistré
-  let  xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
@@ -126,7 +126,7 @@ function cr_record_save(e)
         return;
       }
       // et la liste des images
-      let  option = document.createElement("option");
+      let option = document.createElement("option");
       option.text = audio_name;
       option.value = audio_name;
       document.getElementById("ci_audio_select").add(option);
@@ -159,7 +159,7 @@ function file_create_infos()
   let txt = infos.titre + "\n";
   txt += infos.consigne.replace(/(?:\r\n|\r|\n)/g, '<br />') + "\n";
   txt += infos.total + "|" + infos.arrondi + "\n";
-  for(i=0; i<6; i++)
+  for(let i=0; i<6; i++)
   {
     txt += infos.a[i].min + "|" + infos.a[i].coul + "|";
     txt += infos.a[i].txt.replace(/(?:\r\n|\r|\n)/g, '<br />') + "|";
@@ -199,8 +199,8 @@ function g_restaurer_info(init)
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
     {
       // on met les bonnes valeurs aux bons endroits
-      let  vals = [];
-      let  rep = xhr.responseText;
+      let vals = [];
+      let rep = xhr.responseText;
       let tosave = false;
       if (rep.length > 3 && rep.substr(0,4) == "****")
       {
@@ -411,8 +411,8 @@ function cri_mod_sel_change(e)
       if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
       {
         // on met les bonnes valeurs aux bons endroits
-        let  vals = [];
-        let  rep = xhr.responseText;
+        let vals = [];
+        let rep = xhr.responseText;
         if (rep != "") vals = rep.split("\n");
         else return;
         if (vals.length>10)
@@ -454,7 +454,7 @@ function cri_mod_save(e)
   let txt = prompt("Nom du modèle (sans accents, espaces, etc...)\n\nAttention si il existe déjà, l'ancien sera écrasé !", "");
   if (!txt | txt == "") return;
   file_sauve("modeles/" + txt, file_create_infos());
-  let  option = document.createElement("option");
+  let option = document.createElement("option");
   option.text = txt;
   option.value = txt;
   document.getElementById("cri_mod_sel").add(option);
@@ -463,8 +463,8 @@ function cri_mod_save(e)
 function cr_img_get_change(e)
 {
   //on sauvegarde l'image sélectionnée
-  let  xhr = new XMLHttpRequest();
-  let  fd  = new FormData(e.form);
+  let xhr = new XMLHttpRequest();
+  let fd  = new FormData(e.form);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
@@ -478,7 +478,7 @@ function cr_img_get_change(e)
       }
       
       // et la liste des images
-      let  option = document.createElement("option");
+      let option = document.createElement("option");
       option.text = img_name;
       option.value = img_name;
       document.getElementById("ci_img_select").add(option);
@@ -494,7 +494,7 @@ function cr_img_get_change(e)
 }
 function cr_img_select_change(e)
 {
-  let  v = e.value;
+  let v = e.value;
   if (!v) return;
   if (v == "****")
   {
@@ -507,8 +507,8 @@ function cr_img_select_change(e)
 function cr_audio_get_change(e)
 {
   //on sauvegarde l'image sélectionnée
-  let  xhr = new XMLHttpRequest();
-  let  fd  = new FormData(e.form);
+  let xhr = new XMLHttpRequest();
+  let fd  = new FormData(e.form);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
@@ -521,7 +521,7 @@ function cr_audio_get_change(e)
         return;
       }
       // et la liste des images
-      let  option = document.createElement("option");
+      let option = document.createElement("option");
       option.text = audio_name;
       option.value = audio_name;
       document.getElementById("ci_audio_select").add(option);
@@ -536,7 +536,7 @@ function cr_audio_get_change(e)
 }
 function cr_audio_select_change(e)
 {
-  let  v = e.value;
+  let v = e.value;
   document.getElementById("ci_record_div").style.display = "none";
   if (!v) v = "";
   if (v == "******") //enregistrer

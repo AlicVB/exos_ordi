@@ -33,8 +33,9 @@ function cr_keydown(event)
 {
   if (event.target != document.body) return;
   //console.log(event.keyCode);
-  let  r = document.getElementById("cr_rendu")
-  let  mv = 5;
+  let r = document.getElementById("cr_rendu")
+  let mv = 5;
+  let e = {};
   if (event.ctrlKey || event.shiftKey) mv = 20;
   switch (event.keyCode)
   {
@@ -108,12 +109,10 @@ function cr_keydown(event)
       break;
     case 46: //suppr
     case 8:  //retour arrière
-      let e = {};
       e.value = "2";
       cr_action_change(e);
       break;
     case 67: //C
-      let e = {};
       e.value = "1";
       cr_action_change(e);
       break;
@@ -176,7 +175,7 @@ function cr_img_get_change(e)
       }
       
       // et la liste des images
-      let  option = document.createElement("option");
+      let option = document.createElement("option");
       option.text = img_name;
       option.value = img_name;
       document.getElementById(pre + "_img_select").add(option);
@@ -186,7 +185,7 @@ function cr_img_get_change(e)
       {
         // on récupère le bloc sélectionné
         if (selection.length < 1) return;
-        bloc = selection[0];
+        let bloc = selection[0];
         if (bloc.tpe != "image") return;
         //on récupère les chemins
         let rpath = "img/" + img_name;
@@ -200,7 +199,7 @@ function cr_img_get_change(e)
         document.getElementById("cr_html").value = bloc.html;
         document.getElementById(bloc.id).onload = function () {
           //on met à jour les infos de hauteur
-          let  h = document.getElementById(bloc.id).getBoundingClientRect().height;
+          let h = document.getElementById(bloc.id).getBoundingClientRect().height;
           rendu_get_superbloc(bloc).style.height = h + "px";
           bloc.height = h;
           document.getElementById("cr_tp_h").value = h;
@@ -248,7 +247,7 @@ function cr_img_select_change(e)
     document.getElementById("cr_html").value = bloc.html;
     document.getElementById(bloc.id).onload = function () {
       //on met à jour les infos de hauteur
-      let  h = document.getElementById(bloc.id).getBoundingClientRect().height;
+      let h = document.getElementById(bloc.id).getBoundingClientRect().height;
       rendu_get_superbloc(bloc).style.height = h*100/rendu.height + "%";
       bloc.height = h/rendu.height*631;
       document.getElementById("cr_tp_h").value = h/rendu.height*631;       
@@ -282,7 +281,7 @@ function cr_audio_get_change(e)
         return;
       }
       // et la liste des images
-      let  option = document.createElement("option");
+      let option = document.createElement("option");
       option.text = audio_name;
       option.value = audio_name;
       document.getElementById(pre + "_audio_select").add(option);
@@ -646,7 +645,7 @@ function cr_bord_change(e)
       if (bloc.tpe == "cercle")
       {
         //on modifie le rayon pour prendre en compte la bordure
-        let  w = 0;
+        let w = 0;
         if (selection[i].bord != "hidden") w = selection[i].bord_size;
         svg.setAttribute("rx", 50 - parseFloat(w)/2);
         svg.setAttribute("ry", 50 - parseFloat(w)/2);
@@ -689,7 +688,7 @@ function cr_bord_size_change(e)
       if (bloc.tpe == "cercle")
       {
         //on modifie le rayon pour prendre en compte la bordure
-        let  w = 0;
+        let w = 0;
         if (selection[i].bord != "hidden") w = selection[i].bord_size;
         svg.setAttribute("rx", 50 - parseFloat(w)/2);
         svg.setAttribute("ry", 50 - parseFloat(w)/2);
@@ -1169,7 +1168,7 @@ function cr_record_save(e)
         return;
       }
       // et la liste des images
-      let  option = document.createElement("option");
+      let option = document.createElement("option");
       option.text = audio_name;
       option.value = audio_name;
       document.getElementById(pre + "_audio_select").add(option);
@@ -1286,7 +1285,7 @@ function cr_txt_ini_change(e)
     selection[i].txt = v;
     bloc_create_html(selection[i]);
     rendu_add_bloc(selection[i]);
-    document.getElementById("cr_html").value = bloc.html;
+    document.getElementById("cr_html").value = selection[i].html;
   }
   g_sauver();
 }
