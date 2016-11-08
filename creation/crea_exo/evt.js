@@ -550,8 +550,18 @@ function cr_tp_t_change(e)
   let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
+    let mv = selection[i].top - v;
     selection[i].top = v;
     rendu_get_superbloc(selection[i]).style.top = v*100/631 + "%";
+    if (selection[i].tpe == "ligne")
+    {
+      let elems = document.getElementsByClassName("extrema");
+      for (let j=0; j<elems.length; j++)
+      {
+        elems[j].style.top = parseFloat(elems[j].style.top) - mv*rendu.height/631 + "px";
+      }
+      selection[i].y2 -= mv;
+    }
   }
   //on sauvegarde
   g_sauver();
@@ -561,8 +571,18 @@ function cr_tp_l_change(e)
   let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
+    let mv = selection[i].left - v;
     selection[i].left = v;
     rendu_get_superbloc(selection[i]).style.left = v*100/443 + "%";
+    if (selection[i].tpe == "ligne")
+    {
+      let elems = document.getElementsByClassName("extrema");
+      for (let j=0; j<elems.length; j++)
+      {
+        elems[j].style.left = parseFloat(elems[j].style.left) - mv*rendu.width/443 + "px";
+      }
+      selection[i].x2 -= mv;
+    }
   }
   //on sauvegarde
   g_sauver();
