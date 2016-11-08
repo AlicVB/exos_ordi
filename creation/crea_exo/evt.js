@@ -541,14 +541,14 @@ function cr_tp_w_change(e)
   let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
-    if (bloc.size == "ratio")
+    if (selection[i].size == "ratio")
     {
       selection[i].height = selection[i].height*v/selection[i].width;
       selection[i].width = v;      
       rendu_get_superbloc(selection[i]).style.width = v*100/443 + "%";
       rendu_get_superbloc(selection[i]).style.height = selection[i].height*100/631 + "%";
     }
-    else if (bloc.size == "manuel")
+    else if (selection[i].size == "manuel")
     {
       selection[i].width = v;
       rendu_get_superbloc(selection[i]).style.width = v*100/443 + "%";
@@ -563,14 +563,14 @@ function cr_tp_h_change(e)
   let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
-    if (bloc.size == "ratio")
+    if (selection[i].size == "ratio")
     {
       selection[i].width = selection[i].width*v/selection[i].height;
       selection[i].height = v;      
       rendu_get_superbloc(selection[i]).style.height = v*100/631 + "%";
       rendu_get_superbloc(selection[i]).style.width = selection[i].width*100/443 + "%";
     }
-    else if (bloc.size == "manuel")
+    else if (selection[i].size == "manuel")
     {
       selection[i].height = v;
       rendu_get_superbloc(selection[i]).style.height = v*100/631 + "%";
@@ -619,9 +619,9 @@ function cr_bord_change(e)
   let v = e.value;
   for (let i=0; i<selection.length; i++)
   {
-    if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
+    if (selection[i].tpe == "cercle" || selection[i].tpe == "ligne")
     {
-      if (v == "double" || (v == "hidden" && bloc.tpe == "ligne"))
+      if (v == "double" || (v == "hidden" && selection[i].tpe == "ligne"))
       {
         //non géré, retour à l'ancienne valeur
         selection_update();
@@ -642,7 +642,7 @@ function cr_bord_change(e)
           svg.style.removeProperty("stroke");
           break;
       }
-      if (bloc.tpe == "cercle")
+      if (selection[i].tpe == "cercle")
       {
         //on modifie le rayon pour prendre en compte la bordure
         let w = 0;
@@ -665,7 +665,7 @@ function cr_bord_coul_change(jscolor)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_coul = v;
-    if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
+    if (selection[i].tpe == "cercle" || selection[i].tpe == "ligne")
     {
       let svg = document.getElementById("svg_" + selection[i].id);
       if (selection[i].bord != "hidden") svg.style.stroke = v;
@@ -681,11 +681,11 @@ function cr_bord_size_change(e)
   for (let i=0; i<selection.length; i++)
   {
     selection[i].bord_size = v;
-    if (selection[i].tpe == "cercle" || bloc.tpe == "ligne")
+    if (selection[i].tpe == "cercle" || selection[i].tpe == "ligne")
     {
       let svg = document.getElementById("svg_" + selection[i].id);
       svg.style.strokeWidth = v*rendu.width/443 + "px";
-      if (bloc.tpe == "cercle")
+      if (selection[i].tpe == "cercle")
       {
         //on modifie le rayon pour prendre en compte la bordure
         let w = 0;
