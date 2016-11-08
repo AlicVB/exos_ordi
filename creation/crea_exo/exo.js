@@ -614,7 +614,7 @@ function rendu_add_bloc(bloc)
   //si c'est une image, on règle les chemins
   if (bloc.tpe == "image")
   {
-    document.getElementById(bloc.id).src = bloc.img_vpath;
+    document.getElementById(bloc.id).src = exo_dos + "/../../" + bloc.img_rpath;
   }
   //si c'est un son, on règle les chemins
   if (bloc.tpe == "audio")
