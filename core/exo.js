@@ -793,12 +793,6 @@ function charge(_user, _livreid, _exoid, txt_exo, _root)
   {
     elems[i].addEventListener('mousedown',line_start,true);
   }
-  //on initialise les icones de sons
-  elems = document.querySelectorAll("img.audio");
-  for (let i=0;i<elems.length;i++)
-  {
-    elems[i].src = root + "icons/" + elems[i].getAttribute("src");
-  }
   
   // on initialise les items
   let xhr = new XMLHttpRequest();

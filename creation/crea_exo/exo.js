@@ -264,6 +264,7 @@ function g_exporter()
   let txt = "<style>\n" + file_create_css() + "</style>\n\n";
   for (let i=0; i<blocs.length; i++)
   {
+    bloc_create_html(blocs[i], true);
     txt += blocs[i].html + "\n";
   }
   file_sauve(exo_dos + "/exo.php", txt);
@@ -546,9 +547,9 @@ function bloc_get_from_id(id)
   }
 }
 
-function bloc_create_html(bloc)
+function bloc_create_html(bloc,exp=false)
 {
-  window[bloc.tpe + "_create_html"](bloc, bloc.txt);
+  window[bloc.tpe + "_create_html"](bloc, bloc.txt, exp);
 }
 function bloc_get_size_part(bloc)
 {
@@ -629,17 +630,6 @@ function rendu_add_bloc(bloc)
     
     //on l'ajoute
     document.getElementById("cr_rendu").innerHTML += htm;
-  }
-
-  //si c'est une image, on règle les chemins
-  if (bloc.tpe == "image")
-  {
-    document.getElementById(bloc.id).src = exo_dos + "/../../" + bloc.img_rpath;
-  }
-  //si c'est un son, on règle les chemins
-  if (bloc.tpe == "audio")
-  {
-    document.getElementById(bloc.id).src = "../../icons/audacity.svg";
   }
   
   //on modifie les styles
@@ -1437,7 +1427,7 @@ function image_new()
   selection = [bloc];
   selection_change();
 }
-function image_create_html(bloc, txt)
+function image_create_html(bloc, txt, exp)
 {
   let htm = "";
   htm += "<div";
@@ -1451,7 +1441,8 @@ function image_create_html(bloc, txt)
     htm += "line=\"1\" ";
     if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
-  htm += "src=\"" + bloc.img_rpath;
+  if (exp) htm += "src=\"" + bloc.img_rpath;
+  else htm += "src=\"" + exo_dos + "/../../" + bloc.img_rpath;
   htm += "\" id=\"" + bloc.id + "\" />\n</div>";
   bloc.html = htm;
 }
@@ -1575,7 +1566,7 @@ function audio_new()
   selection = [bloc];
   selection_change();
 }
-function audio_create_html(bloc, txt)
+function audio_create_html(bloc, txt, exp)
 {
   let htm = "";
   htm += "<div";
@@ -1588,9 +1579,13 @@ function audio_create_html(bloc, txt)
     htm += "line=\"1\" ";
     if (bloc.relie_id != "*") htm += "lineok=\"" + bloc.relie_id + "\" ";
   }
-  htm += "src=\"audacity.svg\" onclick=\"audio_play(this)\"";
+  if (exp) htm += "src=\"../../../icons/audacity.svg\" ";
+  else htm += "src=\"../../icons/audacity.svg\" ";
+  htm += "onclick=\"audio_play(this)\"";
   htm += " id=\"" + bloc.id + "\" />\n";
-  htm += "<audio class=\"audio_src\" id=\"audio_" + bloc.id + "\" src=\"" + bloc.audio_name + "\"></audio>";
+  htm += "<audio class=\"audio_src\" id=\"audio_" + bloc.id + "\" ";
+  if (exp) htm += "src=\"" + bloc.audio_name + "\"";
+  htm += "></audio>";
   htm += "</div>";
   bloc.html = htm;
 }
